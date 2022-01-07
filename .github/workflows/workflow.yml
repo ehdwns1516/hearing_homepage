@@ -8,10 +8,10 @@ jobs:
   backend:
     name: CD with Node
     runs-on: ubuntu-18.04
-    defaults:
-      run:
-        shell: bash
-        working-directory: client
+#     defaults:
+#       run:
+#         shell: bash
+#         working-directory: client
 
     strategy:
       matrix:
