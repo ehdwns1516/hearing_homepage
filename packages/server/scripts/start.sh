@@ -8,4 +8,4 @@ else
 fi
 
 sudo nohup node /home/ubuntu/build-be/dist/main.js &
-exit
+echo -ne '\n'
