@@ -6,4 +6,5 @@ else
   kill -9 $CURRENT_PID
   sleep 3
 fi
-node /home/ubuntu/build-be/dist/main.js &
+nohup node /home/ubuntu/build-be/dist/main.js &
+exit
