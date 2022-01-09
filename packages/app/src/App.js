@@ -13,7 +13,7 @@ function App() {
           target='_blank'
           rel='noopener noreferrer'
         >
-          Learn github action
+          Master github action
         </a>
       </header>
     </div>
