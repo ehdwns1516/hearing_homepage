@@ -46,7 +46,7 @@ jobs:
         run: aws s3 cp --region ap-northeast-2 ./build-fe.zip s3://oticon-bucket/build/build-fe.zip
 
       - name: Code Deploy
-        run: aws deploy create-deployment --application-name oticon-app --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name oticon-group2 --s3-location bucket=oticon-bucket,bundleType=zip,key=build/build-fe.zip
+        run: aws deploy create-deployment --application-name oticon-app2 --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name oticon-group2 --s3-location bucket=oticon-bucket,bundleType=zip,key=build/build-fe.zip
 
   backend:
     name: CI/CD with Node
