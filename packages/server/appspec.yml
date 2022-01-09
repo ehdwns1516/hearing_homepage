@@ -15,4 +15,3 @@ hooks:
     - location: ./scripts/beforeStart.sh
   AfterInstall:
     - location: ./scripts/start.sh
-      runas: ubuntu
