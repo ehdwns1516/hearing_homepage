@@ -8,10 +8,9 @@ jobs:
   backend:
     name: CD with Node
     runs-on: ubuntu-18.04
-#     defaults:
-#       run:
-#         shell: bash
-#         working-directory: client
+    defaults:
+      run:
+        working-directory: ./packages/app
 
     strategy:
       matrix:
@@ -47,4 +46,4 @@ jobs:
         run: aws s3 cp --region ap-northeast-2 ./build-fe.zip s3://oticon-bucket/build/build-fe.zip
 
       - name: Code Deploy
-        run: aws deploy create-deployment --application-name hearing-oticon --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name hearing-oticon --s3-location bucket=oticon-bucket,bundleType=zip,key=build/build-fe.zip
+        run: aws deploy create-deployment --application-name oticon-deploy --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name ec2-oticon-deploy --s3-location bucket=oticon-bucket,bundleType=zip,key=build/build-fe.zip
