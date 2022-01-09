@@ -3,8 +3,9 @@ CURRENT_PID=$(pgrep -f node)
 if [ -z $CURRENT_PID];then
   echo "node 실행중이 아님" >> /home/ubuntu/nodelog.log
 else
-  kill -9 $CURRENT_PID
+  sudo kill -9 $CURRENT_PID
   sleep 3
 fi
-nohup node /home/ubuntu/build-be/dist/main.js &
+
+sudo nohup node /home/ubuntu/build-be/dist/main.js &
 exit
