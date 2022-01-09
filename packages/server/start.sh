@@ -1,2 +1,2 @@
 #!/bin/bash
-sudo service nginx restart
+node /home/ubuntu/build-be/dist/main.js
