@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-let addressSchema = new Schema( // 스키마 생성
+const addressSchema = new Schema( // 스키마 생성
   {
     name: { type: String, required: true, unique: true },
     email: { type: String },
