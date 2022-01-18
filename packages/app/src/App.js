@@ -13,7 +13,7 @@ function App() {
           target='_blank'
           rel='noopener noreferrer'
         >
-          Master github action
+          CI/CD test
         </a>
       </header>
     </div>
