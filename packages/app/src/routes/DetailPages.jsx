@@ -10,9 +10,7 @@ const DetailPages = () => {
   return (
     <Routes>
       {topMenuList.map((topMenu) => {
-        console.log('asd');
         return subMenuList[topMenu].map((subMenu) => {
-          console.log(subMenu.replace(/(\s*)/g, ''));
           return (
             <Route
               path={`${encodeURIComponent(
