@@ -27,7 +27,10 @@ jobs:
 
       - name: npm 설치
         run: npm install
-
+        
+      - name: process.env.CI = false
+        run: process.env.CI = false
+        
       - name: npm 빌드
         run: npm run build
 
