@@ -9,10 +9,21 @@ const DetailPages = () => {
   const [subMenuList, setSubMenuList] = useRecoilState(atomSubMenuList);
   return (
     <Routes>
-      {topMenuList.map((topMenu) => {
+      {topMenuList.map((topMenu, index) => {
+        if (subMenuList[topMenu].length === 0)
+          return (
+            <Route
+              key={index}
+              path={`${encodeURIComponent(
+                topMenu.replace(/(\s*)/g, '')
+              )}/${encodeURIComponent(topMenu.replace(/(\s*)/g, ''))}`}
+              element={<DetailPage topMenu={topMenu} subMenu={topMenu} />}
+            />
+          );
         return subMenuList[topMenu].map((subMenu) => {
           return (
             <Route
+              key={index}
               path={`${encodeURIComponent(
                 topMenu.replace(/(\s*)/g, '')
               )}/${encodeURIComponent(subMenu.replace(/(\s*)/g, ''))}`}

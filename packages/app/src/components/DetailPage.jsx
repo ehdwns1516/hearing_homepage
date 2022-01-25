@@ -4,9 +4,7 @@ import styled from 'styled-components';
 import SideNavBar from './SideNavBar';
 
 const DetailPage = ({ topMenu, subMenu }) => {
-  useEffect(() => {
-    console.log('qwe');
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <WholeWrapper>
@@ -14,7 +12,7 @@ const DetailPage = ({ topMenu, subMenu }) => {
         <SideNavBar currentPage={subMenu} />
       </SideWrapper>
       <ContentsWrapper>
-        {topMenu}
+        <TitleText>{topMenu}</TitleText>
         <HorizonLine>
           <InnerText>{subMenu}</InnerText>
         </HorizonLine>
@@ -36,25 +34,33 @@ const ContentsWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   text-align: center;
-  background-color: green;
 `;
 
 const SideWrapper = styled.div`
   height: 100%;
   width: 25%;
+  border-right: 1px solid #b4338a;
   text-align: center;
+  background-color: blue;
 `;
 
 const HorizonLine = styled.div`
   width: 90%;
-  border-bottom: 1px solid #aaa;
-  line-height: 0.1em;
-  margin: 10px 0 20px;
+  border-bottom: 1px solid #b4338a;
+  line-height: 0em;
+  margin-top: 20px;
 `;
 
 const InnerText = styled.span`
   background-color: white;
-  padding: '0 10px';
+  color: rgba(0, 0, 0, 0.5);
+  padding: 0 10px;
+  font-size: 20px;
+`;
+
+const TitleText = styled.span`
+  font-size: 30px;
+  margin-top: 50px;
 `;
 
 export default DetailPage;
