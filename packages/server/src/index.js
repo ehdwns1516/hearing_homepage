@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const db = require('./db');
 const addressRouter = require('./routes/address');
 const bodyParser = require('body-parser');
@@ -6,6 +7,12 @@ const bodyParser = require('body-parser');
 const app = express();
 const port = process.env.PORT || 3001;
 
+app.use(
+  cors({
+    origin: ['http://localhost:3000'],
+    credentials: true,
+  })
+);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use('/address', addressRouter);

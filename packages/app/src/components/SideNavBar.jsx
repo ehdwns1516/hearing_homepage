@@ -148,7 +148,6 @@ const TopMenuLink = styled(Link)`
 const SubMenuWrapper = styled.div`
   height: fit-content;
   width: 100%;
-  background-color: blue;
 `;
 
 const dropDownOpen = keyframes`
