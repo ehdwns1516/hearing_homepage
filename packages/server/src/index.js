@@ -9,13 +9,13 @@ const port = process.env.PORT || 3001;
 
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'http://localhost:80', 'http://13.125.53.163:80'],
+    origin: ['http://localhost:8080', 'http://localhost:3000'],
     credentials: true,
   })
 );
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use('/address', addressRouter);
+app.use('/api/address', addressRouter);
 
 db.once('open', function () {
   console.log('DB Connected');
