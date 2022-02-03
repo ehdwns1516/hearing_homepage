@@ -20,7 +20,6 @@ router.get('/name/:addressname', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  console.log(req.body);
   Address.create(req.body)
     .then((address) => res.send(address))
     .catch((err) => res.status(500).send(err));
