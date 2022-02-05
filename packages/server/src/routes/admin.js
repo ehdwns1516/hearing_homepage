@@ -4,7 +4,7 @@ const { auth } = require('../routes/auth'); // token validation check.
 const jwt = require('jsonwebtoken');
 const SECRET_KEY = 'TEST-SECRET-KEY';
 
-router.get('/admins', (req, res) => {
+router.get('/admins', auth, (req, res) => {
   Admin.findAll()
     .then((admins) => {
       return res.status(200).json({
@@ -21,7 +21,7 @@ router.get('/admins', (req, res) => {
     });
 });
 
-router.delete('/delete/:id', auth, (req, res) => {
+router.delete('/:id', auth, (req, res) => {
   // JWT token test
   Admin.deleteByAdminID(req.params.id)
     .then(() => {
@@ -55,8 +55,8 @@ router.post('/signUp', (req, res) => {
 });
 
 router.post('/login', (req, res) => {
-  const reqId = req.body.id;
-  const reqPassword = req.body.password;
+  const reqId = req.body.data.id;
+  const reqPassword = req.body.data.password;
 
   Admin.findOneByAdminID(reqId).then((adminInfo) => {
     if (!adminInfo)

@@ -1,10 +1,21 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from '../apis/defaultAxios';
 
 const AdminLogin = () => {
   const [ID, setID] = useState('');
   const [PW, setPW] = useState('');
+  const navigate = useNavigate();
+  const sessionStorage = window.sessionStorage;
+
+  useEffect(() => {
+    console.log(sessionStorage.isLogin);
+    if (sessionStorage.isLogin) {
+      alert('이미 로그인 되었습니다.');
+      navigate('/');
+    }
+  }, []);
 
   const onChangeID = (e) => {
     e.preventDefault();
@@ -17,9 +28,21 @@ const AdminLogin = () => {
   };
 
   const login = () => {
-    axios.get('/address').then((res) => {
-      console.log(res.data);
-    }); // API 통신 확인
+    axios
+      .post('/admin/login', {
+        data: {
+          id: ID,
+          password: PW,
+        },
+      })
+      .then((res) => {
+        axios.defaults.headers.common['x-access-token'] = res.data.token; // 발급받은 JWT token axios default header에 넣어두기.
+        sessionStorage.setItem('isLogin', true);
+        navigate('/');
+      })
+      .catch((err) => {
+        console.log(err);
+      }); // API 통신 확인
   };
 
   return (

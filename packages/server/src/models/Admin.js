@@ -8,8 +8,8 @@ const adminSchema = new Schema({
 });
 
 adminSchema.statics.create = function (payload) {
-  const address = new this(payload);
-  return address.save();
+  const admin = new this(payload);
+  return admin.save();
 };
 
 adminSchema.statics.findAll = function () {

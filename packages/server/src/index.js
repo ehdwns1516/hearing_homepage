@@ -3,6 +3,7 @@ const cors = require('cors');
 const db = require('./db');
 const addressRouter = require('./routes/address');
 const adminRouter = require('./routes/admin');
+const detailPageRouter = require('./routes/detailPage');
 const bodyParser = require('body-parser');
 
 const app = express();
@@ -13,6 +14,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use('/api/address', addressRouter);
 app.use('/api/admin', adminRouter);
+app.use('/api/detail', detailPageRouter);
 
 db.once('open', function () {
   console.log('DB Connected');
