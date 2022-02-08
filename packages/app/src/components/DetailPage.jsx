@@ -18,6 +18,21 @@ const DetailPage = ({ topMenu, subMenu }) => {
 
   const onChangeImage = async (event) => {
     selectedImage.current = event.target.files[0];
+    let data = new FormData();
+    data.append('image', selectedImage.current);
+    data.append('imageName', selectedImage.current.name);
+    axios
+      .post('/upload/image', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
