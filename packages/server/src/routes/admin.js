@@ -1,8 +1,9 @@
+require('dotenv').config();
 const router = require('express').Router();
 const Admin = require('../models/Admin');
 const { auth } = require('../routes/auth'); // token validation check.
 const jwt = require('jsonwebtoken');
-const SECRET_KEY = 'TEST-SECRET-KEY';
+const SECRET_KEY = process.env.SECRET_KEY;
 
 router.get('/admins', auth, (req, res) => {
   Admin.findAll()

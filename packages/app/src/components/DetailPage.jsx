@@ -1,38 +1,108 @@
 import React, { useState, useEffect, useRef } from 'react';
-import axios from '../apis/defaultAxios';
-import styled from 'styled-components';
-
+import styled, { css } from 'styled-components';
 import SideNavBar from './SideNavBar';
+import {
+  postUploadImagesToS3,
+  postInitDetailPage,
+  getDetailPageImages,
+  putDetailPageImages,
+} from '../apis/APIs';
 
 const DetailPage = ({ topMenu, subMenu }) => {
   const imageInput = useRef(null);
   const selectedImage = useRef(null);
+  const imageIsChanged = useRef(false);
+  const imageIndex = useRef(0);
   const [contents, setContents] = useState(Array);
+  const [editable, setEditable] = useState(false);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    setEditable(false);
+    getDetailPageImages(subMenu)
+      .then((res) => {
+        console.log(res);
+        setContents(res.data.imageURLs);
+      })
+      .catch((err) => {
+        if (err.response.status === 500)
+          postInitDetailPage(subMenu)
+            .then((res) => {
+              console.log(res);
+              return;
+            })
+            .catch((err) => console.log(err));
+      });
+  }, [subMenu]);
 
-  const onImgInputBtnClick = (event, index) => {
+  useEffect(() => {
+    if (!imageIsChanged.current) return;
+    putDetailPageImages(subMenu, contents)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+    imageIsChanged.current = false;
+  }, [contents]);
+
+  const imgInputBtnClick = (event, index) => {
     event.preventDefault();
+    imageIndex.current = index;
     imageInput.current.click();
+  };
+
+  const imgDeleteBtnClick = (event, index) => {
+    event.preventDefault();
+    if (window.confirm('이미지를 정말 삭제하시겠습니까?')) {
+      const afterContents = [...contents];
+      afterContents.splice(index, 1);
+      imageIsChanged.current = true;
+      setContents(afterContents);
+    }
+  };
+
+  const editBtnClick = (event) => {
+    event.preventDefault();
+    setEditable(!editable);
   };
 
   const onChangeImage = async (event) => {
     selectedImage.current = event.target.files[0];
     let data = new FormData();
     data.append('image', selectedImage.current);
-    data.append('imageName', selectedImage.current.name);
-    axios
-      .post('/upload/image', data, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
+
+    postUploadImagesToS3(data)
       .then((res) => {
+        const afterContents = [...contents];
+        afterContents.splice(imageIndex.current, 0, res.data.url);
+        imageIsChanged.current = true;
+        setContents(afterContents);
         console.log(res);
       })
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const EditContents = (content, index) => {
+    return (
+      <React.Fragment key={index}>
+        <ImgWrapper>
+          <DeleteImageButton onClick={(e) => imgDeleteBtnClick(e, index)}>
+            x
+          </DeleteImageButton>
+          <ContentImg src={content} editable={editable} />
+        </ImgWrapper>
+        <AddImageButton onClick={(e) => imgInputBtnClick(e, index + 1)}>
+          이미지 추가
+        </AddImageButton>
+      </React.Fragment>
+    );
+  };
+
+  const ViewContents = (content, index) => {
+    return (
+      <React.Fragment key={index}>
+        <ContentImg src={content} editable={editable} />
+      </React.Fragment>
+    );
   };
 
   return (
@@ -51,9 +121,19 @@ const DetailPage = ({ topMenu, subMenu }) => {
           accept='image/*'
           onChange={onChangeImage}
         ></ImageHiddenInput>
-        <AddImageButton onClick={(e) => onImgInputBtnClick(e, 0)}>
-          이미지 추가
-        </AddImageButton>
+        {editable ? (
+          <EditButton onClick={editBtnClick}>수정 완료</EditButton>
+        ) : (
+          <EditButton onClick={editBtnClick}>수정</EditButton>
+        )}
+        {editable ? (
+          <AddImageButton onClick={(e) => imgInputBtnClick(e, 0)}>
+            이미지 추가
+          </AddImageButton>
+        ) : null}
+        {contents.map((content, index) =>
+          editable ? EditContents(content, index) : ViewContents(content, index)
+        )}
       </ContentsWrapper>
     </WholeWrapper>
   );
@@ -72,6 +152,7 @@ const ContentsWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   text-align: center;
+  overflow: scroll;
 `;
 
 const SideWrapper = styled.div`
@@ -106,17 +187,76 @@ const TitleText = styled.span`
 const AddImageButton = styled.button`
   width: 90%;
   height: 40px;
+  min-height: 40px;
   background-color: lightgreen;
   font-weight: bold;
   font-size: 20px;
+  margin-bottom: 5px;
   border: 1px solid grey;
   :hover {
     background-color: green;
   }
 `;
 
+const EditButton = styled.button`
+  display: ${sessionStorage.isLogin ? css`flow-root` : css`none`};
+  width: 90%;
+  height: 40px;
+  min-height: 40px;
+  background-color: #b4338a;
+  font-weight: bold;
+  font-size: 20px;
+  color: white;
+  border: 1px solid grey;
+  margin-bottom: 5px;
+  :hover {
+    background-color: #892e6c;
+  }
+`;
+
+const DeleteImageButton = styled.button`
+  position: relative;
+  align-self: flex-start;
+  left: calc(5% + 10px);
+  width: 80px;
+  height: 80px;
+  border: 1px solid grey;
+  border-radius: 40px;
+  background-color: darkred;
+  font-size: 40px;
+  font-weight: bold;
+  color: white;
+  margin-top: 10px;
+  :hover {
+    background-color: red;
+  }
+  display: inline-block;
+`;
+
 const ImageHiddenInput = styled.input`
   display: none;
+`;
+
+const ContentImg = styled.img`
+  width: 90%;
+  height: auto;
+  margin-left: ${(props) =>
+    props.editable
+      ? css`
+          calc(5% - 80px);
+        `
+      : css`
+          0px;
+        `};
+  height: 100%;
+  object-fit: fill;
+  margin-bottom: 5px;
+`;
+
+const ImgWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
 `;
 
 export default DetailPage;

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { postAdminLogin } from '../apis/APIs';
 import axios from '../apis/defaultAxios';
 
 const AdminLogin = () => {
@@ -28,13 +29,7 @@ const AdminLogin = () => {
   };
 
   const login = () => {
-    axios
-      .post('/admin/login', {
-        data: {
-          id: ID,
-          password: PW,
-        },
-      })
+    postAdminLogin(ID, PW)
       .then((res) => {
         axios.defaults.headers.common['x-access-token'] = res.data.token; // 발급받은 JWT token axios default header에 넣어두기.
         sessionStorage.setItem('isLogin', true);

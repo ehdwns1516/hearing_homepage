@@ -1,13 +1,13 @@
 const express = require('express');
 const cors = require('cors');
 const fileUpload = require('express-fileupload');
+const bodyParser = require('body-parser');
 
 const db = require('./db');
 const addressRouter = require('./routes/address');
 const adminRouter = require('./routes/admin');
 const detailPageRouter = require('./routes/detailPage');
-const imgaeUpload = require('./routes/imageUpload');
-const bodyParser = require('body-parser');
+const imageUpload = require('./routes/imageUpload');
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -23,7 +23,7 @@ app.use(
 app.use('/api/address', addressRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/detail', detailPageRouter);
-app.use('/api/upload', imgaeUpload);
+app.use('/api/upload', imageUpload);
 
 db.once('open', function () {
   console.log('DB Connected');

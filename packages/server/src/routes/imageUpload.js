@@ -18,7 +18,7 @@ router.post('/image', (req, res) => {
 
   var param = {
     Bucket: S3_BUCKET,
-    Key: DIR_NAME + image.name,
+    Key: DIR_NAME + new Date().toLocaleString() + image.name,
     ACL: 'public-read-write',
     Body: image.data,
     ContentType: 'image/*',

@@ -1,8 +1,6 @@
 const router = require('express').Router();
 const DetailPage = require('../models/DetailPage');
 const { auth } = require('../routes/auth'); // token validation check.
-const jwt = require('jsonwebtoken');
-const SECRET_KEY = 'TEST-SECRET-KEY';
 
 router.get('/:subMenu/images', (req, res) => {
   DetailPage.findOneByPageName(req.params.subMenu)
@@ -40,7 +38,7 @@ router.delete('/:subMenu', auth, (req, res) => {
 router.put('/:subMenu/images', (req, res) => {
   DetailPage.updateByPageName(req.params.subMenu, {
     name: req.params.subMenu,
-    imageURLs: req.body.imageURLs,
+    imageURLs: req.body.data.imageURLs,
   })
     .then(() => {
       return res.status(200).json({
@@ -56,16 +54,10 @@ router.put('/:subMenu/images', (req, res) => {
     });
 });
 
-router.put('/name/:addressname', (req, res) => {
-  Address.updateByAddrName(req.params.addressname, req.body)
-    .then((address) => res.send(address))
-    .catch((err) => res.status(500).send(err));
-});
-
 router.post('/:subMenu/images', (req, res) => {
   DetailPage.create({
     name: req.params.subMenu,
-    imageURLs: Array,
+    imageURLs: new Array(),
   })
     .then(() => {
       return res.status(200).json({
