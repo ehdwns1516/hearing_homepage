@@ -35,7 +35,7 @@ router.delete('/:subMenu', auth, (req, res) => {
     });
 });
 
-router.put('/:subMenu/images', (req, res) => {
+router.put('/:subMenu/images', auth, (req, res) => {
   DetailPage.updateByPageName(req.params.subMenu, {
     name: req.params.subMenu,
     imageURLs: req.body.data.imageURLs,
@@ -54,7 +54,7 @@ router.put('/:subMenu/images', (req, res) => {
     });
 });
 
-router.post('/:subMenu/images', (req, res) => {
+router.post('/:subMenu/images', auth, (req, res) => {
   DetailPage.create({
     name: req.params.subMenu,
     imageURLs: new Array(),

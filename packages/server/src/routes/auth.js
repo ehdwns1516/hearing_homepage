@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const jwt = require('jsonwebtoken');
-const SECRET_KEY = 'TEST-SECRET-KEY';
+const SECRET_KEY = process.env.SECRET_KEY;
 
 exports.auth = (req, res, next) => {
   const token = req.headers['x-access-token'] || req.body.token;

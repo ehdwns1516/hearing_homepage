@@ -1,13 +1,14 @@
 require('dotenv').config();
 const router = require('express').Router();
 const AWS = require('aws-sdk');
+const { auth } = require('../routes/auth'); // token validation check.
 const S3_BUCKET = process.env.S3_BUCKET;
 const REGION = process.env.REGION;
 const ACCESS_KEY = process.env.ACCESS_KEY;
 const SECRET_ACCESS_KEY = process.env.SECRET_ACCESS_KEY;
 const DIR_NAME = process.env.DIR_NAME;
 
-router.post('/image', (req, res) => {
+router.post('/image', auth, (req, res) => {
   const image = req.files.image;
 
   const s3 = new AWS.S3({

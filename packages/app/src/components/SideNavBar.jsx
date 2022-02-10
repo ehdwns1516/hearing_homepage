@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled, { css, keyframes } from 'styled-components';
 import { useRecoilState } from 'recoil';
+import { useNavigate } from 'react-router-dom';
+import logo from '../images/oticon-logo.png';
 
 import { atomTopMenuList, atomSubMenuList } from '../recoils';
 
@@ -10,6 +12,7 @@ const SideNavBar = ({ currentPage }) => {
   const [subMenuList, setSubMenuList] = useRecoilState(atomSubMenuList);
   const [isOpened, setIsOpened] = useState({});
   const [topMenuAnimation, setTopMenuAtimation] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     let topMenuOpend = {};
@@ -50,7 +53,7 @@ const SideNavBar = ({ currentPage }) => {
                 to={`/${encodeURIComponent(
                   topMenu.replace(/(\s*)/g, '')
                 )}/${encodeURIComponent(subMenu.replace(/(\s*)/g, ''))}`}
-                dropdownani={String(topMenuAnimation[topMenu])}
+                dropdownanimation={String(topMenuAnimation[topMenu])}
               >
                 {subMenu}
               </SubMenuLink>
@@ -63,7 +66,9 @@ const SideNavBar = ({ currentPage }) => {
 
   return (
     <WholeWrapper>
-      <LogoWrapper></LogoWrapper>
+      <LogoWrapper>
+        <LogoImg src={logo} onClick={() => navigate('/')} />
+      </LogoWrapper>
       <TopMenuWrapper>
         {topMenuList.map((topMenu, index) => {
           if (isOpened[topMenu]) return getSubMenus(topMenu, index);
@@ -98,15 +103,23 @@ const WholeWrapper = styled.div`
 `;
 
 const TopMenuWrapper = styled.div`
-  height: 85%;
+  height: calc(100% - 110px);
   width: 100%;
   background-color: #b4338a;
 `;
 
 const LogoWrapper = styled.div`
-  height: 15%;
+  height: 110px;
   width: 100%;
-  background-color: black;
+  line-height: 110px;
+  background-color: white;
+`;
+
+const LogoImg = styled.img`
+  height: auto;
+  width: inherit;
+  vertical-align: middle;
+  cursor: pointer;
 `;
 
 const TopMenuButton = styled.button`
@@ -184,7 +197,7 @@ const SubMenuLink = styled(Link)`
   text-decoration: none;
   animation-delay: 0s;
   animation: ${(props) =>
-    props.dropdownani === 'true'
+    props.dropdownanimation === 'true'
       ? css`
           ${dropDownOpen} 0.3s 0s
         `

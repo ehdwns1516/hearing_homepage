@@ -4,6 +4,7 @@ import { RecoilRoot } from 'recoil';
 import DetailPages from './routes/DetailPages';
 import MainPage from './components/MainPage';
 import AdminLogin from './components/AdminLogin';
+import Footer from './components/Footer';
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
           <Route path='/*' element={<DetailPages />} />
         </Routes>
       </BrowserRouter>
+      <Footer />
     </RecoilRoot>
   );
 };

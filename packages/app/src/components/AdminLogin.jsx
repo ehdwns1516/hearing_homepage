@@ -1,26 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 import styled from 'styled-components';
 import { postAdminLogin } from '../apis/APIs';
-import axios from '../apis/defaultAxios';
 
 const AdminLogin = () => {
   const [ID, setID] = useState('');
   const [PW, setPW] = useState('');
+  const [isRemember, setIsRemember] = useState(false);
   const navigate = useNavigate();
+  const [cookies, setCookie, removeCookie] = useCookies(['rememberId']);
   const sessionStorage = window.sessionStorage;
 
   useEffect(() => {
-    console.log(sessionStorage.isLogin);
     if (sessionStorage.isLogin) {
       alert('이미 로그인 되었습니다.');
       navigate('/');
+    }
+    if (cookies.rememberId) {
+      setIsRemember(true);
+      setID(cookies.rememberId);
     }
   }, []);
 
   const onChangeID = (e) => {
     e.preventDefault();
     setID(e.target.value);
+    if (isRemember) setCookie('rememberId', e.target.value, { maxAge: 2000 });
   };
 
   const onChangePW = (e) => {
@@ -28,16 +34,25 @@ const AdminLogin = () => {
     setPW(e.target.value);
   };
 
+  const onChangeChkBox = (e) => {
+    setIsRemember(e.target.checked);
+    if (e.target.checked) {
+      setCookie('rememberId', ID, { maxAge: 2000 });
+    } else {
+      removeCookie('rememberId');
+    }
+  };
+
   const login = () => {
     postAdminLogin(ID, PW)
       .then((res) => {
-        axios.defaults.headers.common['x-access-token'] = res.data.token; // 발급받은 JWT token axios default header에 넣어두기.
+        sessionStorage.setItem('admin', JSON.stringify(res.data.token, 'accessToken'));
         sessionStorage.setItem('isLogin', true);
         navigate('/');
       })
       .catch((err) => {
         console.log(err);
-      }); // API 통신 확인
+      });
   };
 
   return (
@@ -48,6 +63,14 @@ const AdminLogin = () => {
         <LoginInfoInput value={ID} onChange={onChangeID}></LoginInfoInput>
         <LoginInfoText>비밀번호</LoginInfoText>
         <LoginInfoInput type='password' value={PW} onChange={onChangePW}></LoginInfoInput>
+        <IdRememberWrapper>
+          <IdRememberChkBox
+            type='checkbox'
+            checked={isRemember}
+            onChange={onChangeChkBox}
+          ></IdRememberChkBox>
+          ID 저장하기
+        </IdRememberWrapper>
         <LoginButton onClick={login}>로그인</LoginButton>
       </LoginContentsWrapper>
     </WholeWrapper>
@@ -97,13 +120,26 @@ const LoginInfoInput = styled.input`
   border-radius: 10px;
   font-size: 20px;
   padding-left: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 `;
 
 const LoginButton = styled.button`
   height: 50px;
   width: 310px;
   font-size: 20px;
+`;
+
+const IdRememberWrapper = styled.div`
+  display: flex;
+  width: 320px;
+  height: auto;
+  margin-bottom: 20px;
+`;
+
+const IdRememberChkBox = styled.input`
+  width: 15px;
+  height: 15px;
+  margin-right: 10px;
 `;
 
 export default AdminLogin;

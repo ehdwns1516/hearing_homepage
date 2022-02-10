@@ -64,6 +64,7 @@ const DetailPage = ({ topMenu, subMenu }) => {
   };
 
   const onChangeImage = async (event) => {
+    if (!event.target.files[0]) return;
     selectedImage.current = event.target.files[0];
     let data = new FormData();
     data.append('image', selectedImage.current);
@@ -86,7 +87,7 @@ const DetailPage = ({ topMenu, subMenu }) => {
       <React.Fragment key={index}>
         <ImgWrapper>
           <DeleteImageButton onClick={(e) => imgDeleteBtnClick(e, index)}>
-            x
+            X
           </DeleteImageButton>
           <ContentImg src={content} editable={editable} />
         </ImgWrapper>
@@ -188,13 +189,14 @@ const AddImageButton = styled.button`
   width: 90%;
   height: 40px;
   min-height: 40px;
-  background-color: lightgreen;
+  background-color: #009933;
   font-weight: bold;
   font-size: 20px;
   margin-bottom: 5px;
   border: 1px solid grey;
+  color: white;
   :hover {
-    background-color: green;
+    background-color: #00802b;
   }
 `;
 
@@ -222,13 +224,13 @@ const DeleteImageButton = styled.button`
   height: 80px;
   border: 1px solid grey;
   border-radius: 40px;
-  background-color: darkred;
+  background-color: #cc0000;
   font-size: 40px;
   font-weight: bold;
   color: white;
   margin-top: 10px;
   :hover {
-    background-color: red;
+    background-color: #b30000;
   }
   display: inline-block;
 `;
