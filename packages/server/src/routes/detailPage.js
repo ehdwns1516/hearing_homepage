@@ -43,7 +43,7 @@ router.put('/:subMenu/images', auth, (req, res) => {
     .then(() => {
       return res.status(200).json({
         code: 200,
-        message: 'images update is succeed.',
+        message: 'images update is succeed.' + req,
       });
     })
     .catch((err) => {

@@ -63,7 +63,7 @@ const DetailPage = ({ topMenu, subMenu }) => {
     setEditable(!editable);
   };
 
-  const onChangeImage = async (event) => {
+  const onChangeImage = (event) => {
     if (!event.target.files[0]) return;
     selectedImage.current = event.target.files[0];
     let data = new FormData();

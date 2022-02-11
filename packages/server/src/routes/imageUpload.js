@@ -25,7 +25,7 @@ router.post('/image', auth, (req, res) => {
     ContentType: 'image/*',
   };
 
-  s3.upload(param, function (err, data) {
+  s3.upload(param, (err, data) => {
     if (err) {
       return res.status(500).json({
         code: 500,
