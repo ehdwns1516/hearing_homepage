@@ -96,6 +96,7 @@ const SideNavBar = ({ currentPage }) => {
 
 const WholeWrapper = styled.div`
   height: inherit;
+  overflow: auto;
   width: 100%;
   display: flex;
   flex-direction: column;
