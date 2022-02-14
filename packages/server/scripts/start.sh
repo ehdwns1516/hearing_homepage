@@ -6,3 +6,4 @@ if [ -d $CURRENT_PID];then
 fi
 sudo nohup node /home/ubuntu/build-be/dist/main.js &
 echo -ne '\n'
+echo -ne '\n'
