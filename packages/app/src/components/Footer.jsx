@@ -6,41 +6,39 @@ const Footer = () => {
     <WholeWrapper>
       <HorizonLine />
       <MyFooter>
-        <p>
-          <div
+        <div
+          style={{
+            marginBottom: '5px',
+            marginLeft: '50px',
+          }}
+        >
+          <span>Github: </span>
+          <a
+            href='https://github.com/ehdwns1516/hearing_homepage'
+            target='_blank'
             style={{
-              marginBottom: '5px',
-              marginLeft: '50px',
+              color: 'white',
             }}
           >
-            <span>Github: </span>
-            <a
-              href='https://github.com/ehdwns1516/hearing_homepage'
-              target='_blank'
-              style={{
-                color: 'white',
-              }}
-            >
-              Link
-            </a>
-          </div>
-          <div
-            style={{
-              marginBottom: '5px',
-              marginLeft: '50px',
-            }}
-          >
-            e-mail: ehdwns1516@ajou.ac.kr
-          </div>
-          <div
-            style={{
-              marginBottom: '5px',
-              marginLeft: '50px',
-            }}
-          >
-            Copyright © 2022 ehdwns1516 All Rights Reserved.
-          </div>
-        </p>
+            Link
+          </a>
+        </div>
+        <div
+          style={{
+            marginBottom: '5px',
+            marginLeft: '50px',
+          }}
+        >
+          e-mail: ehdwns1516@ajou.ac.kr
+        </div>
+        <div
+          style={{
+            marginBottom: '5px',
+            marginLeft: '50px',
+          }}
+        >
+          Copyright © 2022 ehdwns1516 All Rights Reserved.
+        </div>
       </MyFooter>
     </WholeWrapper>
   );

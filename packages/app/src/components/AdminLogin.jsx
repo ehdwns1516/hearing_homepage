@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
+import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { postAdminLogin } from '../apis/APIs';
+import { atomIsLogin, atomAdminName } from '../recoils';
 
 const AdminLogin = () => {
   const [ID, setID] = useState('');
@@ -10,10 +12,11 @@ const AdminLogin = () => {
   const [isRemember, setIsRemember] = useState(false);
   const navigate = useNavigate();
   const [cookies, setCookie, removeCookie] = useCookies(['rememberId']);
-  const sessionStorage = window.sessionStorage;
+  const [isLogin, setIsLogin] = useRecoilState(atomIsLogin);
+  const [adminName, setAdminName] = useRecoilState(atomAdminName);
 
   useEffect(() => {
-    if (sessionStorage.isLogin) {
+    if (JSON.parse(window.sessionStorage.getItem('isLogin'))) {
       alert('이미 로그인 되었습니다.');
       navigate('/');
     }
@@ -46,11 +49,19 @@ const AdminLogin = () => {
   const login = () => {
     postAdminLogin(ID, PW)
       .then((res) => {
-        sessionStorage.setItem('admin', JSON.stringify(res.data.token, 'accessToken'));
-        sessionStorage.setItem('isLogin', true);
+        window.sessionStorage.setItem(
+          'admin',
+          JSON.stringify(res.data.token, 'accessToken')
+        );
+        window.sessionStorage.setItem('isLogin', true);
+        window.sessionStorage.setItem('adminName', res.data.name);
+        setIsLogin(true);
+        setAdminName(res.data.name);
+        alert('로그인에 성공하였습니다.');
         navigate('/');
       })
       .catch((err) => {
+        if (err.response.status === 401) alert('로그인 정보가 잘못되었습니다.');
         console.log(err);
       });
   };

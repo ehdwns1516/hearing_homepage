@@ -21,4 +21,14 @@ const atomCurrentPage = atom({
   default: 'Main',
 });
 
-export { atomTopMenuList, atomSubMenuList, atomCurrentPage };
+const atomIsLogin = atom({
+  key: 'isLogin',
+  default: JSON.parse(window.sessionStorage.getItem('isLogin')),
+});
+
+const atomAdminName = atom({
+  key: 'adminName',
+  default: window.sessionStorage.getItem('adminName'),
+});
+
+export { atomTopMenuList, atomSubMenuList, atomCurrentPage, atomIsLogin, atomAdminName };

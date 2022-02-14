@@ -20,7 +20,6 @@ const DetailPage = ({ topMenu, subMenu }) => {
     setEditable(false);
     getDetailPageImages(subMenu)
       .then((res) => {
-        console.log(res);
         setContents(res.data.imageURLs);
       })
       .catch((err) => {
@@ -36,9 +35,7 @@ const DetailPage = ({ topMenu, subMenu }) => {
 
   useEffect(() => {
     if (!imageIsChanged.current) return;
-    putDetailPageImages(subMenu, contents)
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+    putDetailPageImages(subMenu, contents).catch((err) => console.log(err));
     imageIsChanged.current = false;
   }, [contents]);
 

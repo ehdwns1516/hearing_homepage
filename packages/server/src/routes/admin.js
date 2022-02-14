@@ -39,7 +39,7 @@ router.delete('/:id', auth, (req, res) => {
     });
 });
 
-router.post('/signUp', (req, res) => {
+router.post('/signup', (req, res) => {
   Admin.create(req.body)
     .then(() => {
       return res.status(200).json({
@@ -86,6 +86,7 @@ router.post('/login', (req, res) => {
         code: 200,
         message: 'token is issued.',
         token: token,
+        name: adminInfo.name,
       });
     }
   });

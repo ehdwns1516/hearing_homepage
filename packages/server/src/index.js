@@ -4,7 +4,6 @@ const fileUpload = require('express-fileupload');
 const bodyParser = require('body-parser');
 
 const db = require('./db');
-const addressRouter = require('./routes/address');
 const adminRouter = require('./routes/admin');
 const detailPageRouter = require('./routes/detailPage');
 const imageUpload = require('./routes/imageUpload');
@@ -20,7 +19,6 @@ app.use(
     createParentPath: true,
   })
 );
-app.use('/api/address', addressRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/detail', detailPageRouter);
 app.use('/api/upload', imageUpload);

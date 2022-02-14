@@ -198,7 +198,7 @@ const SubMenuLink = styled(Link)`
   text-decoration: none;
   animation-delay: 0s;
   animation: ${(props) =>
-    props.dropdownanimation === 'true'
+    props.dropdownanimation === 'true' // 대문자로 props 선언하면 error 뜨는데 왜지??
       ? css`
           ${dropDownOpen} 0.3s 0s
         `
