@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
@@ -14,10 +14,12 @@ const Header = () => {
   };
   const logoutOnClick = () => {
     window.sessionStorage.setItem('isLogin', false);
-    window.sessionStorage.setItem('adminNmae', '');
+    window.sessionStorage.setItem('adminName', '');
+    window.sessionStorage.setItem('admin', '');
     setIsLogin(false);
     setAdminName('');
     alert('로그아웃 되었습니다.');
+    window.location.reload();
     navigate('/');
   };
 

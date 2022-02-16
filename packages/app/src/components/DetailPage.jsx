@@ -145,7 +145,7 @@ const WholeWrapper = styled.div`
 
 const ContentsWrapper = styled.div`
   height: 100%;
-  width: 80%;
+  width: calc(100% - 285px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -155,8 +155,7 @@ const ContentsWrapper = styled.div`
 
 const SideWrapper = styled.div`
   height: 100%;
-  width: 20%;
-  min-width: 200px;
+  width: 285px;
   border-right: 1px solid #b4338a;
   text-align: center;
   background-color: blue;
@@ -198,7 +197,9 @@ const AddImageButton = styled.button`
 `;
 
 const EditButton = styled.button`
-  display: ${sessionStorage.isLogin ? css`flow-root` : css`none`};
+  display: ${JSON.parse(window.sessionStorage.getItem('isLogin'))
+    ? css`flow-root`
+    : css`none`};
   width: 90%;
   height: 40px;
   min-height: 40px;
