@@ -19,10 +19,6 @@ detailPageSchema.statics.findOneByPageName = function (name) {
   return this.findOne({ name });
 };
 
-detailPageSchema.statics.findOneByPageName = function (name) {
-  return this.findOne({ name });
-};
-
 detailPageSchema.statics.updateByPageName = function (name, payload) {
   return this.findOneAndUpdate({ name }, payload, { new: true });
 };

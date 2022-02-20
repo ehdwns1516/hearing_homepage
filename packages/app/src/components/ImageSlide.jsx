@@ -1,38 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 
-const ImageSlide = () => {
+const ImageSlide = ({ images }) => {
   const [imageCurrentNo, setImageCurrentNo] = useState(0);
 
   const nextOnClick = () => {
-    setImageCurrentNo(imageCurrentNo + 1);
+    if (imageCurrentNo < images.length) setImageCurrentNo(imageCurrentNo + 1);
   };
 
   const prevOnClick = () => {
-    setImageCurrentNo(imageCurrentNo - 1);
+    if (imageCurrentNo > 0) setImageCurrentNo(imageCurrentNo - 1);
   };
 
   return (
     <WholeWrapper>
-      <NavBox></NavBox>
       <SlideBox>
+        <NavBox>
+          {imageCurrentNo} / {images.length}
+        </NavBox>
         <SlideList
           style={{
             transform: `translate3d(
                 ${imageCurrentNo * -500}px, 0px, 0px`,
           }}
         >
-          <SlideContent>
-            <ImageWrapper>
-              <NoticeImage color='red'></NoticeImage>
-            </ImageWrapper>
-          </SlideContent>
-
-          <SlideContent>
-            <ImageWrapper>
-              <NoticeImage></NoticeImage>
-            </ImageWrapper>
-          </SlideContent>
+          {images.forEach((image, index) => {
+            <SlideContent key={index}>
+              <ImageWrapper>
+                <NoticeImage src={`${image.imageUrl}`} color='red'></NoticeImage>
+              </ImageWrapper>
+            </SlideContent>;
+          })}
         </SlideList>
         <PrevButton onClick={prevOnClick}>{'<'}</PrevButton>
         <NextButton onClick={nextOnClick}>{'>'}</NextButton>
@@ -47,7 +45,7 @@ const WholeWrapper = styled.div`
 `;
 
 const SlideList = styled.div`
-  width: 3000px;
+  width: 1000px;
   height: auto;
   transition: all 300ms ease 0s;
   overflow: hidden;

@@ -6,7 +6,8 @@ const bodyParser = require('body-parser');
 const db = require('./db');
 const adminRouter = require('./routes/admin');
 const detailPageRouter = require('./routes/detailPage');
-const imageUpload = require('./routes/imageUpload');
+const imageUploadRouter = require('./routes/imageUpload');
+const noticeRouter = require('./routes/notice');
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -21,7 +22,8 @@ app.use(
 );
 app.use('/api/admin', adminRouter);
 app.use('/api/detail', detailPageRouter);
-app.use('/api/upload', imageUpload);
+app.use('/api/upload', imageUploadRouter);
+app.use('/api/notice', noticeRouter);
 
 db.once('open', function () {
   console.log('DB Connected');
