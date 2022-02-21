@@ -6,20 +6,23 @@ import ImageSlideEditModal from './ImageSlideEditModal';
 const MainPage = () => {
   const [editImageSlideModalOpened, setEditImageSlideModalOpened] = useState(false);
 
-  const openEditImageSlide = () => {
+  const visibleEditImageSlide = () => {
     console.log(editImageSlideModalOpened);
     setEditImageSlideModalOpened(!editImageSlideModalOpened);
   };
 
   return (
     <WholeWrapper>
-      <OpenEditImageSlideButton onClick={openEditImageSlide}>
+      <OpenEditImageSlideButton onClick={visibleEditImageSlide}>
         수정
       </OpenEditImageSlideButton>
       {editImageSlideModalOpened ? (
-        <ImageSlideEditModal openEditImageSlide={openEditImageSlide} />
+        <ImageSlideEditModal
+          visibleEditImageSlide={visibleEditImageSlide}
+          imageInfos={[]}
+        />
       ) : null}
-      <ImageSlide images={[]}></ImageSlide>
+      <ImageSlide imageInfos={[]}></ImageSlide>
     </WholeWrapper>
   );
 };
@@ -28,6 +31,10 @@ const WholeWrapper = styled.div`
   padding-top: 50px;
   height: 100vh;
   width: 100%vw;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const OpenEditImageSlideButton = styled.button`

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 
-const ImageSlide = ({ images }) => {
+const ImageSlide = ({ imageInfos }) => {
   const [imageCurrentNo, setImageCurrentNo] = useState(0);
 
   const nextOnClick = () => {
-    if (imageCurrentNo < images.length) setImageCurrentNo(imageCurrentNo + 1);
+    if (imageCurrentNo < imageInfos.length) setImageCurrentNo(imageCurrentNo + 1);
   };
 
   const prevOnClick = () => {
@@ -16,15 +16,15 @@ const ImageSlide = ({ images }) => {
     <WholeWrapper>
       <SlideBox>
         <NavBox>
-          {imageCurrentNo} / {images.length}
+          {imageCurrentNo} / {imageInfos.length}
         </NavBox>
         <SlideList
           style={{
             transform: `translate3d(
-                ${imageCurrentNo * -500}px, 0px, 0px`,
+                ${imageCurrentNo * -1000}px, 0px, 0px`,
           }}
         >
-          {images.forEach((image, index) => {
+          {imageInfos.forEach((image, index) => {
             <SlideContent key={index}>
               <ImageWrapper>
                 <NoticeImage src={`${image.imageUrl}`} color='red'></NoticeImage>
@@ -40,12 +40,16 @@ const ImageSlide = ({ images }) => {
 };
 
 const WholeWrapper = styled.div`
-  width: 500px;
+  position: relative;
+  top: 0px;
+  width: 1000px;
   height: 500px;
+  display: inline-block;
+  background-color: aqua;
 `;
 
 const SlideList = styled.div`
-  width: 1000px;
+  width: 5000px;
   height: auto;
   transition: all 300ms ease 0s;
   overflow: hidden;
@@ -53,7 +57,7 @@ const SlideList = styled.div`
 
 const SlideContent = styled.div`
   display: table;
-  width: 500px;
+  width: 1000px;
   height: 500px;
   float: left;
 `;
@@ -71,11 +75,9 @@ const NoticeImage = styled.img`
 `;
 
 const NavBox = styled.div`
-  position: absolute;
+  position: relative;
   top: 20px;
-  left: 20px;
   font-size: 14px;
-  z-index: 2;
 `;
 
 const NextButton = styled.button`
