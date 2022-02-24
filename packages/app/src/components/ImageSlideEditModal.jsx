@@ -1,19 +1,77 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import ImageSlide from './ImageSlide';
+import { postUploadImagesToS3, putNoticeInfos } from '../apis/APIs';
 
-const ImageSlideEditModal = ({ visibleEditImageSlide, imageInfos }) => {
+const ImageSlideEditModal = ({
+  visibleEditImageSlide,
+  imageInfos,
+  imageCurrentNo,
+  setImageCurrentNo,
+}) => {
+  const [contents, setContents] = useState(imageInfos);
+  const imageInput = useRef(null);
+  const selectedImage = useRef(null);
+  const imageIsChanged = useRef(false);
+  const imageIndex = useRef(0);
+
+  useEffect(() => {
+    if (!imageIsChanged.current) return;
+    putNoticeInfos('MainPageCarousel', contents)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+    imageIsChanged.current = false;
+  }, [contents]);
+
+  const imgInputBtnClick = (event, position) => {
+    event.preventDefault();
+    imageIndex.current = imageCurrentNo + position;
+    imageInput.current.click();
+  };
+
+  const onChangeImage = (event) => {
+    if (!event.target.files[0]) return;
+    selectedImage.current = event.target.files[0];
+    let data = new FormData();
+    data.append('image', selectedImage.current);
+
+    postUploadImagesToS3(data)
+      .then((res) => {
+        const afterContents = [...contents];
+        afterContents.splice(imageIndex.current, 0, {
+          imageUrl: res.data.url,
+          linkUrl: '',
+        });
+        imageIsChanged.current = true;
+        setContents(afterContents);
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <>
       <ModalOverlay />
       <ModalWrapper tabIndex='-1'>
         <ModalInner tabIndex='0'>
+          <ImageHiddenInput
+            ref={imageInput}
+            type='file'
+            accept='image/*'
+            onChange={onChangeImage}
+          ></ImageHiddenInput>
           <ModalContents>
             <CloseButton onClick={visibleEditImageSlide}>X</CloseButton>
             <EditImageWrapper>
-              <AddImageButton>+</AddImageButton>
-              <ImageSlide imageInfos={imageInfos}></ImageSlide>
-              <AddImageButton>+</AddImageButton>
+              <AddImageButton onClick={(e) => imgInputBtnClick(e, -1)}>+</AddImageButton>
+              <ImageSlide
+                imageInfos={contents}
+                imageCurrentNo={imageCurrentNo}
+                setImageCurrentNo={setImageCurrentNo}
+              ></ImageSlide>
+              <AddImageButton onClick={(e) => imgInputBtnClick(e, 0)}>+</AddImageButton>
             </EditImageWrapper>
           </ModalContents>
         </ModalInner>
@@ -95,6 +153,15 @@ const AddImageButton = styled.button`
   display: inline-block;
   font-size: 35px;
   font-weight: bold;
+  color: white;
+  background-color: #009933;
+  :hover {
+    background-color: #00802b;
+  }
+`;
+
+const ImageHiddenInput = styled.input`
+  display: none;
 `;
 
 export default ImageSlideEditModal;

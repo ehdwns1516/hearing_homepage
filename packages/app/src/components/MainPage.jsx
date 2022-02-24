@@ -1,10 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import ImageSlide from './ImageSlide';
 import ImageSlideEditModal from './ImageSlideEditModal';
+import {
+  postUploadImagesToS3,
+  postInitNoticeInfo,
+  getNoticeInfos,
+  putNoticeInfos,
+} from '../apis/APIs';
 
 const MainPage = () => {
   const [editImageSlideModalOpened, setEditImageSlideModalOpened] = useState(false);
+  const [imageInfos, setImageInfos] = useState(Array);
+  const [imageCurrentNo, setImageCurrentNo] = useState(1);
+
+  useEffect(() => {
+    getNoticeInfos('MainPageCarousel')
+      .then((res) => {
+        console.log(res);
+        setImageInfos(res.data.infos);
+      })
+      .catch((err) => {
+        if (err.response.status === 500)
+          postInitNoticeInfo('MainPageCarousel')
+            .then((res) => {
+              console.log(res);
+              return;
+            })
+            .catch((err) => console.log(err));
+      });
+  }, []);
 
   const visibleEditImageSlide = () => {
     console.log(editImageSlideModalOpened);
@@ -19,10 +44,16 @@ const MainPage = () => {
       {editImageSlideModalOpened ? (
         <ImageSlideEditModal
           visibleEditImageSlide={visibleEditImageSlide}
-          imageInfos={[]}
+          imageInfos={imageInfos}
+          imageCurrentNo={imageCurrentNo}
+          setImageCurrentNo={setImageCurrentNo}
         />
       ) : null}
-      <ImageSlide imageInfos={[]}></ImageSlide>
+      <ImageSlide
+        imageInfos={imageInfos}
+        imageCurrentNo={imageCurrentNo}
+        setImageCurrentNo={setImageCurrentNo}
+      ></ImageSlide>
     </WholeWrapper>
   );
 };

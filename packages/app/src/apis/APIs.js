@@ -32,3 +32,19 @@ export const putDetailPageImages = async (subMenu, contentURLs) => {
     },
   });
 };
+
+export const postInitNoticeInfo = async (type) => {
+  return await axios.post(`/notice/${type}`);
+};
+
+export const getNoticeInfos = async (type) => {
+  return await axios.get(`/notice/${type}`);
+};
+
+export const putNoticeInfos = async (type, infos) => {
+  return await axios.put(`/notice/${type}`, {
+    data: {
+      infos: infos,
+    },
+  });
+};

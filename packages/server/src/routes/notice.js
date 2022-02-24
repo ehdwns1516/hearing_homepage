@@ -2,7 +2,7 @@ const router = require('express').Router();
 const Notice = require('../models/Notice');
 const { auth } = require('../routes/auth'); // token validation check.
 
-router.get('/:type/infos', (req, res) => {
+router.get('/:type', (req, res) => {
   Notice.findOneByType(req.params.type)
     .then((notice) => {
       return res.status(200).json({
@@ -35,8 +35,8 @@ router.delete('/:type', auth, (req, res) => {
     });
 });
 
-router.put('/:type/infos', auth, (req, res) => {
-  Notice.updateByPageName(req.params.type, {
+router.put('/:type', auth, (req, res) => {
+  Notice.updateByType(req.params.type, {
     type: req.params.type,
     infos: req.body.data.infos,
   })
@@ -54,7 +54,7 @@ router.put('/:type/infos', auth, (req, res) => {
     });
 });
 
-router.post('/:type/infos', auth, (req, res) => {
+router.post('/:type', auth, (req, res) => {
   Notice.create({
     type: req.params.type,
     infos: new Array(),

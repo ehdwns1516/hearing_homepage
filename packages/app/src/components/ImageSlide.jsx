@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 
-const ImageSlide = ({ imageInfos }) => {
-  const [imageCurrentNo, setImageCurrentNo] = useState(0);
-
+const ImageSlide = ({ imageInfos, imageCurrentNo, setImageCurrentNo }) => {
   const nextOnClick = () => {
     if (imageCurrentNo < imageInfos.length) setImageCurrentNo(imageCurrentNo + 1);
   };
 
   const prevOnClick = () => {
-    if (imageCurrentNo > 0) setImageCurrentNo(imageCurrentNo - 1);
+    if (imageCurrentNo > 1) setImageCurrentNo(imageCurrentNo - 1);
   };
 
   return (
@@ -21,15 +19,18 @@ const ImageSlide = ({ imageInfos }) => {
         <SlideList
           style={{
             transform: `translate3d(
-                ${imageCurrentNo * -1000}px, 0px, 0px`,
+                ${(imageCurrentNo - 1) * -1000}px, 0px, 0px`,
           }}
+          imageCount={imageInfos.length}
         >
-          {imageInfos.forEach((image, index) => {
-            <SlideContent key={index}>
-              <ImageWrapper>
-                <NoticeImage src={`${image.imageUrl}`} color='red'></NoticeImage>
-              </ImageWrapper>
-            </SlideContent>;
+          {imageInfos.map((image, index) => {
+            return (
+              <SlideContent key={index}>
+                <ImageWrapper>
+                  <NoticeImage src={`${image.imageUrl}`} color='red'></NoticeImage>
+                </ImageWrapper>
+              </SlideContent>
+            );
           })}
         </SlideList>
         <PrevButton onClick={prevOnClick}>{'<'}</PrevButton>
@@ -45,11 +46,15 @@ const WholeWrapper = styled.div`
   width: 1000px;
   height: 500px;
   display: inline-block;
-  background-color: aqua;
+  background-color: white;
 `;
 
 const SlideList = styled.div`
-  width: 5000px;
+  width: ${(props) => {
+    return css`
+        calc(${props.imageCount} * 1000px);
+        `;
+  }};
   height: auto;
   transition: all 300ms ease 0s;
   overflow: hidden;
@@ -69,8 +74,8 @@ const ImageWrapper = styled.picture`
 `;
 
 const NoticeImage = styled.img`
-  width: 100%;
-  height: 500px;
+  width: 1000px;
+  height: auto;
   background-color: ${(props) => props.color || 'black'};
 `;
 
