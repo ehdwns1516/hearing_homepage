@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 
-const ImageSlide = ({ imageInfos, imageCurrentNo, setImageCurrentNo }) => {
+const ImageSlide = ({
+  imageInfos,
+  imageCurrentNo,
+  setImageCurrentNo,
+  deleteImage = null,
+}) => {
   const nextOnClick = () => {
     if (imageCurrentNo < imageInfos.length) setImageCurrentNo(imageCurrentNo + 1);
   };
@@ -14,7 +19,7 @@ const ImageSlide = ({ imageInfos, imageCurrentNo, setImageCurrentNo }) => {
     <WholeWrapper>
       <SlideBox>
         <NavBox>
-          {imageCurrentNo} / {imageInfos.length}
+          {imageInfos.length === 0 ? 0 : imageCurrentNo} / {imageInfos.length}
         </NavBox>
         <SlideList
           style={{
@@ -27,14 +32,17 @@ const ImageSlide = ({ imageInfos, imageCurrentNo, setImageCurrentNo }) => {
             return (
               <SlideContent key={index}>
                 <ImageWrapper>
-                  <NoticeImage src={`${image.imageUrl}`} color='red'></NoticeImage>
+                  <NoticeImage src={`${image.imageUrl}`}></NoticeImage>
                 </ImageWrapper>
               </SlideContent>
             );
           })}
         </SlideList>
-        <PrevButton onClick={prevOnClick}>{'<'}</PrevButton>
-        <NextButton onClick={nextOnClick}>{'>'}</NextButton>
+        {imageInfos.length ? <PrevButton onClick={prevOnClick}>{'<'}</PrevButton> : null}
+        {imageInfos.length ? <NextButton onClick={nextOnClick}>{'>'}</NextButton> : null}
+        {deleteImage && imageInfos.length ? (
+          <DeleteImageButton onClick={() => deleteImage()}>삭제하기</DeleteImageButton>
+        ) : null}
       </SlideBox>
     </WholeWrapper>
   );
@@ -44,9 +52,10 @@ const WholeWrapper = styled.div`
   position: relative;
   top: 0px;
   width: 1000px;
-  height: 500px;
+  height: 496px;
   display: inline-block;
   background-color: white;
+  border: 2px solid grey;
 `;
 
 const SlideList = styled.div`
@@ -76,13 +85,6 @@ const ImageWrapper = styled.picture`
 const NoticeImage = styled.img`
   width: 1000px;
   height: auto;
-  background-color: ${(props) => props.color || 'black'};
-`;
-
-const NavBox = styled.div`
-  position: relative;
-  top: 20px;
-  font-size: 14px;
 `;
 
 const NextButton = styled.button`
@@ -95,7 +97,7 @@ const NextButton = styled.button`
   background-color: #333;
   font-size: 40px;
   font-weight: 100;
-  vertical-align: middle;
+  line-height: 0px;
   color: #eeeeee;
 `;
 
@@ -109,8 +111,38 @@ const PrevButton = styled.button`
   background-color: #333;
   font-size: 40px;
   font-weight: 100;
-  vertical-align: middle;
+  line-height: 0px;
   color: #eeeeee;
+`;
+
+const DeleteImageButton = styled.button`
+  position: absolute;
+  left: 450px;
+  bottom: -50px;
+  width: 100px;
+  height: 50px;
+  border: 0px;
+  font-size: large;
+  font-weight: bold;
+  color: white;
+  background-color: #cc0000;
+  :hover {
+    background-color: #b30000;
+  }
+`;
+
+const NavBox = styled.div`
+  position: relative;
+  top: -30px;
+  width: 60px;
+  height: 30px;
+  display: inline-block;
+  border-radius: 20px;
+  line-height: 30px;
+  text-align: center;
+  font-size: 14px;
+  color: white;
+  background-color: darkgray;
 `;
 
 const SlideBox = styled.div`
@@ -120,12 +152,23 @@ const SlideBox = styled.div`
   margin: auto;
   overflow-x: hidden;
   &:hover ${NextButton} {
-    right: 0;
+    right: 5px;
     transition: right 0.5s;
   }
+
   &:hover ${PrevButton} {
-    left: 0;
+    left: 5px;
     transition: left 0.5s;
+  }
+
+  &:hover ${DeleteImageButton} {
+    bottom: 15px;
+    transition: bottom 0.5s;
+  }
+
+  &:hover ${NavBox} {
+    top: 10px;
+    transition: top 0.5s;
   }
 `;
 

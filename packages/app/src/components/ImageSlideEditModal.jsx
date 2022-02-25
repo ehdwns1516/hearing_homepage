@@ -29,6 +29,14 @@ const ImageSlideEditModal = ({
     imageInput.current.click();
   };
 
+  const deleteImage = () => {
+    const afterContents = [...contents];
+    afterContents.splice(imageIndex.current, 1);
+    console.log(afterContents);
+    imageIsChanged.current = true;
+    setContents(afterContents);
+  };
+
   const onChangeImage = (event) => {
     if (!event.target.files[0]) return;
     selectedImage.current = event.target.files[0];
@@ -70,6 +78,7 @@ const ImageSlideEditModal = ({
                 imageInfos={contents}
                 imageCurrentNo={imageCurrentNo}
                 setImageCurrentNo={setImageCurrentNo}
+                deleteImage={deleteImage}
               ></ImageSlide>
               <AddImageButton onClick={(e) => imgInputBtnClick(e, 0)}>+</AddImageButton>
             </EditImageWrapper>
@@ -127,7 +136,6 @@ const ModalContents = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: beige;
 `;
 
 const CloseButton = styled.button`
@@ -139,11 +147,12 @@ const CloseButton = styled.button`
 `;
 
 const EditImageWrapper = styled.div`
-  width: 100%;
+  width: auto;
   height: auto;
   display: flex;
-  background-color: black;
   justify-content: center;
+  border: 3px solid grey;
+  border-radius: 5px;
 `;
 
 const AddImageButton = styled.button`

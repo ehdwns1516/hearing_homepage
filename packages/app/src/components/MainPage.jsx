@@ -2,12 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import ImageSlide from './ImageSlide';
 import ImageSlideEditModal from './ImageSlideEditModal';
-import {
-  postUploadImagesToS3,
-  postInitNoticeInfo,
-  getNoticeInfos,
-  putNoticeInfos,
-} from '../apis/APIs';
+import { postInitNoticeInfo, getNoticeInfos } from '../apis/APIs';
 
 const MainPage = () => {
   const [editImageSlideModalOpened, setEditImageSlideModalOpened] = useState(false);
@@ -17,7 +12,6 @@ const MainPage = () => {
   useEffect(() => {
     getNoticeInfos('MainPageCarousel')
       .then((res) => {
-        console.log(res);
         setImageInfos(res.data.infos);
       })
       .catch((err) => {
@@ -32,7 +26,7 @@ const MainPage = () => {
   }, []);
 
   const visibleEditImageSlide = () => {
-    console.log(editImageSlideModalOpened);
+    if (editImageSlideModalOpened) window.location.reload();
     setEditImageSlideModalOpened(!editImageSlideModalOpened);
   };
 
