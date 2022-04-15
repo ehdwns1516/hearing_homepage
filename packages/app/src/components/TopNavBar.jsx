@@ -3,27 +3,16 @@ import { Link } from 'react-router-dom';
 import styled, { css, keyframes } from 'styled-components';
 import { useRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
-import logo from '../images/oticon-logo.png';
 
 import { atomTopMenuList, atomSubMenuList } from '../recoils';
 
-const SideNavBar = ({ currentPage }) => {
+const TopNavBar = () => {
   const [topMenuList, setTopMenuList] = useRecoilState(atomTopMenuList);
   const [subMenuList, setSubMenuList] = useRecoilState(atomSubMenuList);
   const [isOpened, setIsOpened] = useState({});
   const [topMenuAnimation, setTopMenuAnimation] = useState({});
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    let topMenuOpened = {};
-    let menuAnimation = {};
-    for (let value of Object.values(topMenuList)) {
-      topMenuOpened[value] = subMenuList[value].includes(currentPage) ? true : false;
-      menuAnimation[value] = true;
-    }
-    setTopMenuAnimation(menuAnimation);
-    setIsOpened(topMenuOpened);
-  }, []);
+  useEffect(() => {}, []);
 
   const onClkTopMenu = (topMenu) => {
     let topMenuOpened = { ...isOpened };
@@ -44,31 +33,30 @@ const SideNavBar = ({ currentPage }) => {
   const getSubMenus = (topMenu, index) => {
     return (
       <React.Fragment key={index}>
-        <TopMenuButton onClick={() => onClkTopMenu(topMenu)}>{topMenu}</TopMenuButton>
-        <SubMenuWrapper>
-          {subMenuList[topMenu].map((subMenu, idx) => {
-            return (
-              <SubMenuLink
-                key={idx}
-                to={`/${encodeURIComponent(
-                  topMenu.replace(/(\s*)/g, '')
-                )}/${encodeURIComponent(subMenu.replace(/(\s*)/g, ''))}`}
-                dropdownanimation={String(topMenuAnimation[topMenu])}
-              >
-                {subMenu}
-              </SubMenuLink>
-            );
-          })}
-        </SubMenuWrapper>
+        <MenuButtonWrapper>
+          <TopMenuButton onClick={() => onClkTopMenu(topMenu)}>{topMenu}</TopMenuButton>
+          <SubMenuWrapper>
+            {subMenuList[topMenu].map((subMenu, idx) => {
+              return (
+                <SubMenuLink
+                  key={idx}
+                  to={`/${encodeURIComponent(
+                    topMenu.replace(/(\s*)/g, '')
+                  )}/${encodeURIComponent(subMenu.replace(/(\s*)/g, ''))}`}
+                  dropdownanimation={String(topMenuAnimation[topMenu])}
+                >
+                  {subMenu}
+                </SubMenuLink>
+              );
+            })}
+          </SubMenuWrapper>
+        </MenuButtonWrapper>
       </React.Fragment>
     );
   };
 
   return (
     <WholeWrapper>
-      <LogoWrapper>
-        <LogoImg src={logo} onClick={() => navigate('/')} />
-      </LogoWrapper>
       <TopMenuWrapper>
         {topMenuList.map((topMenu, index) => {
           if (isOpened[topMenu]) return getSubMenus(topMenu, index);
@@ -95,43 +83,38 @@ const SideNavBar = ({ currentPage }) => {
 };
 
 const WholeWrapper = styled.div`
-  height: inherit;
-  overflow: auto;
-  width: 100%;
+  width: 100vw;
+  height: 60px;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow: visible;
+  z-index: 1;
 `;
 
 const TopMenuWrapper = styled.div`
-  height: calc(100% - 110px);
-  width: 100%;
+  height: 50px;
+  width: 1200px;
   background-color: #b4338a;
+  display: flex;
+  flex-direction: row;
 `;
-
-const LogoWrapper = styled.div`
-  height: 110px;
-  width: 100%;
-  line-height: 110px;
-  background-color: white;
-`;
-
-const LogoImg = styled.img`
+const MenuButtonWrapper = styled.div`
   height: auto;
-  width: inherit;
-  vertical-align: middle;
-  cursor: pointer;
+  width: 240px;
+  float: left;
+  flex-direction: column;
 `;
 
 const TopMenuButton = styled.button`
-  height: 80px;
-  width: 100%;
-  font-size: 25px;
+  height: 50px;
+  width: 240px;
+  font-size: 22px;
   font-weight: bold;
   color: white;
-  text-align: left;
+  text-align: center;
   cursor: pointer;
-  padding-left: 30px;
   border: 0px;
   background-color: #b4338a;
 
@@ -141,14 +124,13 @@ const TopMenuButton = styled.button`
 `;
 
 const TopMenuLink = styled(Link)`
-  height: 80px;
-  width: 100%;
-  font-size: 25px;
+  height: 50px;
+  width: 240px;
+  font-size: 22px;
   font-weight: bold;
   color: white;
-  text-align: left;
-  line-height: 80px;
-  padding-left: 30px;
+  text-align: center;
+  line-height: 50px;
   display: inline-block;
   box-sizing: border-box;
   border: 0px;
@@ -160,8 +142,8 @@ const TopMenuLink = styled(Link)`
 `;
 
 const SubMenuWrapper = styled.div`
-  height: fit-content;
-  width: 100%;
+  height: auto;
+  width: 240px;
 `;
 
 const dropDownOpen = keyframes`
@@ -184,7 +166,7 @@ const dropDownClose = keyframes`
 
 const SubMenuLink = styled(Link)`
   height: 50px;
-  width: 100%;
+  width: 240px;
   font-size: 20px;
   font-weight: bold;
   color: white;
@@ -210,4 +192,4 @@ const SubMenuLink = styled(Link)`
   }
 `;
 
-export default SideNavBar;
+export default TopNavBar;

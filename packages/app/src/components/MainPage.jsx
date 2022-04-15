@@ -2,12 +2,16 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import ImageSlide from './ImageSlide';
 import ImageSlideEditModal from './ImageSlideEditModal';
+import TopNavBar from './TopNavBar';
+import { useNavigate } from 'react-router-dom';
 import { postInitNoticeInfo, getNoticeInfos } from '../apis/APIs';
+import logo from '../images/oticon-logo.png';
 
 const MainPage = () => {
   const [editImageSlideModalOpened, setEditImageSlideModalOpened] = useState(false);
   const [imageInfos, setImageInfos] = useState(Array);
   const [imageCurrentNo, setImageCurrentNo] = useState(1);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getNoticeInfos('MainPageCarousel')
@@ -32,9 +36,13 @@ const MainPage = () => {
 
   return (
     <WholeWrapper>
-      <OpenEditImageSlideButton onClick={visibleEditImageSlide}>
+      <LogoWrapper>
+        <LogoImg src={logo} onClick={() => navigate('/')} />
+      </LogoWrapper>
+      <TopNavBar></TopNavBar>
+      {/* <OpenEditImageSlideButton onClick={visibleEditImageSlide}>
         수정
-      </OpenEditImageSlideButton>
+      </OpenEditImageSlideButton> */}
       {editImageSlideModalOpened ? (
         <ImageSlideEditModal
           visibleEditImageSlide={visibleEditImageSlide}
@@ -55,7 +63,7 @@ const MainPage = () => {
 const WholeWrapper = styled.div`
   padding-top: 50px;
   height: 100vh;
-  width: 100%vw;
+  width: 100vw;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -65,6 +73,23 @@ const WholeWrapper = styled.div`
 const OpenEditImageSlideButton = styled.button`
   height: 50px;
   width: 100px;
+`;
+
+const LogoWrapper = styled.div`
+  width: 100%;
+  height: 75px;
+  display: flex;
+  /* background-color: aqua; */
+  object-fit: cover;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const LogoImg = styled.img`
+  height: auto;
+  width: auto;
+  vertical-align: middle;
+  cursor: pointer;
 `;
 
 export default MainPage;

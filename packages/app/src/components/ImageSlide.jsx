@@ -24,7 +24,7 @@ const ImageSlide = ({
         <SlideList
           style={{
             transform: `translate3d(
-                ${(imageCurrentNo - 1) * -1000}px, 0px, 0px`,
+                ${(imageCurrentNo - 1) * -1200}px, 0px, 0px`,
           }}
           imageCount={imageInfos.length}
         >
@@ -51,8 +51,8 @@ const ImageSlide = ({
 const WholeWrapper = styled.div`
   position: relative;
   top: 0px;
-  width: 1000px;
-  height: 496px;
+  width: 1200px;
+  height: 530px;
   display: inline-block;
   background-color: white;
   border: 2px solid grey;
@@ -61,7 +61,7 @@ const WholeWrapper = styled.div`
 const SlideList = styled.div`
   width: ${(props) => {
     return css`
-        calc(${props.imageCount} * 1000px);
+        calc(${props.imageCount} * 1200px);
         `;
   }};
   height: auto;
@@ -71,7 +71,7 @@ const SlideList = styled.div`
 
 const SlideContent = styled.div`
   display: table;
-  width: 1000px;
+  width: 1200px;
   height: 500px;
   float: left;
 `;
@@ -83,13 +83,13 @@ const ImageWrapper = styled.picture`
 `;
 
 const NoticeImage = styled.img`
-  width: 1000px;
+  width: 1200px;
   height: auto;
 `;
 
 const NextButton = styled.button`
   position: absolute;
-  top: 225px;
+  top: 240px;
   right: -50px;
   width: 50px;
   height: 50px;
@@ -103,7 +103,7 @@ const NextButton = styled.button`
 
 const PrevButton = styled.button`
   position: absolute;
-  top: 225px;
+  top: 240px;
   left: -50px;
   width: 50px;
   height: 50px;
