@@ -56,9 +56,8 @@ const AdminLogin = () => {
         window.sessionStorage.setItem('isLogin', true);
         window.sessionStorage.setItem('adminName', res.data.name);
         setIsLogin(true);
-        setAdminName(res.data.name);
         alert('로그인에 성공하였습니다.');
-        navigate('/');
+        navigate(-1);
       })
       .catch((err) => {
         if (err.response.status === 401) alert('로그인 정보가 잘못되었습니다.');

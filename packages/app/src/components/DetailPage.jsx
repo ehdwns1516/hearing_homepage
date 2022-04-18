@@ -1,12 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled, { css } from 'styled-components';
 import SideNavBar from './SideNavBar';
+import { useRecoilState } from 'recoil';
 import {
   postUploadImagesToS3,
   postInitDetailPage,
   getDetailPageImages,
   putDetailPageImages,
 } from '../apis/APIs';
+
+import { atomIsLogin } from '../recoils';
 
 const DetailPage = ({ topMenu, subMenu }) => {
   const imageInput = useRef(null);
@@ -15,6 +18,7 @@ const DetailPage = ({ topMenu, subMenu }) => {
   const imageIndex = useRef(0);
   const [contents, setContents] = useState(Array);
   const [editable, setEditable] = useState(false);
+  const [isLogin, setIsLogin] = useRecoilState(atomIsLogin);
 
   useEffect(() => {
     setEditable(false);
@@ -119,10 +123,15 @@ const DetailPage = ({ topMenu, subMenu }) => {
           accept='image/*'
           onChange={onChangeImage}
         ></ImageHiddenInput>
+
         {editable ? (
-          <EditButton onClick={editBtnClick}>수정 완료</EditButton>
+          <EditButton islogin={isLogin} onClick={editBtnClick}>
+            수정 완료
+          </EditButton>
         ) : (
-          <EditButton onClick={editBtnClick}>수정</EditButton>
+          <EditButton islogin={isLogin} onClick={editBtnClick}>
+            수정
+          </EditButton>
         )}
         {editable ? (
           <AddImageButton onClick={(e) => imgInputBtnClick(e, 0)}>
@@ -197,9 +206,7 @@ const AddImageButton = styled.button`
 `;
 
 const EditButton = styled.button`
-  display: ${JSON.parse(window.sessionStorage.getItem('isLogin'))
-    ? css`flow-root`
-    : css`none`};
+  display: ${(props) => (props.islogin ? 'flow-root' : 'none')};
   width: 90%;
   height: 40px;
   min-height: 40px;

@@ -11,17 +11,15 @@ const SideNavBar = ({ currentPage }) => {
   const [topMenuList, setTopMenuList] = useRecoilState(atomTopMenuList);
   const [subMenuList, setSubMenuList] = useRecoilState(atomSubMenuList);
   const [isOpened, setIsOpened] = useState({});
-  const [topMenuAnimation, setTopMenuAnimation] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
     let topMenuOpened = {};
     let menuAnimation = {};
     for (let value of Object.values(topMenuList)) {
-      topMenuOpened[value] = subMenuList[value].includes(currentPage) ? true : false;
+      if (subMenuList[value].includes(currentPage)) topMenuOpened[value] = true;
       menuAnimation[value] = true;
     }
-    setTopMenuAnimation(menuAnimation);
     setIsOpened(topMenuOpened);
   }, []);
 
@@ -29,15 +27,9 @@ const SideNavBar = ({ currentPage }) => {
     let topMenuOpened = { ...isOpened };
     topMenuOpened[topMenu] = !topMenuOpened[topMenu];
     if (topMenuOpened[topMenu]) {
-      let menuAnimation = { ...topMenuAnimation };
-      menuAnimation[topMenu] = true;
-      setTopMenuAnimation(menuAnimation);
       setIsOpened(topMenuOpened);
     } else {
-      let menuAnimation = { ...topMenuAnimation };
-      menuAnimation[topMenu] = false;
-      setTopMenuAnimation(menuAnimation);
-      setTimeout(() => setIsOpened(topMenuOpened), 250);
+      setIsOpened(topMenuOpened);
     }
   };
 
@@ -53,7 +45,8 @@ const SideNavBar = ({ currentPage }) => {
                 to={`/${encodeURIComponent(
                   topMenu.replace(/(\s*)/g, '')
                 )}/${encodeURIComponent(subMenu.replace(/(\s*)/g, ''))}`}
-                dropdownanimation={String(topMenuAnimation[topMenu])}
+                isopened={String(isOpened[topMenu])}
+                iscurrentpage={String(subMenu === currentPage)}
               >
                 {subMenu}
               </SubMenuLink>
@@ -71,7 +64,6 @@ const SideNavBar = ({ currentPage }) => {
       </LogoWrapper>
       <TopMenuWrapper>
         {topMenuList.map((topMenu, index) => {
-          if (isOpened[topMenu]) return getSubMenus(topMenu, index);
           if (subMenuList[topMenu].length === 0)
             return (
               <TopMenuLink
@@ -83,11 +75,7 @@ const SideNavBar = ({ currentPage }) => {
                 {topMenu}
               </TopMenuLink>
             );
-          return (
-            <TopMenuButton key={index} onClick={() => onClkTopMenu(topMenu)}>
-              {topMenu}
-            </TopMenuButton>
-          );
+          return getSubMenus(topMenu, index);
         })}
       </TopMenuWrapper>
     </WholeWrapper>
@@ -167,23 +155,32 @@ const SubMenuWrapper = styled.div`
 const dropDownOpen = keyframes`
   0% {
     height: 0px;
+    opacity: 0;
   }
   100% {
     height: 50px;
+    opacity: 1;
   }
 `;
 
 const dropDownClose = keyframes`
   0% {
     height: 50px;
+    opacity: 1;
   }
   100% {
     height: 0px;
+    opacity: 0;
   }
 `;
 
 const SubMenuLink = styled(Link)`
-  height: 50px;
+  height: ${(props) => (props.isopened === 'true' ? '50px' : '0px')};
+  display: ${(props) => (props.isopened === 'undefined' ? 'none' : 'block')};
+  opacity: ${(props) =>
+    props.isopened === 'undefined' || props.isopened === 'false' ? 0 : 1};
+  pointer-events: ${(props) =>
+    props.isopened === 'undefined' || props.isopened === 'false' ? 'none' : 'auto'};
   width: 100%;
   font-size: 20px;
   font-weight: bold;
@@ -194,17 +191,21 @@ const SubMenuLink = styled(Link)`
   display: block;
   box-sizing: border-box;
   border: 0px;
-  background-color: #b4338a;
+  background-color: ${(props) =>
+    props.iscurrentpage === 'true' ? '#892e6c' : '#b4338a'};
   text-decoration: none;
   animation-delay: 0s;
-  animation: ${(props) =>
-    props.dropdownanimation === 'true' // 대문자로 props 선언하면 error 뜨는데 왜지??
+  animation: ${(props) => {
+    if (props.isopened === 'undefined') return null;
+    return props.isopened === 'true' // 대문자로 props 선언하면 error 뜨는데 왜지??
       ? css`
           ${dropDownOpen} 0.3s 0s
         `
       : css`
           ${dropDownClose} 0.3s 0s
-        `};
+        `;
+  }};
+
   :hover {
     background-color: #892e6c;
   }

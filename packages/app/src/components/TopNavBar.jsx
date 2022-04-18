@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled, { css, keyframes } from 'styled-components';
 import { useRecoilState } from 'recoil';
-import { useNavigate } from 'react-router-dom';
 
 import { atomTopMenuList, atomSubMenuList } from '../recoils';
 
@@ -10,31 +9,33 @@ const TopNavBar = () => {
   const [topMenuList, setTopMenuList] = useRecoilState(atomTopMenuList);
   const [subMenuList, setSubMenuList] = useRecoilState(atomSubMenuList);
   const [isOpened, setIsOpened] = useState({});
-  const [topMenuAnimation, setTopMenuAnimation] = useState({});
 
   useEffect(() => {}, []);
 
-  const onClkTopMenu = (topMenu) => {
+  const hoverTopMenu = (topMenu) => {
     let topMenuOpened = { ...isOpened };
     topMenuOpened[topMenu] = !topMenuOpened[topMenu];
     if (topMenuOpened[topMenu]) {
-      let menuAnimation = { ...topMenuAnimation };
-      menuAnimation[topMenu] = true;
-      setTopMenuAnimation(menuAnimation);
+      for (let menu in topMenuOpened) {
+        if (topMenu !== menu) topMenuOpened[menu] = false;
+      }
       setIsOpened(topMenuOpened);
     } else {
-      let menuAnimation = { ...topMenuAnimation };
-      menuAnimation[topMenu] = false;
-      setTopMenuAnimation(menuAnimation);
-      setTimeout(() => setIsOpened(topMenuOpened), 250);
+      for (let menu in topMenuOpened) {
+        if (topMenu !== menu) topMenuOpened[menu] = false;
+      }
+      setIsOpened(topMenuOpened);
     }
   };
 
   const getSubMenus = (topMenu, index) => {
     return (
       <React.Fragment key={index}>
-        <MenuButtonWrapper>
-          <TopMenuButton onClick={() => onClkTopMenu(topMenu)}>{topMenu}</TopMenuButton>
+        <MenuButtonWrapper
+          onMouseLeave={() => hoverTopMenu(topMenu)}
+          onMouseEnter={() => hoverTopMenu(topMenu)}
+        >
+          <TopMenuButton>{topMenu}</TopMenuButton>
           <SubMenuWrapper>
             {subMenuList[topMenu].map((subMenu, idx) => {
               return (
@@ -43,7 +44,7 @@ const TopNavBar = () => {
                   to={`/${encodeURIComponent(
                     topMenu.replace(/(\s*)/g, '')
                   )}/${encodeURIComponent(subMenu.replace(/(\s*)/g, ''))}`}
-                  dropdownanimation={String(topMenuAnimation[topMenu])}
+                  dropdownanimation={String(isOpened[topMenu])}
                 >
                   {subMenu}
                 </SubMenuLink>
@@ -59,7 +60,6 @@ const TopNavBar = () => {
     <WholeWrapper>
       <TopMenuWrapper>
         {topMenuList.map((topMenu, index) => {
-          if (isOpened[topMenu]) return getSubMenus(topMenu, index);
           if (subMenuList[topMenu].length === 0)
             return (
               <TopMenuLink
@@ -71,11 +71,7 @@ const TopNavBar = () => {
                 {topMenu}
               </TopMenuLink>
             );
-          return (
-            <TopMenuButton key={index} onClick={() => onClkTopMenu(topMenu)}>
-              {topMenu}
-            </TopMenuButton>
-          );
+          return getSubMenus(topMenu, index);
         })}
       </TopMenuWrapper>
     </WholeWrapper>
@@ -142,30 +138,43 @@ const TopMenuLink = styled(Link)`
 `;
 
 const SubMenuWrapper = styled.div`
-  height: auto;
+  height: 0px;
   width: 240px;
 `;
 
 const dropDownOpen = keyframes`
   0% {
-    height: 0px;
+    /* height: 0px; */
+    opacity: 0;
   }
   100% {
-    height: 50px;
+    /* height: 50px; */
+    opacity: 1;
   }
 `;
 
 const dropDownClose = keyframes`
   0% {
-    height: 50px;
+    /* height: 50px; */
+    opacity: 1;
   }
   100% {
-    height: 0px;
+    /* height: 0px; */
+    opacity: 0;
   }
 `;
 
 const SubMenuLink = styled(Link)`
-  height: 50px;
+  height: ${(props) => (props.dropdownanimation === 'true' ? '50px' : '0px')};
+  display: ${(props) => (props.dropdownanimation === 'undefined' ? 'none' : 'block')};
+  opacity: ${(props) =>
+    props.dropdownanimation === 'undefined' || props.dropdownanimation === 'false'
+      ? 0
+      : 1};
+  pointer-events: ${(props) =>
+    props.dropdownanimation === 'undefined' || props.dropdownanimation === 'false'
+      ? 'none'
+      : 'auto'};
   width: 240px;
   font-size: 20px;
   font-weight: bold;
@@ -173,7 +182,6 @@ const SubMenuLink = styled(Link)`
   text-align: left;
   line-height: 50px;
   padding-left: 50px;
-  display: block;
   box-sizing: border-box;
   border: 0px;
   background-color: #b4338a;
@@ -182,10 +190,10 @@ const SubMenuLink = styled(Link)`
   animation: ${(props) =>
     props.dropdownanimation === 'true' // 대문자로 props 선언하면 error 뜨는데 왜지??
       ? css`
-          ${dropDownOpen} 0.3s 0s
+          ${dropDownOpen} 0.4s 0s
         `
       : css`
-          ${dropDownClose} 0.3s 0s
+          ${dropDownClose} 0.4s 0s
         `};
   :hover {
     background-color: #892e6c;
