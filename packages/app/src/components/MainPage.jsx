@@ -6,11 +6,14 @@ import TopNavBar from './TopNavBar';
 import { useNavigate } from 'react-router-dom';
 import { postInitNoticeInfo, getNoticeInfos } from '../apis/APIs';
 import logo from '../images/oticon-logo.png';
+import { useRecoilState } from 'recoil';
+import { atomIsLogin } from '../recoils';
 
 const MainPage = () => {
   const [editImageSlideModalOpened, setEditImageSlideModalOpened] = useState(false);
   const [imageInfos, setImageInfos] = useState(Array);
   const [imageCurrentNo, setImageCurrentNo] = useState(1);
+  const [isLogin, setIsLogin] = useRecoilState(atomIsLogin);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -40,9 +43,6 @@ const MainPage = () => {
         <LogoImg src={logo} onClick={() => navigate('/')} />
       </LogoWrapper>
       <TopNavBar></TopNavBar>
-      {/* <OpenEditImageSlideButton onClick={visibleEditImageSlide}>
-        수정
-      </OpenEditImageSlideButton> */}
       {editImageSlideModalOpened ? (
         <ImageSlideEditModal
           visibleEditImageSlide={visibleEditImageSlide}
@@ -55,6 +55,8 @@ const MainPage = () => {
         imageInfos={imageInfos}
         imageCurrentNo={imageCurrentNo}
         setImageCurrentNo={setImageCurrentNo}
+        visibleEditImageSlide={visibleEditImageSlide}
+        isLogin={isLogin}
       ></ImageSlide>
     </WholeWrapper>
   );
@@ -68,11 +70,6 @@ const WholeWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
-
-const OpenEditImageSlideButton = styled.button`
-  height: 50px;
-  width: 100px;
 `;
 
 const LogoWrapper = styled.div`

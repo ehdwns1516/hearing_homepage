@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const noticeSchema = new Schema({
-  type: { type: String, required: true, unique: true },
+  type: { type: String, required: true, unique: true }, // Carousel or popup
   infos: { type: Array, required: true },
 });
 

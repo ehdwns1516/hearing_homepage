@@ -3,6 +3,11 @@ import styled from 'styled-components';
 import ImageSlide from './ImageSlide';
 import { postUploadImagesToS3, putNoticeInfos } from '../apis/APIs';
 
+const IMAGESLIDE_CONFIG = {
+  width: 1200,
+  height: 530,
+};
+
 const ImageSlideEditModal = ({
   visibleEditImageSlide,
   imageInfos,
@@ -10,6 +15,7 @@ const ImageSlideEditModal = ({
   setImageCurrentNo,
 }) => {
   const [contents, setContents] = useState(imageInfos);
+  const [linkURL, setLinkURL] = useState();
   const imageInput = useRef(null);
   const selectedImage = useRef(null);
   const imageIsChanged = useRef(false);
@@ -23,7 +29,11 @@ const ImageSlideEditModal = ({
     imageIsChanged.current = false;
   }, [contents]);
 
-  const imgInputBtnClick = (event, position) => {
+  useEffect(() => {
+    setLinkURL(contents[imageCurrentNo - 1]['linkUrl']);
+  }, [imageCurrentNo]);
+
+  const imgUploadBtnClick = (event, position) => {
     event.preventDefault();
     imageIndex.current = imageCurrentNo + position;
     imageInput.current.click();
@@ -32,6 +42,8 @@ const ImageSlideEditModal = ({
   const deleteImage = () => {
     const afterContents = [...contents];
     afterContents.splice(imageIndex.current, 1);
+    if (imageCurrentNo > 1) setImageCurrentNo(imageCurrentNo - 1);
+    imageIndex.current = imageCurrentNo;
     console.log(afterContents);
     imageIsChanged.current = true;
     setContents(afterContents);
@@ -59,6 +71,21 @@ const ImageSlideEditModal = ({
       });
   };
 
+  const onChangeLinkURL = (event) => {
+    setLinkURL(event.target.value.trim());
+  };
+
+  const saveLinkURLOnClk = () => {
+    let imageURL = contents[imageCurrentNo - 1]['imageUrl'];
+    const afterContents = [...contents];
+    afterContents.splice(imageCurrentNo - 1, 1, {
+      imageUrl: imageURL,
+      linkUrl: linkURL,
+    });
+    imageIsChanged.current = true;
+    setContents(afterContents);
+  };
+
   return (
     <>
       <ModalOverlay />
@@ -73,15 +100,29 @@ const ImageSlideEditModal = ({
           <ModalContents>
             <CloseButton onClick={visibleEditImageSlide}>X</CloseButton>
             <EditImageWrapper>
-              <AddImageButton onClick={(e) => imgInputBtnClick(e, -1)}>+</AddImageButton>
+              <AddImageButton
+                onClick={(e) => imgUploadBtnClick(e, -1)}
+                imageslide_config={IMAGESLIDE_CONFIG}
+              >
+                +
+              </AddImageButton>
               <ImageSlide
                 imageInfos={contents}
                 imageCurrentNo={imageCurrentNo}
                 setImageCurrentNo={setImageCurrentNo}
                 deleteImage={deleteImage}
               ></ImageSlide>
-              <AddImageButton onClick={(e) => imgInputBtnClick(e, 0)}>+</AddImageButton>
+              <AddImageButton
+                onClick={(e) => imgUploadBtnClick(e, 0)}
+                imageslide_config={IMAGESLIDE_CONFIG}
+              >
+                +
+              </AddImageButton>
             </EditImageWrapper>
+            <ImageLinkWrapper>
+              <ImageLinkInput value={linkURL || ''} onChange={onChangeLinkURL} />
+              <ImageLinkAddButton onClick={saveLinkURLOnClk}></ImageLinkAddButton>
+            </ImageLinkWrapper>
           </ModalContents>
         </ModalInner>
       </ModalWrapper>
@@ -147,9 +188,10 @@ const CloseButton = styled.button`
 `;
 
 const EditImageWrapper = styled.div`
+  display: flex;
   width: auto;
   height: auto;
-  display: flex;
+  margin-top: 40px;
   justify-content: center;
   border: 3px solid grey;
   border-radius: 5px;
@@ -157,7 +199,7 @@ const EditImageWrapper = styled.div`
 
 const AddImageButton = styled.button`
   border: 0px;
-  height: 500px;
+  height: ${(props) => props.imageslide_config.height};
   width: 40px;
   display: inline-block;
   font-size: 35px;
@@ -171,6 +213,26 @@ const AddImageButton = styled.button`
 
 const ImageHiddenInput = styled.input`
   display: none;
+`;
+
+const ImageLinkWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  width: inherit;
+  height: 100px;
+`;
+const ImageLinkInput = styled.input`
+  width: 1100px;
+  height: 50px;
+`;
+
+const ImageLinkAddButton = styled.button`
+  width: 100px;
+  height: 50px;
+  margin-left: 10px;
 `;
 
 export default ImageSlideEditModal;

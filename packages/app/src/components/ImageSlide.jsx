@@ -1,47 +1,82 @@
 import React, { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 
+const IMAGESLIDE_CONFIG = {
+  width: 1200,
+  height: 530,
+};
+
 const ImageSlide = ({
   imageInfos,
   imageCurrentNo,
   setImageCurrentNo,
   deleteImage = null,
+  visibleEditImageSlide = null,
+  isLogin = false,
 }) => {
   const nextOnClick = () => {
     if (imageCurrentNo < imageInfos.length) setImageCurrentNo(imageCurrentNo + 1);
+    if (imageCurrentNo === imageInfos.length) setImageCurrentNo(1);
   };
 
   const prevOnClick = () => {
     if (imageCurrentNo > 1) setImageCurrentNo(imageCurrentNo - 1);
+    else setImageCurrentNo(imageInfos.length);
+  };
+
+  const imageOnClick = (linkURL) => {
+    if (linkURL) window.open(linkURL, '_blank');
   };
 
   return (
-    <WholeWrapper>
+    <WholeWrapper imageslide_config={IMAGESLIDE_CONFIG}>
+      <OpenEditImageSlideButton islogin={isLogin} onClick={visibleEditImageSlide}>
+        수정
+      </OpenEditImageSlideButton>
       <SlideBox>
-        <NavBox>
+        <NavBox imageslide_config={IMAGESLIDE_CONFIG}>
           {imageInfos.length === 0 ? 0 : imageCurrentNo} / {imageInfos.length}
         </NavBox>
         <SlideList
           style={{
             transform: `translate3d(
-                ${(imageCurrentNo - 1) * -1200}px, 0px, 0px`,
+                ${(imageCurrentNo - 1) * -IMAGESLIDE_CONFIG.width}px, 0px, 0px`,
           }}
           imageCount={imageInfos.length}
+          imageslide_config={IMAGESLIDE_CONFIG}
         >
           {imageInfos.map((image, index) => {
             return (
-              <SlideContent key={index}>
+              <SlideContent key={index} imageslide_config={IMAGESLIDE_CONFIG}>
                 <ImageWrapper>
-                  <NoticeImage src={`${image.imageUrl}`}></NoticeImage>
+                  <NoticeImage
+                    src={`${image.imageUrl}`}
+                    imageslide_config={IMAGESLIDE_CONFIG}
+                    onClick={() => imageOnClick(image.linkUrl)}
+                    pointable={image.linkUrl}
+                  ></NoticeImage>
                 </ImageWrapper>
               </SlideContent>
             );
           })}
         </SlideList>
-        {imageInfos.length ? <PrevButton onClick={prevOnClick}>{'<'}</PrevButton> : null}
-        {imageInfos.length ? <NextButton onClick={nextOnClick}>{'>'}</NextButton> : null}
+        {imageInfos.length ? (
+          <PrevButton onClick={prevOnClick} imageslide_config={IMAGESLIDE_CONFIG}>
+            {'<'}
+          </PrevButton>
+        ) : null}
+        {imageInfos.length ? (
+          <NextButton onClick={nextOnClick} imageslide_config={IMAGESLIDE_CONFIG}>
+            {'>'}
+          </NextButton>
+        ) : null}
         {deleteImage && imageInfos.length ? (
-          <DeleteImageButton onClick={() => deleteImage()}>삭제하기</DeleteImageButton>
+          <DeleteImageButton
+            onClick={() => deleteImage()}
+            imageslide_config={IMAGESLIDE_CONFIG}
+          >
+            삭제하기
+          </DeleteImageButton>
         ) : null}
       </SlideBox>
     </WholeWrapper>
@@ -51,8 +86,8 @@ const ImageSlide = ({
 const WholeWrapper = styled.div`
   position: relative;
   top: 0px;
-  width: 1200px;
-  height: 530px;
+  width: ${(props) => props.imageslide_config.width}px;
+  height: ${(props) => props.imageslide_config.height}px;
   display: inline-block;
   background-color: white;
   border: 2px solid grey;
@@ -61,18 +96,18 @@ const WholeWrapper = styled.div`
 const SlideList = styled.div`
   width: ${(props) => {
     return css`
-        calc(${props.imageCount} * 1200px);
+        calc(${props.imageCount} * ${props.imageslide_config.width}px);
         `;
   }};
-  height: auto;
+  height: ${(props) => props.imageslide_config.height}px;
   transition: all 300ms ease 0s;
   overflow: hidden;
 `;
 
 const SlideContent = styled.div`
   display: table;
-  width: 1200px;
-  height: 500px;
+  width: ${(props) => props.imageslide_config.width}px;
+  height: ${(props) => props.imageslide_config.height}px;
   float: left;
 `;
 
@@ -83,8 +118,9 @@ const ImageWrapper = styled.picture`
 `;
 
 const NoticeImage = styled.img`
-  width: 1200px;
-  height: auto;
+  width: ${(props) => props.imageslide_config.width}px;
+  height: ${(props) => props.imageslide_config.height}px;
+  cursor: ${(props) => (props.pointable === '' ? 'default' : 'pointer')};
 `;
 
 const NextButton = styled.button`
@@ -117,7 +153,7 @@ const PrevButton = styled.button`
 
 const DeleteImageButton = styled.button`
   position: absolute;
-  left: 450px;
+  left: ${(props) => (props.imageslide_config.width - 100) / 2}px;
   bottom: -50px;
   width: 100px;
   height: 50px;
@@ -132,8 +168,9 @@ const DeleteImageButton = styled.button`
 `;
 
 const NavBox = styled.div`
-  position: relative;
+  position: absolute;
   top: -30px;
+  left: ${(props) => (props.imageslide_config.width - 60) / 2}px;
   width: 60px;
   height: 30px;
   display: inline-block;
@@ -143,13 +180,14 @@ const NavBox = styled.div`
   font-size: 14px;
   color: white;
   background-color: darkgray;
+  z-index: 1;
 `;
 
 const SlideBox = styled.div`
   position: relative;
   width: inherit;
   height: inherit;
-  margin: auto;
+  /* margin: auto; */
   overflow-x: hidden;
   &:hover ${NextButton} {
     right: 5px;
@@ -170,6 +208,16 @@ const SlideBox = styled.div`
     top: 10px;
     transition: top 0.5s;
   }
+`;
+
+const OpenEditImageSlideButton = styled.button`
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  height: 50px;
+  width: 50px;
+  display: ${(props) => (props.islogin ? 'visible' : 'none')};
+  z-index: 1;
 `;
 
 export default ImageSlide;
