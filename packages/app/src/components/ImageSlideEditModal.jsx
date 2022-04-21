@@ -15,7 +15,7 @@ const ImageSlideEditModal = ({
   setImageCurrentNo,
 }) => {
   const [contents, setContents] = useState(imageInfos);
-  const [linkURL, setLinkURL] = useState();
+  const [linkURL, setLinkURL] = useState('');
   const imageInput = useRef(null);
   const selectedImage = useRef(null);
   const imageIsChanged = useRef(false);
@@ -30,20 +30,19 @@ const ImageSlideEditModal = ({
   }, [contents]);
 
   useEffect(() => {
-    setLinkURL(contents[imageCurrentNo - 1]['linkUrl']);
+    if (contents.length) setLinkURL(contents[imageCurrentNo]['linkUrl']);
   }, [imageCurrentNo]);
 
   const imgUploadBtnClick = (event, position) => {
     event.preventDefault();
-    imageIndex.current = imageCurrentNo + position;
+    imageIndex.current = position;
     imageInput.current.click();
   };
 
   const deleteImage = () => {
     const afterContents = [...contents];
-    afterContents.splice(imageIndex.current, 1);
-    if (imageCurrentNo > 1) setImageCurrentNo(imageCurrentNo - 1);
-    imageIndex.current = imageCurrentNo;
+    afterContents.splice(imageCurrentNo, 1);
+    if (imageCurrentNo > 0) setImageCurrentNo(imageCurrentNo - 1);
     console.log(afterContents);
     imageIsChanged.current = true;
     setContents(afterContents);
@@ -58,12 +57,17 @@ const ImageSlideEditModal = ({
     postUploadImagesToS3(data)
       .then((res) => {
         const afterContents = [...contents];
-        afterContents.splice(imageIndex.current, 0, {
+        let index =
+          imageCurrentNo || afterContents.length
+            ? imageCurrentNo + imageIndex.current
+            : 0;
+        afterContents.splice(index, 0, {
           imageUrl: res.data.url,
           linkUrl: '',
         });
         imageIsChanged.current = true;
         setContents(afterContents);
+        setImageCurrentNo(index);
         console.log(res);
       })
       .catch((err) => {
@@ -76,9 +80,9 @@ const ImageSlideEditModal = ({
   };
 
   const saveLinkURLOnClk = () => {
-    let imageURL = contents[imageCurrentNo - 1]['imageUrl'];
+    let imageURL = contents[imageCurrentNo]['imageUrl'];
     const afterContents = [...contents];
-    afterContents.splice(imageCurrentNo - 1, 1, {
+    afterContents.splice(imageCurrentNo, 1, {
       imageUrl: imageURL,
       linkUrl: linkURL,
     });
@@ -101,7 +105,7 @@ const ImageSlideEditModal = ({
             <CloseButton onClick={visibleEditImageSlide}>X</CloseButton>
             <EditImageWrapper>
               <AddImageButton
-                onClick={(e) => imgUploadBtnClick(e, -1)}
+                onClick={(e) => imgUploadBtnClick(e, 0)}
                 imageslide_config={IMAGESLIDE_CONFIG}
               >
                 +
@@ -113,7 +117,7 @@ const ImageSlideEditModal = ({
                 deleteImage={deleteImage}
               ></ImageSlide>
               <AddImageButton
-                onClick={(e) => imgUploadBtnClick(e, 0)}
+                onClick={(e) => imgUploadBtnClick(e, 1)}
                 imageslide_config={IMAGESLIDE_CONFIG}
               >
                 +

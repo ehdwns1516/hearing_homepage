@@ -46,7 +46,7 @@ const TopNavBar = () => {
                   )}/${encodeURIComponent(subMenu.replace(/(\s*)/g, ''))}`}
                   dropdownanimation={String(isOpened[topMenu])}
                 >
-                  {subMenu}
+                  {isOpened[topMenu] ? subMenu : null}
                 </SubMenuLink>
               );
             })}
@@ -166,15 +166,15 @@ const dropDownClose = keyframes`
 
 const SubMenuLink = styled(Link)`
   height: ${(props) => (props.dropdownanimation === 'true' ? '50px' : '0px')};
-  display: ${(props) => (props.dropdownanimation === 'undefined' ? 'none' : 'block')};
-  opacity: ${(props) =>
+  display: ${(props) => (props.dropdownanimation === 'undefined' ? 'block' : 'block')};
+  /* opacity: ${(props) =>
     props.dropdownanimation === 'undefined' || props.dropdownanimation === 'false'
-      ? 0
-      : 1};
-  pointer-events: ${(props) =>
+      ? 1
+      : 1}; */
+  /* pointer-events: ${(props) =>
     props.dropdownanimation === 'undefined' || props.dropdownanimation === 'false'
       ? 'none'
-      : 'auto'};
+      : 'auto'}; */
   width: 240px;
   font-size: 20px;
   font-weight: bold;
@@ -190,11 +190,12 @@ const SubMenuLink = styled(Link)`
   animation: ${(props) =>
     props.dropdownanimation === 'true' // 대문자로 props 선언하면 error 뜨는데 왜지??
       ? css`
-          ${dropDownOpen} 0.4s 0s
+          ${dropDownOpen} 0.3s 0s
         `
-      : css`
-          ${dropDownClose} 0.4s 0s
-        `};
+      : // css`
+        //     ${dropDownClose} 0.4s 0s
+        //   `
+        null};
   :hover {
     background-color: #892e6c;
   }

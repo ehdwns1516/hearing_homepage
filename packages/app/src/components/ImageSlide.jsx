@@ -16,12 +16,12 @@ const ImageSlide = ({
 }) => {
   const nextOnClick = () => {
     if (imageCurrentNo < imageInfos.length) setImageCurrentNo(imageCurrentNo + 1);
-    if (imageCurrentNo === imageInfos.length) setImageCurrentNo(1);
+    if (imageCurrentNo + 1 === imageInfos.length) setImageCurrentNo(0);
   };
 
   const prevOnClick = () => {
-    if (imageCurrentNo > 1) setImageCurrentNo(imageCurrentNo - 1);
-    else setImageCurrentNo(imageInfos.length);
+    if (imageCurrentNo > 0) setImageCurrentNo(imageCurrentNo - 1);
+    else setImageCurrentNo(imageInfos.length - 1);
   };
 
   const imageOnClick = (linkURL) => {
@@ -35,12 +35,12 @@ const ImageSlide = ({
       </OpenEditImageSlideButton>
       <SlideBox>
         <NavBox imageslide_config={IMAGESLIDE_CONFIG}>
-          {imageInfos.length === 0 ? 0 : imageCurrentNo} / {imageInfos.length}
+          {imageInfos.length === 0 ? 0 : imageCurrentNo + 1} / {imageInfos.length}
         </NavBox>
         <SlideList
           style={{
             transform: `translate3d(
-                ${(imageCurrentNo - 1) * -IMAGESLIDE_CONFIG.width}px, 0px, 0px`,
+                ${imageCurrentNo * -IMAGESLIDE_CONFIG.width}px, 0px, 0px`,
           }}
           imageCount={imageInfos.length}
           imageslide_config={IMAGESLIDE_CONFIG}

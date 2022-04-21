@@ -12,7 +12,7 @@ import { atomIsLogin } from '../recoils';
 const MainPage = () => {
   const [editImageSlideModalOpened, setEditImageSlideModalOpened] = useState(false);
   const [imageInfos, setImageInfos] = useState(Array);
-  const [imageCurrentNo, setImageCurrentNo] = useState(1);
+  const [imageCurrentNo, setImageCurrentNo] = useState(0);
   const [isLogin, setIsLogin] = useRecoilState(atomIsLogin);
   const navigate = useNavigate();
 
