@@ -179,9 +179,9 @@ const SubMenuLink = styled(Link)`
   font-size: 20px;
   font-weight: bold;
   color: white;
-  text-align: left;
+  text-align: center;
   line-height: 50px;
-  padding-left: 50px;
+  /* padding-left: 50px; */
   box-sizing: border-box;
   border: 0px;
   background-color: #b4338a;
