@@ -160,6 +160,7 @@ const ContentsWrapper = styled.div`
   align-items: center;
   text-align: center;
   overflow: scroll;
+  overflow-x: hidden;
 `;
 
 const SideWrapper = styled.div`

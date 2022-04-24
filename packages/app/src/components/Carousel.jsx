@@ -2,16 +2,16 @@ import React, { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 
 const IMAGESLIDE_CONFIG = {
-  width: 1200,
+  width: 1195,
   height: 530,
 };
 
-const ImageSlide = ({
+const Carousel = ({
   imageInfos,
   imageCurrentNo,
   setImageCurrentNo,
   deleteImage = null,
-  visibleEditImageSlide = null,
+  visibleEditCarousel = null,
   isLogin = false,
 }) => {
   const nextOnClick = () => {
@@ -30,7 +30,7 @@ const ImageSlide = ({
 
   return (
     <WholeWrapper imageslide_config={IMAGESLIDE_CONFIG}>
-      <OpenEditImageSlideButton islogin={isLogin} onClick={visibleEditImageSlide}>
+      <OpenEditImageSlideButton islogin={isLogin} onClick={visibleEditCarousel}>
         수정
       </OpenEditImageSlideButton>
       <SlideBox>
@@ -220,4 +220,4 @@ const OpenEditImageSlideButton = styled.button`
   z-index: 1;
 `;
 
-export default ImageSlide;
+export default Carousel;

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
-import ImageSlide from './ImageSlide';
+import ImageSlide from './Carousel';
 import { postUploadImagesToS3, putNoticeInfos } from '../apis/APIs';
 
 const IMAGESLIDE_CONFIG = {
@@ -8,8 +8,8 @@ const IMAGESLIDE_CONFIG = {
   height: 530,
 };
 
-const ImageSlideEditModal = ({
-  visibleEditImageSlide,
+const CarouselEditModal = ({
+  visibleEditCarousel,
   imageInfos,
   imageCurrentNo,
   setImageCurrentNo,
@@ -102,7 +102,7 @@ const ImageSlideEditModal = ({
             onChange={onChangeImage}
           ></ImageHiddenInput>
           <ModalContents>
-            <CloseButton onClick={visibleEditImageSlide}>X</CloseButton>
+            <CloseButton onClick={visibleEditCarousel}>X</CloseButton>
             <EditImageWrapper>
               <AddImageButton
                 onClick={(e) => imgUploadBtnClick(e, 0)}
@@ -239,4 +239,4 @@ const ImageLinkAddButton = styled.button`
   margin-left: 10px;
 `;
 
-export default ImageSlideEditModal;
+export default CarouselEditModal;
