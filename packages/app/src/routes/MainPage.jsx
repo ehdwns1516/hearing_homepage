@@ -13,6 +13,8 @@ import { atomIsLogin } from '../recoils';
 import logo from '../images/oticon-logo.png';
 import center_summary from '../images/center-summary.jpeg';
 import call_info from '../images/call-info.jpeg';
+import naver_blog from '../images/naver-blog.png';
+import NHIS from '../images/NHIS.jpeg';
 
 const MainPage = () => {
   const [editCarouselModalOpened, setEditCarouselModalOpened] = useState(false);
@@ -72,8 +74,15 @@ const MainPage = () => {
             onClick={() => navigate('/센터소개/센터약력')}
           ></CenterSummary>
           <HowToCome>
-            <HowToComeLink onClick={() => navigate('/오시는길/오시는길')}>
-              오시는 길
+            <HowToComeLink
+              onClick={() => {
+                window.open(
+                  'https://map.kakao.com/?map_type=TYPE_MAP&target=car&rt=,,500375,1046319&rt1=&rt2=%EB%8D%B4%EB%A7%88%ED%81%AC%EC%98%A4%ED%8B%B0%EC%BD%98%EB%B3%B4%EC%B2%AD%EA%B8%B0%20%EC%88%98%EC%9B%90%EC%A0%90&rtIds=,12510627',
+                  '_blank'
+                );
+              }}
+            >
+              빠른 길찾기
             </HowToComeLink>
             <Map id='map'>
               <KakaoMap></KakaoMap>
@@ -82,7 +91,52 @@ const MainPage = () => {
         </RowContents>
         <RowContents>
           <CallInfo src={call_info}></CallInfo>
-          <LinkInfo></LinkInfo>
+          <LinkWrapper>
+            <LinkInfo>
+              <LinkImg
+                src={naver_blog}
+                onClick={() => {
+                  window.open(
+                    'https://blog.naver.com/PostList.naver?blogId=sds00519',
+                    '_blank'
+                  );
+                }}
+              ></LinkImg>
+              <LinkText
+                onClick={() => {
+                  window.open(
+                    'https://blog.naver.com/PostList.naver?blogId=sds00519',
+                    '_blank'
+                  );
+                }}
+              >
+                블로그 바로가기
+              </LinkText>
+            </LinkInfo>
+            <LinkInfo>
+              <LinkImg
+                src={NHIS}
+                onClick={() => {
+                  window.open(
+                    'https://blog.naver.com/PostList.naver?blogId=sds00519&from=postList&categoryNo=14',
+                    '_blank'
+                  );
+                }}
+              ></LinkImg>
+              <LinkText
+                onClick={() => {
+                  window.open(
+                    'https://blog.naver.com/PostList.naver?blogId=sds00519&from=postList&categoryNo=14',
+                    '_blank'
+                  );
+                }}
+              >
+                보청기 보험급여
+                <br />
+                제도 안내
+              </LinkText>
+            </LinkInfo>
+          </LinkWrapper>
         </RowContents>
       </ContentsWrapper>
       <Footer />
@@ -121,10 +175,10 @@ const ContentsWrapper = styled.div`
   height: auto;
   min-height: calc(100vh - 275px);
   width: 1200px;
-  text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
   overflow-x: hidden;
   margin-bottom: 5px;
 `;
@@ -134,7 +188,6 @@ const RowContents = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
-  background-color: wheat;
 `;
 
 const CenterSummary = styled.img`
@@ -143,7 +196,6 @@ const CenterSummary = styled.img`
   border: 1px solid grey;
   border-top: none;
   border-bottom: none;
-  background-color: white;
   cursor: pointer;
 `;
 
@@ -152,7 +204,9 @@ const HowToCome = styled.div`
   height: 400px;
   display: flex;
   flex-direction: column;
-  /* background-color: black; */
+  border: 1px solid grey;
+  /* border-top: none; */
+  border-left: none;
 `;
 
 const HowToComeLink = styled.div`
@@ -176,26 +230,57 @@ const HowToComeLink = styled.div`
 const Map = styled.div`
   width: 100%;
   height: 350px;
-  /* background-color: black; */
 `;
 
 const CallInfo = styled.img`
   width: 50%;
   height: 250px;
+  cursor: pointer;
   border: 1px solid grey;
   border-top: none;
-  /* border-bottom: none; */
-  background-color: white;
-  cursor: pointer;
+  border-right: none;
+`;
+
+const LinkWrapper = styled.div`
+  width: 50%;
+  height: 250px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid grey;
+  border-top: none;
+  /* border-left: none; */
 `;
 
 const LinkInfo = styled.div`
   width: 50%;
-  height: 250px;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  border: 1px solid grey;
-  border-top: none;
-  background-color: black;
+  align-items: center;
+`;
+
+const LinkImg = styled.img`
+  position: relative;
+  top: 40px;
+  width: 50%;
+  height: 50%;
+  display: block;
+  border-radius: 100px;
+  cursor: pointer;
+`;
+
+const LinkText = styled.div`
+  position: relative;
+  top: 40px;
+  width: 50%;
+  height: auto;
+  margin-top: 10px;
+  line-height: 25px;
+  font-size: 22px;
+  color: grey;
+  font-weight: bold;
+  cursor: pointer;
 `;
 export default MainPage;
