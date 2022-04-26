@@ -97,7 +97,7 @@ const MainPage = () => {
                 src={naver_blog}
                 onClick={() => {
                   window.open(
-                    'https://blog.naver.com/PostList.naver?blogId=sds00519',
+                    'https://blog.naver.com/PostList.naver?blogId=sds00519&from=postList&categoryNo=52',
                     '_blank'
                   );
                 }}
@@ -105,7 +105,7 @@ const MainPage = () => {
               <LinkText
                 onClick={() => {
                   window.open(
-                    'https://blog.naver.com/PostList.naver?blogId=sds00519',
+                    'https://blog.naver.com/PostList.naver?blogId=sds00519&from=postList&categoryNo=52',
                     '_blank'
                   );
                 }}

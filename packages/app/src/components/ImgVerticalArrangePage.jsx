@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import StandardImageList from './StandardImageList';
 import styled, { css } from 'styled-components';
 import SideNavBar from './SideNavBar';
 import { useRecoilState } from 'recoil';
@@ -11,7 +12,7 @@ import {
 
 import { atomIsLogin } from '../recoils';
 
-const DetailPage = ({ topMenu, subMenu }) => {
+const ImgVerticalArrangePage = ({ topMenu, subMenu }) => {
   const imageInput = useRef(null);
   const selectedImage = useRef(null);
   const imageIsChanged = useRef(false);
@@ -117,6 +118,7 @@ const DetailPage = ({ topMenu, subMenu }) => {
         <HorizonLine>
           <InnerText>{subMenu}</InnerText>
         </HorizonLine>
+        <StandardImageList images={[]}></StandardImageList>
         <ImageHiddenInput
           ref={imageInput}
           type='file'
@@ -267,4 +269,4 @@ const ImgWrapper = styled.div`
   align-items: center;
 `;
 
-export default DetailPage;
+export default ImgVerticalArrangePage;

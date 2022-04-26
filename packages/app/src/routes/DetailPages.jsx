@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { atomTopMenuList, atomSubMenuList } from '../recoils';
-import DetailPage from '../components/DetailPage';
+import ImgVerticalArrangePage from '../components/ImgVerticalArrangePage';
 import NotFoundPage from './NotFoundPage';
 
 const DetailPages = () => {
@@ -13,13 +13,12 @@ const DetailPages = () => {
       {topMenuList.map((topMenu, index) => {
         if (subMenuList[topMenu].length === 0)
           return (
-            <React.Fragment>
+            <React.Fragment key={index}>
               <Route
-                key={index}
                 path={`/${encodeURIComponent(
                   topMenu.replace(/(\s*)/g, '')
                 )}/${encodeURIComponent(topMenu.replace(/(\s*)/g, ''))}`}
-                element={<DetailPage topMenu={topMenu} subMenu={topMenu} />}
+                element={<ImgVerticalArrangePage topMenu={topMenu} subMenu={topMenu} />}
               />
               <Route
                 path={`/${encodeURIComponent(
@@ -31,13 +30,12 @@ const DetailPages = () => {
           );
         return subMenuList[topMenu].map((subMenu) => {
           return (
-            <React.Fragment>
+            <React.Fragment key={index}>
               <Route
-                key={index}
                 path={`/${encodeURIComponent(
                   topMenu.replace(/(\s*)/g, '')
                 )}/${encodeURIComponent(subMenu.replace(/(\s*)/g, ''))}`}
-                element={<DetailPage topMenu={topMenu} subMenu={subMenu} />}
+                element={<ImgVerticalArrangePage topMenu={topMenu} subMenu={subMenu} />}
               />
               <Route
                 path={`/${encodeURIComponent(

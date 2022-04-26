@@ -16,6 +16,23 @@ const atomSubMenuList = atom({
   },
 });
 
+const atomPageType = atom({
+  // 0 -> DetailPage.jsx, 1 -> 이미지 목록으로 보기, 2-> 보청기 간단 정보 목록으로 보기
+  key: 'pageType',
+  default: {
+    '센터 약력': 0,
+    '일하는 사람들': 0,
+    '센터 둘러보기': 1,
+    '이달의 이벤트 및 소식': 0,
+    '보청기 제품 목록': 2,
+    '보청기 구입': 0,
+    '건강보험 대상자': 0,
+    '기초생활 수급자': 0,
+    '오시는 길': 0,
+    '주차비 지원': 0,
+  },
+});
+
 const atomCurrentPage = atom({
   key: 'currentPage',
   default: 'Main',
@@ -31,4 +48,11 @@ const atomAdminName = atom({
   default: window.sessionStorage.getItem('adminName'),
 });
 
-export { atomTopMenuList, atomSubMenuList, atomCurrentPage, atomIsLogin, atomAdminName };
+export {
+  atomTopMenuList,
+  atomSubMenuList,
+  atomPageType,
+  atomCurrentPage,
+  atomIsLogin,
+  atomAdminName,
+};
