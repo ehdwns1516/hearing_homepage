@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import styled, { css } from 'styled-components';
 import SideNavBar from './SideNavBar';
 import { useRecoilState } from 'recoil';
+import StandardImageList from './StandardImageList';
+
 import {
   postUploadImagesToS3,
   postInitDetailPage,
@@ -11,7 +13,7 @@ import {
 
 import { atomIsLogin } from '../recoils';
 
-const ImgListPage = ({ topMenu, subMenu }) => {
+const ImgListPage = ({ topMenu, subMenu, type }) => {
   const imageInput = useRef(null);
   const selectedImage = useRef(null);
   const imageIsChanged = useRef(false);
@@ -49,16 +51,6 @@ const ImgListPage = ({ topMenu, subMenu }) => {
     imageInput.current.click();
   };
 
-  const imgDeleteBtnClick = (event, index) => {
-    event.preventDefault();
-    if (window.confirm('이미지를 정말 삭제하시겠습니까?')) {
-      const afterContents = [...contents];
-      afterContents.splice(index, 1);
-      imageIsChanged.current = true;
-      setContents(afterContents);
-    }
-  };
-
   const editBtnClick = (event) => {
     event.preventDefault();
     setEditable(!editable);
@@ -81,30 +73,6 @@ const ImgListPage = ({ topMenu, subMenu }) => {
       .catch((err) => {
         console.log(err);
       });
-  };
-
-  const EditContents = (content, index) => {
-    return (
-      <React.Fragment key={index}>
-        <ImgWrapper>
-          <DeleteImageButton onClick={(e) => imgDeleteBtnClick(e, index)}>
-            X
-          </DeleteImageButton>
-          <ContentImg src={content} editable={editable} />
-        </ImgWrapper>
-        <AddImageButton onClick={(e) => imgInputBtnClick(e, index + 1)}>
-          이미지 추가
-        </AddImageButton>
-      </React.Fragment>
-    );
-  };
-
-  const ViewContents = (content, index) => {
-    return (
-      <React.Fragment key={index}>
-        <ContentImg src={content} editable={editable} />
-      </React.Fragment>
-    );
   };
 
   return (
@@ -138,9 +106,107 @@ const ImgListPage = ({ topMenu, subMenu }) => {
             이미지 추가
           </AddImageButton>
         ) : null}
-        {contents.map((content, index) =>
-          editable ? EditContents(content, index) : ViewContents(content, index)
-        )}
+        <StandardImageList
+          editable={editable}
+          images={[
+            {
+              img: 'https://t1.daumcdn.net/cfile/tistory/24283C3858F778CA2E',
+              title: 'Breakfast',
+            },
+            {
+              img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
+              title: 'Burger',
+            },
+            {
+              img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
+              title: 'Camera',
+            },
+            {
+              img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
+              title: 'Coffee',
+            },
+            {
+              img: 'https://images.unsplash.com/photo-1533827432537-70133748f5c8',
+              title: 'Hats',
+            },
+            {
+              img: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62',
+              title: 'Honey',
+            },
+            {
+              img: 'https://images.unsplash.com/photo-1516802273409-68526ee1bdd6',
+              title: 'Basketball',
+            },
+            {
+              img: 'https://images.unsplash.com/photo-1518756131217-31eb79b20e8f',
+              title: 'Fern',
+            },
+            {
+              img: 'https://images.unsplash.com/photo-1597645587822-e99fa5d45d25',
+              title: 'Mushrooms',
+            },
+            {
+              img: 'https://images.unsplash.com/photo-1567306301408-9b74779a11af',
+              title: 'Tomato basil',
+            },
+            {
+              img: 'https://images.unsplash.com/photo-1471357674240-e1a485acb3e1',
+              title: 'Sea star',
+            },
+            {
+              img: 'https://images.unsplash.com/photo-1589118949245-7d38baf380d6',
+              title: 'Bike',
+            },
+            {
+              img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
+              title: 'Breakfast',
+            },
+            {
+              img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
+              title: 'Burger',
+            },
+            {
+              img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
+              title: 'Camera',
+            },
+            {
+              img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
+              title: 'Coffee',
+            },
+            {
+              img: 'https://images.unsplash.com/photo-1533827432537-70133748f5c8',
+              title: 'Hats',
+            },
+            {
+              img: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62',
+              title: 'Honey',
+            },
+            {
+              img: 'https://images.unsplash.com/photo-1516802273409-68526ee1bdd6',
+              title: 'Basketball',
+            },
+            {
+              img: 'https://images.unsplash.com/photo-1518756131217-31eb79b20e8f',
+              title: 'Fern',
+            },
+            {
+              img: 'https://images.unsplash.com/photo-1597645587822-e99fa5d45d25',
+              title: 'Mushrooms',
+            },
+            {
+              img: 'https://images.unsplash.com/photo-1567306301408-9b74779a11af',
+              title: 'Tomato basil',
+            },
+            {
+              img: 'https://images.unsplash.com/photo-1471357674240-e1a485acb3e1',
+              title: 'Sea star',
+            },
+            {
+              img: 'https://images.unsplash.com/photo-1589118949245-7d38baf380d6',
+              title: 'Bike',
+            },
+          ]}
+        ></StandardImageList>
       </ContentsWrapper>
     </WholeWrapper>
   );
@@ -222,49 +288,8 @@ const EditButton = styled.button`
   }
 `;
 
-const DeleteImageButton = styled.button`
-  position: relative;
-  align-self: flex-start;
-  left: calc(5% + 10px);
-  width: 80px;
-  height: 80px;
-  border: 1px solid grey;
-  border-radius: 40px;
-  background-color: #cc0000;
-  font-size: 40px;
-  font-weight: bold;
-  color: white;
-  margin-top: 10px;
-  :hover {
-    background-color: #b30000;
-  }
-  display: inline-block;
-`;
-
 const ImageHiddenInput = styled.input`
   display: none;
-`;
-
-const ContentImg = styled.img`
-  width: 90%;
-  height: auto;
-  margin-left: ${(props) =>
-    props.editable
-      ? css`
-          calc(5% - 80px);
-        `
-      : css`
-          0px;
-        `};
-  height: 100%;
-  object-fit: fill;
-  margin-bottom: 5px;
-`;
-
-const ImgWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
 `;
 
 export default ImgListPage;

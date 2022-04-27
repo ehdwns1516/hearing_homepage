@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import StandardImageList from './StandardImageList';
 import styled, { css } from 'styled-components';
 import SideNavBar from './SideNavBar';
 import { useRecoilState } from 'recoil';
+import StandardImageList from './StandardImageList';
 import {
   postUploadImagesToS3,
   postInitDetailPage,
@@ -10,22 +10,25 @@ import {
   putDetailPageImages,
 } from '../apis/APIs';
 
-import { atomIsLogin } from '../recoils';
+import { atomIsLogin, atomPageType } from '../recoils';
 
-const ImgVerticalArrangePage = ({ topMenu, subMenu }) => {
+const DetailPage = ({ topMenu, subMenu }) => {
   const imageInput = useRef(null);
   const selectedImage = useRef(null);
   const imageIsChanged = useRef(false);
   const imageIndex = useRef(0);
   const [contents, setContents] = useState(Array);
   const [editable, setEditable] = useState(false);
+  const [type, setType] = useState(-1);
   const [isLogin, setIsLogin] = useRecoilState(atomIsLogin);
+  const [pageType, setPageType] = useRecoilState(atomPageType);
 
   useEffect(() => {
     setEditable(false);
     getDetailPageImages(subMenu)
       .then((res) => {
         setContents(res.data.imageURLs);
+        setType(pageType[subMenu]);
       })
       .catch((err) => {
         if (err.response.status === 500)
@@ -100,16 +103,24 @@ const ImgVerticalArrangePage = ({ topMenu, subMenu }) => {
     );
   };
 
-  const ViewContents = (content, index) => {
+  const ViewContents = (imageUrl, index) => {
     return (
       <React.Fragment key={index}>
-        <ContentImg src={content} editable={editable} />
+        <ImgWrapper>
+          <ContentImg src={imageUrl} editable={editable} />
+        </ImgWrapper>
       </React.Fragment>
     );
   };
 
   return (
     <WholeWrapper>
+      <ImageHiddenInput
+        ref={imageInput}
+        type='file'
+        accept='image/*'
+        onChange={onChangeImage}
+      ></ImageHiddenInput>
       <SideWrapper>
         <SideNavBar currentPage={subMenu} />
       </SideWrapper>
@@ -118,14 +129,6 @@ const ImgVerticalArrangePage = ({ topMenu, subMenu }) => {
         <HorizonLine>
           <InnerText>{subMenu}</InnerText>
         </HorizonLine>
-        <StandardImageList images={[]}></StandardImageList>
-        <ImageHiddenInput
-          ref={imageInput}
-          type='file'
-          accept='image/*'
-          onChange={onChangeImage}
-        ></ImageHiddenInput>
-
         {editable ? (
           <EditButton islogin={isLogin} onClick={editBtnClick}>
             수정 완료
@@ -140,9 +143,21 @@ const ImgVerticalArrangePage = ({ topMenu, subMenu }) => {
             이미지 추가
           </AddImageButton>
         ) : null}
-        {contents.map((content, index) =>
-          editable ? EditContents(content, index) : ViewContents(content, index)
-        )}
+
+        {type === 0
+          ? contents.map((imageUrl, index) =>
+              editable ? EditContents(imageUrl, index) : ViewContents(imageUrl, index)
+            )
+          : null}
+
+        {type === 1 ? (
+          <StandardImageList
+            editable={editable}
+            allImages={contents}
+            setAllImages={setContents}
+            imageIsChanged={imageIsChanged}
+          ></StandardImageList>
+        ) : null}
       </ContentsWrapper>
     </WholeWrapper>
   );
@@ -152,6 +167,11 @@ const WholeWrapper = styled.div`
   height: 100vh;
   width: 100vw;
   display: flex;
+`;
+
+const TitleText = styled.span`
+  font-size: 30px;
+  margin-top: 30px;
 `;
 
 const ContentsWrapper = styled.div`
@@ -186,11 +206,6 @@ const InnerText = styled.span`
   color: rgba(0, 0, 0, 0.5);
   padding: 0 10px;
   font-size: 20px;
-`;
-
-const TitleText = styled.span`
-  font-size: 30px;
-  margin-top: 50px;
 `;
 
 const AddImageButton = styled.button`
@@ -269,4 +284,4 @@ const ImgWrapper = styled.div`
   align-items: center;
 `;
 
-export default ImgVerticalArrangePage;
+export default DetailPage;

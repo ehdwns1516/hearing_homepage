@@ -3,43 +3,50 @@ import { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
-import { cardClasses } from '@mui/material';
 
-const StandardImageList = ({ images }) => {
+const StandardImageList = ({ editable, allImages, setAllImages, imageIsChanged }) => {
   const ImageListRef = useRef(null);
   const [imageHeight, setImageHeight] = useState('auto');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [currentButtonPage, setCurrentButtonPage] = useState(1);
-  const [pageNumbers, setPageNumbers] = useState([]);
-  const [currentImages, setCurrentImages] = useState([]);
+  const [currentPageNum, setCurrentPageNum] = useState(1);
+  const [currentControlButtonsPage, setCurrentControlButtonsPage] = useState(1);
+  const [currentPageImages, setCurrentPageImages] = useState([]);
+  const [controlButtonNum, setControlButtonNum] = useState([]);
 
   useEffect(() => {
     window.onresize = function (event) {
       setImageHeight(ImageListRef.current.offsetHeight / 3 - 20);
     };
     setImageHeight(ImageListRef.current.offsetHeight / 3 - 20);
-
-    let pageNumbers_ = [];
-    let maxPageCount = Math.ceil(itemData.length / 12) || 1;
-    for (let i = 1; i <= maxPageCount; i++) {
-      pageNumbers_.push(i);
-    }
-    setPageNumbers(pageNumbers_);
   }, []);
 
   useEffect(() => {
-    let slicedItems = itemData.slice((currentPage - 1) * 12, currentPage * 12);
+    let slicedItems = allImages.slice((currentPageNum - 1) * 12, currentPageNum * 12);
     const slicedItemsSize = slicedItems.length;
     if (slicedItemsSize < 12) {
       for (let i = 0; i < 12 - slicedItemsSize; i++) {
-        slicedItems.push({ title: null });
+        slicedItems.push(null);
       }
     }
-    setCurrentImages(slicedItems);
-  }, [currentPage]);
+    setCurrentPageImages(slicedItems);
 
-  const findIndex = (index) => {
-    console.log(index);
+    if (slicedItemsSize === 0 && currentPageNum !== 1)
+      setCurrentPageNum(currentPageNum - 1);
+
+    let controlButtonNum_ = [];
+    let maxPageCount = Math.ceil(allImages.length / 12) || 1;
+    for (let i = 1; i <= maxPageCount; i++) {
+      controlButtonNum_.push(i);
+    }
+    setControlButtonNum(controlButtonNum_);
+  }, [currentPageNum, allImages]);
+
+  const deleteImage = (index) => {
+    if (window.confirm('이미지를 정말 삭제하시겠습니까?')) {
+      const afterImages = [...allImages];
+      afterImages.splice(index + (currentPageNum - 1) * 12, 1);
+      setAllImages(afterImages);
+      imageIsChanged.current = true;
+    }
   };
 
   return (
@@ -49,25 +56,33 @@ const StandardImageList = ({ images }) => {
         cols={4}
         gap={15}
         rowHeight={imageHeight}
-        style={{
-          backgroundColor: 'white',
+        sx={{
           width: '88%',
           height: '70%',
-          borderRadius: '10px',
+          boxShadow: 3,
+          paddingLeft: '15px',
+          paddingRight: '15px',
+          paddingBottom: '5px',
+          paddingTop: '5px',
+          borderRadius: 3,
         }}
       >
-        {currentImages.map((item, index) =>
-          !item.title ? (
-            <CustomImageListItem key={index} empty={true}></CustomImageListItem>
+        {currentPageImages.map((imageUrl, index) =>
+          !imageUrl ? (
+            <CustomImageListItem key={index} empty={'true'}></CustomImageListItem>
           ) : (
             <CustomImageListItem key={index}>
-              <DeleteImageButton onClick={() => findIndex(index)}>-</DeleteImageButton>
+              {editable ? (
+                <DeleteImageButton onClick={() => deleteImage(index)}>
+                  -
+                </DeleteImageButton>
+              ) : null}
               <img
-                src={`${item.img}`}
-                // src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
-                // srcSet={`${item.img}?w=200&h=200&fit=crop&auto=format&dpr=2 2x`}
-                alt={item.title}
-                loading='lazy'
+                src={`${imageUrl}`}
+                // src={`${imageUrl}?w=233&h=233&fit=crop&auto=format`}
+                // srcSet={`${imageUrl} 1x`}
+                alt={'None'}
+                style={{ width: '100%' }}
               />
             </CustomImageListItem>
           )
@@ -76,8 +91,8 @@ const StandardImageList = ({ images }) => {
       <ControlPageWrapper>
         <PageButtonPrev
           onClick={() => {
-            if (currentButtonPage === 1) return;
-            setCurrentButtonPage(currentButtonPage - 1);
+            if (currentControlButtonsPage === 1) return;
+            setCurrentControlButtonsPage(currentControlButtonsPage - 1);
           }}
         >
           {'<'}
@@ -86,21 +101,32 @@ const StandardImageList = ({ images }) => {
           <PageButtonList
             style={{
               transform: `translate3d(
-                ${(currentButtonPage - 1) * -310}px, 0px, 0px`,
+                ${(currentControlButtonsPage - 1) * -310}px, 0px, 0px`,
             }}
-            maxPageCount={pageNumbers.length}
+            maxPageCount={controlButtonNum.length}
           >
-            <>
-              {pageNumbers.map((item) => (
-                <PageButton key={item}>{item}</PageButton>
-              ))}
-            </>
+            {controlButtonNum.map((item) =>
+              currentPageNum === item ? (
+                <PageButton
+                  key={item}
+                  // onClick={() => return;}
+                  style={{ backgroundColor: '#892e6c' }}
+                >
+                  {item}
+                </PageButton>
+              ) : (
+                <PageButton key={item} onClick={() => setCurrentPageNum(item)}>
+                  {item}
+                </PageButton>
+              )
+            )}
           </PageButtonList>
         </PageButtonWrapper>
         <PageButtonNext
           onClick={() => {
-            if (currentButtonPage === Math.ceil(pageNumbers.length / 5)) return;
-            setCurrentButtonPage(currentButtonPage + 1);
+            if (currentControlButtonsPage === Math.ceil(controlButtonNum.length / 5))
+              return;
+            setCurrentControlButtonsPage(currentControlButtonsPage + 1);
           }}
         >
           {'>'}
@@ -110,114 +136,16 @@ const StandardImageList = ({ images }) => {
   );
 };
 
-const itemData = [
-  {
-    img: 'https://t1.daumcdn.net/cfile/tistory/24283C3858F778CA2E',
-    title: 'Breakfast',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
-    title: 'Burger',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
-    title: 'Camera',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
-    title: 'Coffee',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1533827432537-70133748f5c8',
-    title: 'Hats',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62',
-    title: 'Honey',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1516802273409-68526ee1bdd6',
-    title: 'Basketball',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1518756131217-31eb79b20e8f',
-    title: 'Fern',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1597645587822-e99fa5d45d25',
-    title: 'Mushrooms',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1567306301408-9b74779a11af',
-    title: 'Tomato basil',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1471357674240-e1a485acb3e1',
-    title: 'Sea star',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1589118949245-7d38baf380d6',
-    title: 'Bike',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
-    title: 'Breakfast',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
-    title: 'Burger',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
-    title: 'Camera',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
-    title: 'Coffee',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1533827432537-70133748f5c8',
-    title: 'Hats',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62',
-    title: 'Honey',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1516802273409-68526ee1bdd6',
-    title: 'Basketball',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1518756131217-31eb79b20e8f',
-    title: 'Fern',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1597645587822-e99fa5d45d25',
-    title: 'Mushrooms',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1567306301408-9b74779a11af',
-    title: 'Tomato basil',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1471357674240-e1a485acb3e1',
-    title: 'Sea star',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1589118949245-7d38baf380d6',
-    title: 'Bike',
-  },
-];
-
 const CustomImageListItem = styled(ImageListItem)`
   overflow: hidden;
   border-radius: 10px;
   margin: auto;
-  cursor: ${(props) => (props.empty ? 'default' : 'pointer')};
+  cursor: ${(props) => (props.empty === 'true' ? 'default' : 'pointer')};
   background-color: black;
 
   :hover {
     opacity: ${(props) => (props.empty ? '1' : '0.75')};
+    box-shadow: 0 0 0.4em #b4338a;
   }
 `;
 const DeleteImageButton = styled.div`
