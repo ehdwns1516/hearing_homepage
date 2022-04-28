@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
-
-const IMAGESLIDE_CONFIG = {
-  width: 1195,
-  height: 530,
-};
+import { AiFillSetting } from 'react-icons/ai';
 
 const Carousel = ({
   imageInfos,
@@ -13,6 +9,7 @@ const Carousel = ({
   deleteImage = null,
   visibleEditCarousel = null,
   isLogin = false,
+  carousel_config,
 }) => {
   const nextOnClick = () => {
     if (imageCurrentNo < imageInfos.length) setImageCurrentNo(imageCurrentNo + 1);
@@ -29,29 +26,29 @@ const Carousel = ({
   };
 
   return (
-    <WholeWrapper imageslide_config={IMAGESLIDE_CONFIG}>
-      <OpenEditImageSlideButton islogin={isLogin} onClick={visibleEditCarousel}>
-        수정
-      </OpenEditImageSlideButton>
+    <WholeWrapper carousel_config={carousel_config}>
+      <EditCarouselButton islogin={isLogin} onClick={visibleEditCarousel}>
+        <EditCarouselImage></EditCarouselImage>
+      </EditCarouselButton>
       <SlideBox>
-        <NavBox imageslide_config={IMAGESLIDE_CONFIG}>
+        <NavBox carousel_config={carousel_config}>
           {imageInfos.length === 0 ? 0 : imageCurrentNo + 1} / {imageInfos.length}
         </NavBox>
         <SlideList
           style={{
             transform: `translate3d(
-                ${imageCurrentNo * -IMAGESLIDE_CONFIG.width}px, 0px, 0px`,
+                ${imageCurrentNo * -carousel_config.width}px, 0px, 0px`,
           }}
           imageCount={imageInfos.length}
-          imageslide_config={IMAGESLIDE_CONFIG}
+          carousel_config={carousel_config}
         >
           {imageInfos.map((image, index) => {
             return (
-              <SlideContent key={index} imageslide_config={IMAGESLIDE_CONFIG}>
+              <SlideContent key={index} carousel_config={carousel_config}>
                 <ImageWrapper>
                   <NoticeImage
                     src={`${image.imageUrl}`}
-                    imageslide_config={IMAGESLIDE_CONFIG}
+                    carousel_config={carousel_config}
                     onClick={() => imageOnClick(image.linkUrl)}
                     pointable={image.linkUrl}
                   ></NoticeImage>
@@ -61,19 +58,19 @@ const Carousel = ({
           })}
         </SlideList>
         {imageInfos.length ? (
-          <PrevButton onClick={prevOnClick} imageslide_config={IMAGESLIDE_CONFIG}>
+          <PrevButton onClick={prevOnClick} carousel_config={carousel_config}>
             {'<'}
           </PrevButton>
         ) : null}
         {imageInfos.length ? (
-          <NextButton onClick={nextOnClick} imageslide_config={IMAGESLIDE_CONFIG}>
+          <NextButton onClick={nextOnClick} carousel_config={carousel_config}>
             {'>'}
           </NextButton>
         ) : null}
         {deleteImage && imageInfos.length ? (
           <DeleteImageButton
             onClick={() => deleteImage()}
-            imageslide_config={IMAGESLIDE_CONFIG}
+            carousel_config={carousel_config}
           >
             삭제하기
           </DeleteImageButton>
@@ -86,28 +83,44 @@ const Carousel = ({
 const WholeWrapper = styled.div`
   position: relative;
   top: 0px;
-  width: ${(props) => props.imageslide_config.width}px;
-  height: ${(props) => props.imageslide_config.height}px;
+  width: ${(props) => props.carousel_config.width}px;
+  height: ${(props) => props.carousel_config.height}px;
   display: inline-block;
   background-color: white;
   border: 2px solid grey;
 `;
 
+const NavBox = styled.div`
+  position: absolute;
+  top: -30px;
+  left: ${(props) => (props.carousel_config.width - 60) / 2}px;
+  width: 60px;
+  height: 30px;
+  display: inline-block;
+  border-radius: 20px;
+  line-height: 30px;
+  text-align: center;
+  font-size: 14px;
+  color: #eeeeee;
+  background-color: grey;
+  z-index: 1;
+`;
+
 const SlideList = styled.div`
   width: ${(props) => {
     return css`
-        calc(${props.imageCount} * ${props.imageslide_config.width}px);
+        calc(${props.imageCount} * ${props.carousel_config.width}px);
         `;
   }};
-  height: ${(props) => props.imageslide_config.height}px;
+  height: ${(props) => props.carousel_config.height}px;
   transition: all 300ms ease 0s;
   overflow: hidden;
 `;
 
 const SlideContent = styled.div`
   display: table;
-  width: ${(props) => props.imageslide_config.width}px;
-  height: ${(props) => props.imageslide_config.height}px;
+  width: ${(props) => props.carousel_config.width}px;
+  height: ${(props) => props.carousel_config.height}px;
   float: left;
 `;
 
@@ -118,8 +131,8 @@ const ImageWrapper = styled.picture`
 `;
 
 const NoticeImage = styled.img`
-  width: ${(props) => props.imageslide_config.width}px;
-  height: ${(props) => props.imageslide_config.height}px;
+  width: ${(props) => props.carousel_config.width}px;
+  height: ${(props) => props.carousel_config.height}px;
   cursor: ${(props) => (props.pointable === '' ? 'default' : 'pointer')};
 `;
 
@@ -129,11 +142,13 @@ const NextButton = styled.button`
   right: -50px;
   width: 50px;
   height: 50px;
-  padding-top: 5px;
-  background-color: #333;
   font-size: 40px;
-  font-weight: 100;
   line-height: 0px;
+  border-radius: 5px;
+  background-color: #515151;
+  :hover {
+    background-color: #393939;
+  }
   color: #eeeeee;
 `;
 
@@ -143,21 +158,24 @@ const PrevButton = styled.button`
   left: -50px;
   width: 50px;
   height: 50px;
-  padding-top: 5px;
-  background-color: #333;
   font-size: 40px;
-  font-weight: 100;
   line-height: 0px;
+  border-radius: 5px;
+  background-color: #515151;
+  :hover {
+    background-color: #393939;
+  }
   color: #eeeeee;
 `;
 
 const DeleteImageButton = styled.button`
   position: absolute;
-  left: ${(props) => (props.imageslide_config.width - 100) / 2}px;
+  left: ${(props) => (props.carousel_config.width - 100) / 2}px;
   bottom: -50px;
   width: 100px;
   height: 50px;
   border: 0px;
+  border-radius: 5px;
   font-size: large;
   font-weight: bold;
   color: white;
@@ -167,28 +185,11 @@ const DeleteImageButton = styled.button`
   }
 `;
 
-const NavBox = styled.div`
-  position: absolute;
-  top: -30px;
-  left: ${(props) => (props.imageslide_config.width - 60) / 2}px;
-  width: 60px;
-  height: 30px;
-  display: inline-block;
-  border-radius: 20px;
-  line-height: 30px;
-  text-align: center;
-  font-size: 14px;
-  color: white;
-  background-color: darkgray;
-  z-index: 1;
-`;
-
 const SlideBox = styled.div`
   position: relative;
   width: inherit;
   height: inherit;
-  /* margin: auto; */
-  overflow-x: hidden;
+  overflow: hidden;
   &:hover ${NextButton} {
     right: 5px;
     transition: right 0.5s;
@@ -210,14 +211,26 @@ const SlideBox = styled.div`
   }
 `;
 
-const OpenEditImageSlideButton = styled.button`
+const EditCarouselImage = styled(AiFillSetting)`
+  color: #515151;
+  width: 50px;
+  height: 50px;
+`;
+
+const EditCarouselButton = styled.div`
   position: absolute;
   right: 10px;
   top: 10px;
   height: 50px;
   width: 50px;
+  margin: auto;
   display: ${(props) => (props.islogin ? 'visible' : 'none')};
   z-index: 1;
+  :hover {
+    ${EditCarouselImage} {
+      color: #393939;
+    }
+  }
 `;
 
 export default Carousel;

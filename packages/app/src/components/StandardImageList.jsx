@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
 const StandardImageList = ({ editable, allImages, setAllImages, imageIsChanged }) => {
   const ImageListRef = useRef(null);
@@ -77,13 +78,7 @@ const StandardImageList = ({ editable, allImages, setAllImages, imageIsChanged }
                   -
                 </DeleteImageButton>
               ) : null}
-              <img
-                src={`${imageUrl}`}
-                // src={`${imageUrl}?w=233&h=233&fit=crop&auto=format`}
-                // srcSet={`${imageUrl} 1x`}
-                alt={'None'}
-                style={{ width: '100%' }}
-              />
+              <img src={`${imageUrl}`} alt={'None'} style={{ width: '100%' }} />
             </CustomImageListItem>
           )
         )}
@@ -95,7 +90,7 @@ const StandardImageList = ({ editable, allImages, setAllImages, imageIsChanged }
             setCurrentControlButtonsPage(currentControlButtonsPage - 1);
           }}
         >
-          {'<'}
+          <IoIosArrowBack style={{ width: '35px', height: '35px' }}></IoIosArrowBack>
         </PageButtonPrev>
         <PageButtonWrapper>
           <PageButtonList
@@ -129,7 +124,9 @@ const StandardImageList = ({ editable, allImages, setAllImages, imageIsChanged }
             setCurrentControlButtonsPage(currentControlButtonsPage + 1);
           }}
         >
-          {'>'}
+          <IoIosArrowForward
+            style={{ width: '35px', height: '35px' }}
+          ></IoIosArrowForward>
         </PageButtonNext>
       </ControlPageWrapper>
     </React.Fragment>
@@ -220,13 +217,15 @@ const PageButtonNext = styled.div`
   border-radius: 25px;
   color: white;
   font-size: 25px;
-  line-height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-weight: bold;
-  background-color: grey;
-  margin-left: 5px;
+  background-color: #515151;
+  margin-right: 5px;
   cursor: pointer;
   :hover {
-    background-color: darkgrey;
+    background-color: #393939;
   }
 `;
 
@@ -236,13 +235,15 @@ const PageButtonPrev = styled.div`
   border-radius: 25px;
   color: white;
   font-size: 25px;
-  line-height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-weight: bold;
-  background-color: grey;
+  background-color: #515151;
   margin-right: 5px;
   cursor: pointer;
   :hover {
-    background-color: darkgrey;
+    background-color: #393939;
   }
 `;
 

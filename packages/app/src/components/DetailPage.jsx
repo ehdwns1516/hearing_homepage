@@ -48,13 +48,11 @@ const DetailPage = ({ topMenu, subMenu }) => {
   }, [contents]);
 
   const imgInputBtnClick = (event, index) => {
-    event.preventDefault();
     imageIndex.current = index;
     imageInput.current.click();
   };
 
   const imgDeleteBtnClick = (event, index) => {
-    event.preventDefault();
     if (window.confirm('이미지를 정말 삭제하시겠습니까?')) {
       const afterContents = [...contents];
       afterContents.splice(index, 1);

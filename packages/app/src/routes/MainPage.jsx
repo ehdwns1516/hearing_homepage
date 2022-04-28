@@ -42,7 +42,6 @@ const MainPage = () => {
   const visibleEditCarousel = () => {
     if (editCarouselModalOpened) window.location.reload();
     setEditCarouselModalOpened(!editCarouselModalOpened);
-    console.log('object');
   };
 
   return (
@@ -58,6 +57,7 @@ const MainPage = () => {
             imageInfos={imageInfos}
             imageCurrentNo={imageCurrentNo}
             setImageCurrentNo={setImageCurrentNo}
+            carousel_config={{ width: 1195, height: 530 }}
           />
         ) : null}
         <Carousel
@@ -66,6 +66,7 @@ const MainPage = () => {
           setImageCurrentNo={setImageCurrentNo}
           visibleEditCarousel={visibleEditCarousel}
           isLogin={isLogin}
+          carousel_config={{ width: 1195, height: 530 }}
         ></Carousel>
 
         <RowContents>
@@ -205,7 +206,6 @@ const HowToCome = styled.div`
   display: flex;
   flex-direction: column;
   border: 1px solid grey;
-  /* border-top: none; */
   border-left: none;
 `;
 
@@ -250,7 +250,6 @@ const LinkWrapper = styled.div`
   justify-content: center;
   border: 1px solid grey;
   border-top: none;
-  /* border-left: none; */
 `;
 
 const LinkInfo = styled.div`

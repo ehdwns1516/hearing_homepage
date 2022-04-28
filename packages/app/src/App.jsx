@@ -4,8 +4,6 @@ import { RecoilRoot } from 'recoil';
 import DetailPages from './routes/DetailPages';
 import MainPage from './routes/MainPage';
 import AdminLogin from './routes/AdminLogin';
-import Footer from './components/Footer';
-import Header from './components/Header';
 
 const App = () => {
   return (

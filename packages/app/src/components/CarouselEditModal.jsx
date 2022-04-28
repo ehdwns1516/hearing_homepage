@@ -1,32 +1,42 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
-import ImageSlide from './Carousel';
+import Carousel from './Carousel';
+import { IoIosClose } from 'react-icons/io';
 import { postUploadImagesToS3, putNoticeInfos } from '../apis/APIs';
-
-const IMAGESLIDE_CONFIG = {
-  width: 1200,
-  height: 530,
-};
 
 const CarouselEditModal = ({
   visibleEditCarousel,
   imageInfos,
   imageCurrentNo,
   setImageCurrentNo,
+  carousel_config,
 }) => {
   const [contents, setContents] = useState(imageInfos);
   const [linkURL, setLinkURL] = useState('');
   const imageInput = useRef(null);
   const selectedImage = useRef(null);
-  const imageIsChanged = useRef(false);
+  const imageInfoIsChanged = useRef(0);
   const imageIndex = useRef(0);
 
   useEffect(() => {
-    if (!imageIsChanged.current) return;
+    if (!imageInfoIsChanged.current) return;
     putNoticeInfos('MainPageCarousel', contents)
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
-    imageIsChanged.current = false;
+      .then((res) => {
+        if (imageInfoIsChanged.current === 1) {
+          alert('이미지를 성공적으로 업로드하였습니다.');
+        } else if (imageInfoIsChanged.current === 2) {
+          alert('이미지를 성공적으로 삭제하였습니다.');
+        } else if (imageInfoIsChanged.current === 3) {
+          alert('url 적용에 성공하였습니다.');
+        }
+        console.log(res);
+        imageInfoIsChanged.current = 0;
+      })
+      .catch((err) => {
+        imageInfoIsChanged.current = 0;
+        alert('ERROR: ' + err);
+        console.log(err);
+      });
   }, [contents]);
 
   useEffect(() => {
@@ -40,12 +50,13 @@ const CarouselEditModal = ({
   };
 
   const deleteImage = () => {
-    const afterContents = [...contents];
-    afterContents.splice(imageCurrentNo, 1);
-    if (imageCurrentNo > 0) setImageCurrentNo(imageCurrentNo - 1);
-    console.log(afterContents);
-    imageIsChanged.current = true;
-    setContents(afterContents);
+    if (window.confirm('이미지를 정말 삭제하시겠습니까?')) {
+      const afterContents = [...contents];
+      afterContents.splice(imageCurrentNo, 1);
+      if (imageCurrentNo > 0) setImageCurrentNo(imageCurrentNo - 1);
+      imageInfoIsChanged.current = 2;
+      setContents(afterContents);
+    }
   };
 
   const onChangeImage = (event) => {
@@ -65,7 +76,7 @@ const CarouselEditModal = ({
           imageUrl: res.data.url,
           linkUrl: '',
         });
-        imageIsChanged.current = true;
+        imageInfoIsChanged.current = 1;
         setContents(afterContents);
         setImageCurrentNo(index);
         console.log(res);
@@ -86,15 +97,21 @@ const CarouselEditModal = ({
       imageUrl: imageURL,
       linkUrl: linkURL,
     });
-    imageIsChanged.current = true;
+    imageInfoIsChanged.current = 3;
     setContents(afterContents);
   };
 
   return (
     <>
-      <ModalOverlay />
+      <ModalOverlay onClick={visibleEditCarousel} />
       <ModalWrapper tabIndex='-1'>
-        <ModalInner tabIndex='0'>
+        <ModalInner
+          tabIndex='0'
+          style={{
+            width: carousel_config.width + 140,
+            height: carousel_config.height + 150,
+          }}
+        >
           <ImageHiddenInput
             ref={imageInput}
             type='file'
@@ -102,30 +119,30 @@ const CarouselEditModal = ({
             onChange={onChangeImage}
           ></ImageHiddenInput>
           <ModalContents>
-            <CloseButton onClick={visibleEditCarousel}>X</CloseButton>
+            <CloseButton onClick={visibleEditCarousel}>
+              <CloseButtonlImage></CloseButtonlImage>
+            </CloseButton>
             <EditImageWrapper>
-              <AddImageButton
-                onClick={(e) => imgUploadBtnClick(e, 0)}
-                imageslide_config={IMAGESLIDE_CONFIG}
-              >
-                +
-              </AddImageButton>
-              <ImageSlide
+              <AddImageButton onClick={(e) => imgUploadBtnClick(e, 0)}>+</AddImageButton>
+              <Carousel
                 imageInfos={contents}
                 imageCurrentNo={imageCurrentNo}
                 setImageCurrentNo={setImageCurrentNo}
                 deleteImage={deleteImage}
-              ></ImageSlide>
-              <AddImageButton
-                onClick={(e) => imgUploadBtnClick(e, 1)}
-                imageslide_config={IMAGESLIDE_CONFIG}
-              >
-                +
-              </AddImageButton>
+                carousel_config={{
+                  width: (carousel_config.width * 9) / 10,
+                  height: (carousel_config.height * 9) / 10,
+                }}
+              ></Carousel>
+              <AddImageButton onClick={(e) => imgUploadBtnClick(e, 1)}>+</AddImageButton>
             </EditImageWrapper>
-            <ImageLinkWrapper>
-              <ImageLinkInput value={linkURL || ''} onChange={onChangeLinkURL} />
-              <ImageLinkAddButton onClick={saveLinkURLOnClk}></ImageLinkAddButton>
+            <ImageLinkWrapper width={(carousel_config.width * 9) / 10 + 80}>
+              <ImageLinkInput
+                placeholder='적용할 url을 입력하세요.'
+                value={linkURL || ''}
+                onChange={onChangeLinkURL}
+              />
+              <ImageLinkAddButton onClick={saveLinkURLOnClk}>적용하기</ImageLinkAddButton>
             </ImageLinkWrapper>
           </ModalContents>
         </ModalInner>
@@ -166,8 +183,6 @@ const ModalInner = styled.div`
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.5);
   background-color: #fff;
   border-radius: 10px;
-  width: 90%;
-  height: 90%;
   top: 50%;
   transform: translateY(-50%);
   margin: 0 auto;
@@ -183,14 +198,6 @@ const ModalContents = styled.div`
   align-items: center;
 `;
 
-const CloseButton = styled.button`
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  width: 40px;
-  height: 40px;
-`;
-
 const EditImageWrapper = styled.div`
   display: flex;
   width: auto;
@@ -203,13 +210,13 @@ const EditImageWrapper = styled.div`
 
 const AddImageButton = styled.button`
   border: 0px;
-  height: ${(props) => props.imageslide_config.height};
   width: 40px;
   display: inline-block;
   font-size: 35px;
   font-weight: bold;
   color: white;
   background-color: #009933;
+
   :hover {
     background-color: #00802b;
   }
@@ -222,21 +229,64 @@ const ImageHiddenInput = styled.input`
 const ImageLinkWrapper = styled.div`
   display: flex;
   flex-direction: row;
+  width: ${(props) => props.width + 10}px;
+  height: 100px;
+  align-items: center;
   justify-content: center;
   text-align: center;
-  align-items: center;
-  width: inherit;
-  height: 100px;
+  padding-left: 3px;
 `;
 const ImageLinkInput = styled.input`
-  width: 1100px;
+  width: 90%;
   height: 50px;
+  font-size: 20px;
+  padding-left: 10px;
+  border-radius: 5px;
+  border: 0px;
+  outline: 2px solid grey;
+  font-style: italic;
+  :focus {
+    outline: 2px solid #b4338a;
+  }
 `;
 
-const ImageLinkAddButton = styled.button`
-  width: 100px;
+const ImageLinkAddButton = styled.div`
+  width: 10%;
   height: 50px;
   margin-left: 10px;
+  border: 3px solid #b4338a;
+  border-radius: 5px;
+  background-color: #b4338a;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 50px;
+  color: white;
+  cursor: pointer;
+
+  :hover {
+    background-color: #892e6c;
+    border: 3px solid #892e6c;
+  }
+`;
+
+const CloseButtonlImage = styled(IoIosClose)`
+  color: #515151;
+  width: 70px;
+  height: 70px;
+`;
+
+const CloseButton = styled.div`
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  height: 70px;
+  width: 70px;
+  margin: auto;
+  :hover {
+    ${CloseButtonlImage} {
+      color: #393939;
+    }
+  }
 `;
 
 export default CarouselEditModal;
