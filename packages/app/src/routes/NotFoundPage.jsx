@@ -27,6 +27,10 @@ const WholeWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 `;
 
 const NotFoundWrapper = styled.div`

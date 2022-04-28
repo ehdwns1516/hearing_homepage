@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
+import ImageEnlargeModal from './ImageEnlargeModal';
 
 const StandardImageList = ({ editable, allImages, setAllImages, imageIsChanged }) => {
   const ImageListRef = useRef(null);
@@ -12,6 +13,8 @@ const StandardImageList = ({ editable, allImages, setAllImages, imageIsChanged }
   const [currentControlButtonsPage, setCurrentControlButtonsPage] = useState(1);
   const [currentPageImages, setCurrentPageImages] = useState([]);
   const [controlButtonNum, setControlButtonNum] = useState([]);
+  const [imageModalOpened, setImageEnlargeModal] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   useEffect(() => {
     window.onresize = function (event) {
@@ -50,6 +53,13 @@ const StandardImageList = ({ editable, allImages, setAllImages, imageIsChanged }
     }
   };
 
+  const openEnlageImageModal = (index) => {
+    if (editable) return;
+    if (!imageModalOpened) setSelectedImageIndex((currentPageNum - 1) * 12 + index);
+
+    setImageEnlargeModal(!imageModalOpened);
+  };
+
   return (
     <React.Fragment>
       <ImageList
@@ -72,13 +82,18 @@ const StandardImageList = ({ editable, allImages, setAllImages, imageIsChanged }
           !imageUrl ? (
             <CustomImageListItem key={index} empty={'true'}></CustomImageListItem>
           ) : (
-            <CustomImageListItem key={index}>
+            <CustomImageListItem key={index} onClick={() => openEnlageImageModal(index)}>
               {editable ? (
                 <DeleteImageButton onClick={() => deleteImage(index)}>
                   -
                 </DeleteImageButton>
               ) : null}
-              <img src={`${imageUrl}`} alt={'None'} style={{ width: '100%' }} />
+              <img
+                src={`${imageUrl}`}
+                alt={'None'}
+                style={{ width: '100%' }}
+                draggable={false}
+              />
             </CustomImageListItem>
           )
         )}
@@ -102,11 +117,7 @@ const StandardImageList = ({ editable, allImages, setAllImages, imageIsChanged }
           >
             {controlButtonNum.map((item) =>
               currentPageNum === item ? (
-                <PageButton
-                  key={item}
-                  // onClick={() => return;}
-                  style={{ backgroundColor: '#892e6c' }}
-                >
+                <PageButton key={item} style={{ backgroundColor: '#892e6c' }}>
                   {item}
                 </PageButton>
               ) : (
@@ -129,6 +140,13 @@ const StandardImageList = ({ editable, allImages, setAllImages, imageIsChanged }
           ></IoIosArrowForward>
         </PageButtonNext>
       </ControlPageWrapper>
+      {imageModalOpened ? (
+        <ImageEnlargeModal
+          images={allImages}
+          imageIndex={selectedImageIndex}
+          openEnlageImageModal={openEnlageImageModal}
+        ></ImageEnlargeModal>
+      ) : null}
     </React.Fragment>
   );
 };
@@ -245,6 +263,17 @@ const PageButtonPrev = styled.div`
   :hover {
     background-color: #393939;
   }
+`;
+
+const Img = styled.img`
+  width: 100%;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -moz-drag-over: none;
+  -webkit-user-drag: none;
+  -moz-window-dragging: none;
 `;
 
 export default StandardImageList;

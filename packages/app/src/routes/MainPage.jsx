@@ -67,6 +67,8 @@ const MainPage = () => {
           visibleEditCarousel={visibleEditCarousel}
           isLogin={isLogin}
           carousel_config={{ width: 1195, height: 530 }}
+          autoSlide={7}
+          editCarouselModalOpened={editCarouselModalOpened}
         ></Carousel>
 
         <RowContents>
@@ -154,6 +156,10 @@ const WholeWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   overflow-x: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 `;
 
 const LogoWrapper = styled.div`

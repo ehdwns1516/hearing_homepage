@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 import SideNavBar from './SideNavBar';
 import { useRecoilState } from 'recoil';
 import StandardImageList from './StandardImageList';
+import PreparingPage from './PreparingPage';
 import {
   postUploadImagesToS3,
   postInitDetailPage,
@@ -89,9 +90,12 @@ const DetailPage = ({ topMenu, subMenu }) => {
     return (
       <React.Fragment key={index}>
         <ImgWrapper>
-          <DeleteImageButton onClick={(e) => imgDeleteBtnClick(e, index)}>
-            X
-          </DeleteImageButton>
+          <div style={{ overflow: 'visible', height: '0px' }}>
+            <DeleteImageButton onClick={(e) => imgDeleteBtnClick(e, index)}>
+              이미지 삭제
+            </DeleteImageButton>
+          </div>
+
           <ContentImg src={content} editable={editable} />
         </ImgWrapper>
         <AddImageButton onClick={(e) => imgInputBtnClick(e, index + 1)}>
@@ -142,13 +146,15 @@ const DetailPage = ({ topMenu, subMenu }) => {
           </AddImageButton>
         ) : null}
 
-        {type === 0
+        {contents.length === 0 ? <PreparingPage></PreparingPage> : null}
+
+        {contents.length && type === 0
           ? contents.map((imageUrl, index) =>
               editable ? EditContents(imageUrl, index) : ViewContents(imageUrl, index)
             )
           : null}
 
-        {type === 1 ? (
+        {contents.length && type === 1 ? (
           <StandardImageList
             editable={editable}
             allImages={contents}
@@ -165,6 +171,10 @@ const WholeWrapper = styled.div`
   height: 100vh;
   width: 100vw;
   display: flex;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 `;
 
 const TitleText = styled.span`
@@ -239,21 +249,20 @@ const EditButton = styled.button`
 
 const DeleteImageButton = styled.button`
   position: relative;
-  align-self: flex-start;
-  left: calc(5% + 10px);
-  width: 80px;
-  height: 80px;
+  top: 20px;
+  display: block;
+  width: 120px;
+  height: 60px;
   border: 1px solid grey;
-  border-radius: 40px;
+  border-radius: 10px;
   background-color: #cc0000;
-  font-size: 40px;
+  font-size: 20px;
   font-weight: bold;
   color: white;
   margin-top: 10px;
   :hover {
     background-color: #b30000;
   }
-  display: inline-block;
 `;
 
 const ImageHiddenInput = styled.input`
@@ -261,7 +270,7 @@ const ImageHiddenInput = styled.input`
 `;
 
 const ContentImg = styled.img`
-  width: 90%;
+  width: 80%;
   height: auto;
   margin-left: ${(props) =>
     props.editable
@@ -271,7 +280,6 @@ const ContentImg = styled.img`
       : css`
           0px;
         `};
-  height: 100%;
   object-fit: fill;
   margin-bottom: 5px;
 `;
@@ -279,7 +287,9 @@ const ContentImg = styled.img`
 const ImgWrapper = styled.div`
   width: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
 `;
 
 export default DetailPage;

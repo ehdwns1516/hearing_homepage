@@ -29,7 +29,7 @@ const AdminLogin = () => {
   const onChangeID = (e) => {
     e.preventDefault();
     setID(e.target.value);
-    if (isRemember) setCookie('rememberId', e.target.value, { maxAge: 2000 });
+    if (isRemember) setCookie('rememberId', e.target.value, { maxAge: 24 * 60 * 60 });
   };
 
   const onChangePW = (e) => {
@@ -40,7 +40,7 @@ const AdminLogin = () => {
   const onChangeChkBox = (e) => {
     setIsRemember(e.target.checked);
     if (e.target.checked) {
-      setCookie('rememberId', ID, { maxAge: 2000 });
+      setCookie('rememberId', ID, { maxAge: 24 * 60 * 60 });
     } else {
       removeCookie('rememberId');
     }

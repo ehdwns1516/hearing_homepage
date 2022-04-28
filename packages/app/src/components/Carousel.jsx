@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled, { css } from 'styled-components';
 import { AiFillSetting } from 'react-icons/ai';
 
@@ -9,8 +9,32 @@ const Carousel = ({
   deleteImage = null,
   visibleEditCarousel = null,
   isLogin = false,
+  autoSlideTime = 0,
   carousel_config,
+  editCarouselModalOpened,
 }) => {
+  const [intervalID, setIntervalID] = useState(null);
+  const nextButtonRef = useRef();
+
+  useEffect(() => {
+    if (editCarouselModalOpened === true) {
+      clearInterval(intervalID);
+      setIntervalID(null);
+    } else if (editCarouselModalOpened === false) {
+      setSlideAuto();
+    }
+  }, [editCarouselModalOpened]);
+
+  const setSlideAuto = () => {
+    if (autoSlideTime) {
+      const new_intervalID = setInterval(
+        () => nextButtonRef.current.click(),
+        autoSlideTime * 1000
+      );
+      setIntervalID(new_intervalID);
+    }
+  };
+
   const nextOnClick = () => {
     if (imageCurrentNo < imageInfos.length) setImageCurrentNo(imageCurrentNo + 1);
     if (imageCurrentNo + 1 === imageInfos.length) setImageCurrentNo(0);
@@ -26,7 +50,24 @@ const Carousel = ({
   };
 
   return (
-    <WholeWrapper carousel_config={carousel_config}>
+    <WholeWrapper
+      carousel_config={carousel_config}
+      onMouseEnter={
+        !editCarouselModalOpened
+          ? () => {
+              clearInterval(intervalID);
+              setIntervalID(null);
+            }
+          : null
+      }
+      onMouseLeave={
+        !editCarouselModalOpened
+          ? () => {
+              if (!editCarouselModalOpened) setSlideAuto();
+            }
+          : null
+      }
+    >
       <EditCarouselButton islogin={isLogin} onClick={visibleEditCarousel}>
         <EditCarouselImage></EditCarouselImage>
       </EditCarouselButton>
@@ -63,7 +104,11 @@ const Carousel = ({
           </PrevButton>
         ) : null}
         {imageInfos.length ? (
-          <NextButton onClick={nextOnClick} carousel_config={carousel_config}>
+          <NextButton
+            ref={nextButtonRef}
+            onClick={nextOnClick}
+            carousel_config={carousel_config}
+          >
             {'>'}
           </NextButton>
         ) : null}
@@ -113,7 +158,7 @@ const SlideList = styled.div`
         `;
   }};
   height: ${(props) => props.carousel_config.height}px;
-  transition: all 300ms ease 0s;
+  transition: all 500ms ease 0s;
   overflow: hidden;
 `;
 
