@@ -270,7 +270,7 @@ const ImageLinkAddButton = styled.div`
 `;
 
 const CloseButtonlImage = styled(IoIosClose)`
-  color: #515151;
+  color: grey;
   width: 70px;
   height: 70px;
 `;

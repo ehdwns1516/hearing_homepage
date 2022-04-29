@@ -11,7 +11,7 @@ const Carousel = ({
   isLogin = false,
   autoSlideTime = 0,
   carousel_config,
-  editCarouselModalOpened,
+  editCarouselModalOpened = false,
 }) => {
   const [intervalID, setIntervalID] = useState(null);
   const nextButtonRef = useRef();
@@ -183,7 +183,7 @@ const NoticeImage = styled.img`
 
 const NextButton = styled.button`
   position: absolute;
-  top: 240px;
+  top: ${(props) => (props.carousel_config.height - 50) / 2}px;
   right: -50px;
   width: 50px;
   height: 50px;
@@ -199,7 +199,7 @@ const NextButton = styled.button`
 
 const PrevButton = styled.button`
   position: absolute;
-  top: 240px;
+  top: ${(props) => (props.carousel_config.height - 50) / 2}px;
   left: -50px;
   width: 50px;
   height: 50px;

@@ -67,7 +67,7 @@ const MainPage = () => {
           visibleEditCarousel={visibleEditCarousel}
           isLogin={isLogin}
           carousel_config={{ width: 1195, height: 530 }}
-          autoSlide={7}
+          autoSlideTime={7}
           editCarouselModalOpened={editCarouselModalOpened}
         ></Carousel>
 
