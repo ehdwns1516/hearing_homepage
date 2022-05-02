@@ -26,7 +26,7 @@ const Carousel = ({
   }, [editCarouselModalOpened]);
 
   const setSlideAuto = () => {
-    if (autoSlideTime) {
+    if (autoSlideTime && nextButtonRef.current) {
       const new_intervalID = setInterval(
         () => nextButtonRef.current.click(),
         autoSlideTime * 1000
