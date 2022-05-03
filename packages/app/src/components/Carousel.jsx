@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled, { css } from 'styled-components';
 import { AiFillSetting } from 'react-icons/ai';
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
 const Carousel = ({
   imageInfos,
@@ -13,27 +14,26 @@ const Carousel = ({
   carousel_config,
   editCarouselModalOpened = false,
 }) => {
-  const [intervalID, setIntervalID] = useState(null);
-  const nextButtonRef = useRef();
+  const [initAutoCarousel, setInitAutoCarousel] = useState(false);
+  const nextButtonRef = useRef(null);
+  const intervalID = useRef(null);
+  useEffect(() => {
+    return () => {
+      clearInterval(intervalID.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (initAutoCarousel) setSlideAuto();
+  }, [initAutoCarousel]);
 
   useEffect(() => {
     if (editCarouselModalOpened === true) {
-      clearInterval(intervalID);
-      setIntervalID(null);
+      clearInterval(intervalID.current);
     } else if (editCarouselModalOpened === false) {
       setSlideAuto();
     }
   }, [editCarouselModalOpened]);
-
-  const setSlideAuto = () => {
-    if (autoSlideTime && nextButtonRef.current) {
-      const new_intervalID = setInterval(
-        () => nextButtonRef.current.click(),
-        autoSlideTime * 1000
-      );
-      setIntervalID(new_intervalID);
-    }
-  };
 
   const nextOnClick = () => {
     if (imageCurrentNo < imageInfos.length) setImageCurrentNo(imageCurrentNo + 1);
@@ -49,14 +49,22 @@ const Carousel = ({
     if (linkURL) window.open(linkURL, '_blank');
   };
 
+  const setSlideAuto = () => {
+    if (autoSlideTime && nextButtonRef.current) {
+      intervalID.current = setInterval(() => {
+        nextButtonRef.current.click();
+        if (!nextButtonRef.current) clearInterval(intervalID.current);
+      }, autoSlideTime * 1000);
+    }
+  };
+
   return (
     <WholeWrapper
       carousel_config={carousel_config}
       onMouseEnter={
         !editCarouselModalOpened
           ? () => {
-              clearInterval(intervalID);
-              setIntervalID(null);
+              clearInterval(intervalID.current);
             }
           : null
       }
@@ -100,16 +108,19 @@ const Carousel = ({
         </SlideList>
         {imageInfos.length ? (
           <PrevButton onClick={prevOnClick} carousel_config={carousel_config}>
-            {'<'}
+            <IoIosArrowBack></IoIosArrowBack>
           </PrevButton>
         ) : null}
         {imageInfos.length ? (
           <NextButton
-            ref={nextButtonRef}
+            ref={(el) => {
+              nextButtonRef.current = el;
+              setInitAutoCarousel(true);
+            }}
             onClick={nextOnClick}
             carousel_config={carousel_config}
           >
-            {'>'}
+            <IoIosArrowForward></IoIosArrowForward>
           </NextButton>
         ) : null}
         {deleteImage && imageInfos.length ? (
@@ -188,9 +199,12 @@ const NextButton = styled.button`
   width: 50px;
   height: 50px;
   font-size: 40px;
-  line-height: 0px;
   border-radius: 5px;
+  text-align: center;
   background-color: #515151;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   :hover {
     background-color: #393939;
   }
@@ -204,9 +218,12 @@ const PrevButton = styled.button`
   width: 50px;
   height: 50px;
   font-size: 40px;
-  line-height: 0px;
   border-radius: 5px;
+  text-align: center;
   background-color: #515151;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   :hover {
     background-color: #393939;
   }
