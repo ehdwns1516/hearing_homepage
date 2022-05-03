@@ -8,6 +8,7 @@ const adminRouter = require('./routes/admin');
 const detailPageRouter = require('./routes/detailPage');
 const imageUploadRouter = require('./routes/imageUpload');
 const noticeRouter = require('./routes/notice');
+const healthCheckRouter = require('./routes/healthCheck');
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -24,7 +25,7 @@ app.use('/api/admin', adminRouter);
 app.use('/api/detail', detailPageRouter);
 app.use('/api/upload', imageUploadRouter);
 app.use('/api/notice', noticeRouter);
-
+app.use('/healthz', healthCheckRouter);
 db.once('open', function () {
   console.log('DB Connected');
 });
