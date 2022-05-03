@@ -4,7 +4,8 @@ import { useCookies } from 'react-cookie';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { postAdminLogin } from '../apis/APIs';
-import { atomIsLogin, atomAdminName } from '../recoils';
+import { atomIsLogin } from '../recoils';
+import logo from '../images/oticon-logo.png';
 
 const AdminLogin = () => {
   const [ID, setID] = useState('');
@@ -13,7 +14,6 @@ const AdminLogin = () => {
   const navigate = useNavigate();
   const [cookies, setCookie, removeCookie] = useCookies(['rememberId']);
   const [isLogin, setIsLogin] = useRecoilState(atomIsLogin);
-  const [adminName, setAdminName] = useRecoilState(atomAdminName);
 
   useEffect(() => {
     if (JSON.parse(window.sessionStorage.getItem('isLogin'))) {
@@ -68,7 +68,9 @@ const AdminLogin = () => {
   return (
     <WholeWrapper>
       <LoginContentsWrapper>
-        <LoginLabel>관리자 로그인</LoginLabel>
+        <LogoWrapper>
+          <LogoImg src={logo} onClick={() => navigate('/')} />
+        </LogoWrapper>
         <LoginInfoText>아이디</LoginInfoText>
         <LoginInfoInput value={ID} onChange={onChangeID}></LoginInfoInput>
         <LoginInfoText>비밀번호</LoginInfoText>
@@ -91,8 +93,27 @@ const WholeWrapper = styled.div`
   height: 100vh;
   width: 100vw;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+`;
+
+const LogoWrapper = styled.div`
+  width: 100%;
+  height: 75px;
+  display: flex;
+  object-fit: cover;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+  margin-top: 50px;
+`;
+
+const LogoImg = styled.img`
+  height: auto;
+  width: auto;
+  vertical-align: middle;
+  cursor: pointer;
 `;
 
 const LoginContentsWrapper = styled.div`
@@ -104,13 +125,6 @@ const LoginContentsWrapper = styled.div`
   background-color: white;
   border: 3px solid gray;
   border-radius: 10px;
-`;
-
-const LoginLabel = styled.label`
-  font-size: 30px;
-  font-weight: bold;
-  margin-top: 50px;
-  margin-bottom: 50px;
 `;
 
 const LoginInfoText = styled.div`
