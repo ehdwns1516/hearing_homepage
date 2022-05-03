@@ -186,7 +186,7 @@ const ContentsWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   text-align: center;
-  overflow-x: hidden;
+  overflow: hidden;
   margin-bottom: 5px;
 `;
 
