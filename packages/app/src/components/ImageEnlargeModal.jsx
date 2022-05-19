@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { IoIosClose, IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
+import { getColor } from '../utils';
 
 const ImageEnlargeModal = ({ images, imageIndex, openEnlageImageModal }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(imageIndex);
@@ -93,7 +94,7 @@ const ModalContents = styled.div`
 const CloseButtonlImage = styled(IoIosClose)`
   width: 70px;
   height: 70px;
-  color: white;
+  color: ${getColor('white')};
 `;
 
 const CloseButton = styled.div`
@@ -106,7 +107,7 @@ const CloseButton = styled.div`
   cursor: pointer;
   :hover {
     ${CloseButtonlImage} {
-      color: #515151;
+      color: ${getColor('dark_gray')};
     }
   }
 `;
@@ -114,7 +115,7 @@ const CloseButton = styled.div`
 const NextButtonlImage = styled(IoIosArrowForward)`
   width: 80px;
   height: 80px;
-  color: white;
+  color: ${getColor('white')};
 `;
 
 const NextButton = styled.div`
@@ -130,7 +131,7 @@ const NextButton = styled.div`
   cursor: pointer;
   :hover {
     ${NextButtonlImage} {
-      color: #515151;
+      color: ${getColor('dark_gray')};
     }
   }
 `;
@@ -138,7 +139,7 @@ const NextButton = styled.div`
 const PrevButtonlImage = styled(IoIosArrowBack)`
   width: 80px;
   height: 80px;
-  color: white;
+  color: ${getColor('white')};
 `;
 
 const PrevButton = styled.div`
@@ -154,7 +155,7 @@ const PrevButton = styled.div`
   cursor: pointer;
   :hover {
     ${PrevButtonlImage} {
-      color: #515151;
+      color: ${getColor('dark_gray')};
     }
   }
 `;

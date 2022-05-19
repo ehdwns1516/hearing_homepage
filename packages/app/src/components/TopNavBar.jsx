@@ -4,6 +4,7 @@ import styled, { css, keyframes } from 'styled-components';
 import { useRecoilState } from 'recoil';
 
 import { atomTopMenuList, atomSubMenuList } from '../recoils';
+import { getColor } from '../utils';
 
 const TopNavBar = () => {
   const [topMenuList, setTopMenuList] = useRecoilState(atomTopMenuList);
@@ -92,7 +93,7 @@ const WholeWrapper = styled.div`
 const TopMenuWrapper = styled.div`
   height: 50px;
   width: 1200px;
-  background-color: #b4338a;
+  background-color: ${getColor('purple')};
   display: flex;
   flex-direction: row;
 `;
@@ -108,14 +109,14 @@ const TopMenuButton = styled.button`
   width: 240px;
   font-size: 22px;
   font-weight: bold;
-  color: white;
+  color: ${getColor('white')};
   text-align: center;
   cursor: pointer;
   border: 0px;
-  background-color: #b4338a;
+  background-color: ${getColor('purple')};
 
   :hover {
-    background-color: #892e6c;
+    background-color: ${getColor('dark_purple')};
   }
 `;
 
@@ -124,16 +125,16 @@ const TopMenuLink = styled(Link)`
   width: 240px;
   font-size: 22px;
   font-weight: bold;
-  color: white;
+  color: ${getColor('white')};
   text-align: center;
   line-height: 50px;
   display: inline-block;
   box-sizing: border-box;
   border: 0px;
-  background-color: #b4338a;
+  background-color: ${getColor('purple')};
   text-decoration: none;
   :hover {
-    background-color: #892e6c;
+    background-color: ${getColor('dark_purple')};
   }
 `;
 
@@ -144,47 +145,25 @@ const SubMenuWrapper = styled.div`
 
 const dropDownOpen = keyframes`
   0% {
-    /* height: 0px; */
     opacity: 0;
   }
   100% {
-    /* height: 50px; */
     opacity: 1;
-  }
-`;
-
-const dropDownClose = keyframes`
-  0% {
-    /* height: 50px; */
-    opacity: 1;
-  }
-  100% {
-    /* height: 0px; */
-    opacity: 0;
   }
 `;
 
 const SubMenuLink = styled(Link)`
   height: ${(props) => (props.dropdownanimation === 'true' ? '50px' : '0px')};
   display: ${(props) => (props.dropdownanimation === 'undefined' ? 'block' : 'block')};
-  /* opacity: ${(props) =>
-    props.dropdownanimation === 'undefined' || props.dropdownanimation === 'false'
-      ? 1
-      : 1}; */
-  /* pointer-events: ${(props) =>
-    props.dropdownanimation === 'undefined' || props.dropdownanimation === 'false'
-      ? 'none'
-      : 'auto'}; */
   width: 240px;
   font-size: 20px;
   font-weight: bold;
-  color: white;
+  color: ${getColor('white')};
   text-align: center;
   line-height: 50px;
-  /* padding-left: 50px; */
   box-sizing: border-box;
   border: 0px;
-  background-color: #b4338a;
+  background-color: ${getColor('purple')};
   text-decoration: none;
   animation-delay: 0s;
   animation: ${(props) =>
@@ -192,12 +171,9 @@ const SubMenuLink = styled(Link)`
       ? css`
           ${dropDownOpen} 0.3s 0s
         `
-      : // css`
-        //     ${dropDownClose} 0.4s 0s
-        //   `
-        null};
+      : null};
   :hover {
-    background-color: #892e6c;
+    background-color: ${getColor('dark_purple')};
   }
 `;
 

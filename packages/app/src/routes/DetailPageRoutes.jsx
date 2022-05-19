@@ -1,14 +1,14 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { atomTopMenuList, atomSubMenuList, atomPageType } from '../recoils';
-import DetailPage from '../components/DetailPage';
-import NotFoundPage from './NotFoundPage';
+import { atomTopMenuList, atomSubMenuList } from '../recoils';
+import DetailPage from '../pages/DetailPage';
+import NotFoundPage from '../pages/NotFoundPage';
 
 const DetailPages = () => {
   const [topMenuList, setTopMenuList] = useRecoilState(atomTopMenuList);
   const [subMenuList, setSubMenuList] = useRecoilState(atomSubMenuList);
-  const [pageType, setPageType] = useRecoilState(atomPageType);
+
   return (
     <Routes>
       {topMenuList.map((topMenu, index) => {

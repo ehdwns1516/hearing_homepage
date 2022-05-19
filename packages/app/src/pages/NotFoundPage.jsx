@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import logo from '../images/oticon-logo.png';
+import { getColor } from '../utils';
 
 const NotFoundPage = () => {
   const navigate = useNavigate();
@@ -56,7 +57,7 @@ const NotFoundContent2 = styled.div`
   margin-top: 25px;
   margin-bottom: 15px;
   font-size: 20px;
-  color: grey;
+  color: ${getColor('gray')};
   font-style: italic;
 `;
 

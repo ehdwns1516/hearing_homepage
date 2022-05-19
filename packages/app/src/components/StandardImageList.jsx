@@ -5,6 +5,7 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import ImageEnlargeModal from './ImageEnlargeModal';
+import { getColor } from '../utils';
 
 const StandardImageList = ({ editable, allImages, setAllImages, imageIsChanged }) => {
   const ImageListRef = useRef(null);
@@ -117,7 +118,10 @@ const StandardImageList = ({ editable, allImages, setAllImages, imageIsChanged }
           >
             {controlButtonNum.map((item) =>
               currentPageNum === item ? (
-                <PageButton key={item} style={{ backgroundColor: '#892e6c' }}>
+                <PageButton
+                  key={item}
+                  style={{ backgroundColor: `${getColor('dark_purple')};` }}
+                >
                   {item}
                 </PageButton>
               ) : (
@@ -156,11 +160,11 @@ const CustomImageListItem = styled(ImageListItem)`
   border-radius: 10px;
   margin: auto;
   cursor: ${(props) => (props.empty === 'true' ? 'default' : 'pointer')};
-  background-color: black;
+  background-color: ${getColor('black')};
 
   :hover {
     opacity: ${(props) => (props.empty ? '1' : '0.75')};
-    box-shadow: 0 0 0.4em #b4338a;
+    box-shadow: 0 0 0.4em ${getColor('purple')};
   }
 `;
 const DeleteImageButton = styled.div`
@@ -172,8 +176,8 @@ const DeleteImageButton = styled.div`
   line-height: 23px;
   border-radius: 20px;
   display: inline-block;
-  background-color: red;
-  color: white;
+  background-color: ${getColor('red')};
+  color: ${getColor('white')};
   font-size: 35px;
   z-index: 1;
   cursor: pointer;
@@ -219,12 +223,12 @@ const PageButton = styled.div`
   border-radius: 25px;
   font-weight: bold;
   font-size: 25px;
-  color: white;
+  color: ${getColor('white')};
   margin: auto;
-  background-color: #b4338a;
+  background-color: ${getColor('purple')};
 
   :hover {
-    background-color: #892e6c;
+    background-color: ${getColor('dark_purple')};
   }
   cursor: pointer;
 `;
@@ -233,17 +237,17 @@ const PageButtonNext = styled.div`
   width: 50px;
   height: 50px;
   border-radius: 25px;
-  color: white;
+  color: ${getColor('white')};
   font-size: 25px;
   display: flex;
   justify-content: center;
   align-items: center;
   font-weight: bold;
-  background-color: #515151;
+  background-color: ${getColor('dark_gray')};
   margin-right: 5px;
   cursor: pointer;
   :hover {
-    background-color: #393939;
+    background-color: ${getColor('darker_gray')};
   }
 `;
 
@@ -251,29 +255,18 @@ const PageButtonPrev = styled.div`
   width: 50px;
   height: 50px;
   border-radius: 25px;
-  color: white;
+  color: ${getColor('white')};
   font-size: 25px;
   display: flex;
   justify-content: center;
   align-items: center;
   font-weight: bold;
-  background-color: #515151;
+  background-color: ${getColor('dark_gray')};
   margin-right: 5px;
   cursor: pointer;
   :hover {
-    background-color: #393939;
+    background-color: ${getColor('darker_gray')};
   }
-`;
-
-const Img = styled.img`
-  width: 100%;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  -moz-drag-over: none;
-  -webkit-user-drag: none;
-  -moz-window-dragging: none;
 `;
 
 export default StandardImageList;

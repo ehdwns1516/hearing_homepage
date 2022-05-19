@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { FaUserCog, FaUserSlash } from 'react-icons/fa';
 import { atomIsLogin, atomAdminName } from '../recoils';
+import { getColor } from '../utils';
 
 const Footer = () => {
   const navigate = useNavigate();
@@ -60,7 +61,7 @@ const WholeWrapper = styled.div`
   align-items: center;
   justify-content: center;
   text-align: center;
-  background-color: #63214e;
+  background-color: ${getColor('darker_purple')};
 `;
 
 const MyFooter = styled.footer`
@@ -72,17 +73,17 @@ const MyFooter = styled.footer`
   justify-content: center;
   text-align: center;
   font-size: 14px;
-  color: lightgray;
+  color: ${getColor('light_gray')};
 `;
 
 const LoginImage = styled(FaUserCog)`
-  color: white;
+  color: ${getColor('white')};
   width: 40px;
   height: 40px;
 `;
 
 const LogoutImage = styled(FaUserSlash)`
-  color: white;
+  color: ${getColor('white')};
   width: 40px;
   height: 40px;
 `;
@@ -93,17 +94,17 @@ const LoginButton = styled.button`
   width: 60px;
   height: 60px;
   border: none;
-  background-color: #63214e;
+  background-color: ${getColor('darker_purple')};
   font-weight: bold;
-  color: white;
+  color: ${getColor('white')};
   line-height: 15px;
   :hover {
-    color: lightgrey;
+    color: ${getColor('gray')};
     ${LoginImage} {
-      color: lightgray;
+      color: ${getColor('gray')};
     }
     ${LogoutImage} {
-      color: lightgray;
+      color: ${getColor('gray')};
     }
   }
   cursor: pointer;

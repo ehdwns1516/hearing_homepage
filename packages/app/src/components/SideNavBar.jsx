@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import logo from '../images/oticon-logo.png';
 
 import { atomTopMenuList, atomSubMenuList } from '../recoils';
+import { getColor } from '../utils';
 
 const SideNavBar = ({ currentPage }) => {
   const [topMenuList, setTopMenuList] = useRecoilState(atomTopMenuList);
@@ -84,8 +85,8 @@ const SideNavBar = ({ currentPage }) => {
 
 const WholeWrapper = styled.div`
   height: inherit;
-  overflow: auto;
   width: 100%;
+  overflow: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -94,14 +95,14 @@ const WholeWrapper = styled.div`
 const TopMenuWrapper = styled.div`
   height: calc(100% - 110px);
   width: 100%;
-  background-color: #b4338a;
+  background-color: ${getColor('purple')};
 `;
 
 const LogoWrapper = styled.div`
   height: 110px;
   width: 100%;
   line-height: 110px;
-  background-color: white;
+  background-color: ${getColor('white')};
 `;
 
 const LogoImg = styled.img`
@@ -116,15 +117,15 @@ const TopMenuButton = styled.button`
   width: 100%;
   font-size: 25px;
   font-weight: bold;
-  color: white;
+  color: ${getColor('white')};
   text-align: left;
   cursor: pointer;
   padding-left: 30px;
   border: 0px;
-  background-color: #b4338a;
+  background-color: ${getColor('purple')};
 
   :hover {
-    background-color: #892e6c;
+    background-color: ${getColor('dark_purple')};
   }
 `;
 
@@ -133,17 +134,17 @@ const TopMenuLink = styled(Link)`
   width: 100%;
   font-size: 25px;
   font-weight: bold;
-  color: white;
+  color: ${getColor('white')};
   text-align: left;
   line-height: 80px;
   padding-left: 30px;
   display: inline-block;
   box-sizing: border-box;
   border: 0px;
-  background-color: #b4338a;
+  background-color: ${getColor('purple')};
   text-decoration: none;
   :hover {
-    background-color: #892e6c;
+    background-color: ${getColor('dark_purple')};
   }
 `;
 
@@ -184,7 +185,7 @@ const SubMenuLink = styled(Link)`
   width: 100%;
   font-size: 20px;
   font-weight: bold;
-  color: white;
+  color: ${getColor('white')};
   text-align: left;
   line-height: 50px;
   padding-left: 50px;
@@ -192,7 +193,9 @@ const SubMenuLink = styled(Link)`
   box-sizing: border-box;
   border: 0px;
   background-color: ${(props) =>
-    props.iscurrentpage === 'true' ? '#892e6c' : '#b4338a'};
+    props.iscurrentpage === 'true'
+      ? `${getColor('dark_purple')};`
+      : `${getColor('purple')};`};
   text-decoration: none;
   animation-delay: 0s;
   animation: ${(props) => {
@@ -207,7 +210,7 @@ const SubMenuLink = styled(Link)`
   }};
 
   :hover {
-    background-color: #892e6c;
+    background-color: ${getColor('dark_purple')};
   }
 `;
 

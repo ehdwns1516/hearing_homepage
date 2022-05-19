@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled, { css } from 'styled-components';
-import SideNavBar from './SideNavBar';
+import SideNavBar from '../components/SideNavBar';
 import { useRecoilState } from 'recoil';
-import StandardImageList from './StandardImageList';
-import PreparingPage from './PreparingPage';
+import StandardImageList from '../components/StandardImageList';
+import PreparingPage from '../components/Preparing';
 import {
   postUploadImagesToS3,
   postInitDetailPage,
@@ -12,6 +12,7 @@ import {
 } from '../apis/APIs';
 
 import { atomIsLogin, atomPageType } from '../recoils';
+import { getColor } from '../utils';
 
 const DetailPage = ({ topMenu, subMenu }) => {
   const imageInput = useRef(null);
@@ -196,21 +197,20 @@ const ContentsWrapper = styled.div`
 const SideWrapper = styled.div`
   height: 100%;
   width: 285px;
-  border-right: 1px solid #b4338a;
+  border-right: 1px solid ${getColor('purple')};
   text-align: center;
-  background-color: blue;
 `;
 
 const HorizonLine = styled.div`
   width: 90%;
-  border-bottom: 1px solid #b4338a;
+  border-bottom: 1px solid ${getColor('purple')};
   line-height: 0em;
   margin-top: 20px;
   margin-bottom: 20px;
 `;
 
 const InnerText = styled.span`
-  background-color: white;
+  background-color: ${getColor('white')};
   color: rgba(0, 0, 0, 0.5);
   padding: 0 10px;
   font-size: 20px;
@@ -220,14 +220,14 @@ const AddImageButton = styled.button`
   width: 90%;
   height: 40px;
   min-height: 40px;
-  background-color: #009933;
+  background-color: ${getColor('green')};
   font-weight: bold;
   font-size: 20px;
   margin-bottom: 5px;
   border: 1px solid grey;
-  color: white;
+  color: ${getColor('white')};
   :hover {
-    background-color: #00802b;
+    background-color: ${getColor('dark_green')};
   }
 `;
 
@@ -236,14 +236,14 @@ const EditButton = styled.button`
   width: 90%;
   height: 40px;
   min-height: 40px;
-  background-color: #b4338a;
+  background-color: ${getColor('purple')};
   font-weight: bold;
   font-size: 20px;
-  color: white;
+  color: ${getColor('white')};
   border: 1px solid grey;
   margin-bottom: 5px;
   :hover {
-    background-color: #892e6c;
+    background-color: ${getColor('dark_purple')};
   }
 `;
 
@@ -255,13 +255,13 @@ const DeleteImageButton = styled.button`
   height: 60px;
   border: 1px solid grey;
   border-radius: 10px;
-  background-color: #cc0000;
+  background-color: ${getColor('red')};
   font-size: 20px;
   font-weight: bold;
-  color: white;
+  color: ${getColor('white')};
   margin-top: 10px;
   :hover {
-    background-color: #b30000;
+    background-color: ${getColor('dark_red')};
   }
 `;
 

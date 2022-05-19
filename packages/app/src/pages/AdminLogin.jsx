@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { postAdminLogin } from '../apis/APIs';
 import { atomIsLogin } from '../recoils';
 import logo from '../images/oticon-logo.png';
+import { getColor } from '../utils';
 
 const AdminLogin = () => {
   const [ID, setID] = useState('');
@@ -122,7 +123,7 @@ const LoginContentsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: white;
+  background-color: ${getColor('white')};
   border: 3px solid gray;
   border-radius: 10px;
 `;

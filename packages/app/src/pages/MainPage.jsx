@@ -15,6 +15,7 @@ import center_summary from '../images/center-summary.jpeg';
 import call_info from '../images/call-info.jpeg';
 import naver_blog from '../images/naver-blog.png';
 import NHIS from '../images/NHIS.jpeg';
+import { getColor } from '../utils';
 
 const MainPage = () => {
   const [editCarouselModalOpened, setEditCarouselModalOpened] = useState(false);
@@ -220,16 +221,16 @@ const HowToComeLink = styled.div`
   height: 50px;
   font-size: 22px;
   font-weight: bold;
-  color: white;
+  color: ${getColor('white')};
   text-align: left;
   padding-left: 20px;
   line-height: 50px;
   cursor: pointer;
   border: 0px;
-  background-color: #b4338a;
+  background-color: ${getColor('purple')};
 
   :hover {
-    background-color: #892e6c;
+    background-color: ${getColor('dark_purple')};
   }
 `;
 
@@ -284,7 +285,7 @@ const LinkText = styled.div`
   margin-top: 10px;
   line-height: 25px;
   font-size: 22px;
-  color: grey;
+  color: ${getColor('gray')};
   font-weight: bold;
   cursor: pointer;
 `;

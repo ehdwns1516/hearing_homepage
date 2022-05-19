@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import styled, { css } from 'styled-components';
 import { AiFillSetting } from 'react-icons/ai';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
+import { getColor } from '../utils';
 
 const Carousel = ({
   imageInfos,
@@ -142,7 +143,7 @@ const WholeWrapper = styled.div`
   width: ${(props) => props.carousel_config.width}px;
   height: ${(props) => props.carousel_config.height}px;
   display: inline-block;
-  background-color: white;
+  background-color: ${getColor('white')};
   border: 2px solid grey;
 `;
 
@@ -157,8 +158,8 @@ const NavBox = styled.div`
   line-height: 30px;
   text-align: center;
   font-size: 14px;
-  color: #eeeeee;
-  background-color: grey;
+  color: ${getColor('light_gray')};
+  background-color: ${getColor('gray')};
   z-index: 1;
 `;
 
@@ -201,14 +202,15 @@ const NextButton = styled.button`
   font-size: 40px;
   border-radius: 5px;
   text-align: center;
-  background-color: #515151;
+  background-color: ${getColor('dark_gray')};
   display: flex;
   justify-content: center;
   align-items: center;
+  box-sizing: border-box;
   :hover {
-    background-color: #393939;
+    background-color: ${getColor('darker_gray')};
   }
-  color: #eeeeee;
+  color: ${getColor('light_gray')};
 `;
 
 const PrevButton = styled.button`
@@ -220,14 +222,15 @@ const PrevButton = styled.button`
   font-size: 40px;
   border-radius: 5px;
   text-align: center;
-  background-color: #515151;
+  background-color: ${getColor('dark_gray')};
   display: flex;
   justify-content: center;
   align-items: center;
+  box-sizing: border-box;
   :hover {
-    background-color: #393939;
+    background-color: ${getColor('darker_gray')};
   }
-  color: #eeeeee;
+  color: ${getColor('light_gray')};
 `;
 
 const DeleteImageButton = styled.button`
@@ -240,10 +243,10 @@ const DeleteImageButton = styled.button`
   border-radius: 5px;
   font-size: large;
   font-weight: bold;
-  color: white;
-  background-color: #cc0000;
+  color: ${getColor('white')};
+  background-color: ${getColor('red')};
   :hover {
-    background-color: #b30000;
+    background-color: ${getColor('dark_red')};
   }
 `;
 
@@ -274,7 +277,7 @@ const SlideBox = styled.div`
 `;
 
 const EditCarouselImage = styled(AiFillSetting)`
-  color: #515151;
+  color: ${getColor('dark_gray')};
   width: 50px;
   height: 50px;
 `;
@@ -290,7 +293,7 @@ const EditCarouselButton = styled.div`
   z-index: 1;
   :hover {
     ${EditCarouselImage} {
-      color: #393939;
+      color: ${getColor('darker_gray')};
     }
   }
 `;

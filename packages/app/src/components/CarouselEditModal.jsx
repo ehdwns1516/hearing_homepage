@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Carousel from './Carousel';
 import { IoIosClose } from 'react-icons/io';
 import { postUploadImagesToS3, putNoticeInfos } from '../apis/APIs';
+import { getColor } from '../utils';
 
 const CarouselEditModal = ({
   visibleEditCarousel,
@@ -181,7 +182,7 @@ const ModalInner = styled.div`
   box-sizing: border-box;
   position: relative;
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.5);
-  background-color: #fff;
+  background-color: ${getColor('white')};
   border-radius: 10px;
   top: 50%;
   transform: translateY(-50%);
@@ -214,11 +215,11 @@ const AddImageButton = styled.button`
   display: inline-block;
   font-size: 35px;
   font-weight: bold;
-  color: white;
-  background-color: #009933;
+  color: ${getColor('white')};
+  background-color: ${getColor('green')};
 
   :hover {
-    background-color: #00802b;
+    background-color: ${getColor('dark_green')};
   }
 `;
 
@@ -246,7 +247,7 @@ const ImageLinkInput = styled.input`
   outline: 2px solid grey;
   font-style: italic;
   :focus {
-    outline: 2px solid #b4338a;
+    outline: 2px solid ${getColor('purple')};
   }
 `;
 
@@ -254,23 +255,23 @@ const ImageLinkAddButton = styled.div`
   width: 10%;
   height: 50px;
   margin-left: 10px;
-  border: 3px solid #b4338a;
+  border: 3px solid ${getColor('purple')};
   border-radius: 5px;
-  background-color: #b4338a;
+  background-color: ${getColor('purple')};
   font-size: 20px;
   font-weight: bold;
   line-height: 50px;
-  color: white;
+  color: ${getColor('white')};
   cursor: pointer;
 
   :hover {
-    background-color: #892e6c;
-    border: 3px solid #892e6c;
+    background-color: ${getColor('dark_purple')};
+    border: 3px solid ${getColor('dark_purple')};
   }
 `;
 
 const CloseButtonlImage = styled(IoIosClose)`
-  color: grey;
+  color: ${getColor('gray')};
   width: 70px;
   height: 70px;
 `;
@@ -284,7 +285,7 @@ const CloseButton = styled.div`
   margin: auto;
   :hover {
     ${CloseButtonlImage} {
-      color: #393939;
+      color: ${getColor('darker_gray')};
     }
   }
 `;
