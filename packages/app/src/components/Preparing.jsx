@@ -16,27 +16,27 @@ const PreparingPage = () => {
 };
 
 const WholeWrapper = styled.div`
-  width: 100%;
-  height: 80%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  height: 80%;
 `;
 
 const Title = styled.div`
   width: 100%;
+  color: ${getColor('gray')};
   font-size: 65px;
   font-weight: bold;
-  color: ${getColor('gray')};
 `;
 
 const Description = styled.div`
   width: 100%;
+  margin-top: 30px;
+  color: ${getColor('gray')};
   font-size: 35px;
   font-weight: bold;
-  color: ${getColor('gray')};
-  margin-top: 30px;
 `;
 
 const AccentText = styled.span`

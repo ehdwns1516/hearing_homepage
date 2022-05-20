@@ -54,7 +54,9 @@ const CarouselEditModal = ({
     if (window.confirm('이미지를 정말 삭제하시겠습니까?')) {
       const afterContents = [...contents];
       afterContents.splice(imageCurrentNo, 1);
+
       if (imageCurrentNo > 0) setImageCurrentNo(imageCurrentNo - 1);
+
       imageInfoIsChanged.current = 2;
       setContents(afterContents);
     }
@@ -155,24 +157,23 @@ const CarouselEditModal = ({
 const ModalWrapper = styled.div`
   box-sizing: border-box;
   text-align: center;
-  display: block;
+  overflow: auto;
   position: fixed;
   top: 0;
-  right: 0;
   bottom: 0;
   left: 0;
-  z-index: 1000;
-  overflow: auto;
+  right: 0;
   outline: 0;
+  z-index: 1000;
 `;
 
 const ModalOverlay = styled.div`
-  box-sizing: border-box;
   display: block;
+  box-sizing: border-box;
   position: fixed;
   top: 0;
-  left: 0;
   bottom: 0;
+  left: 0;
   right: 0;
   background-color: rgba(0, 0, 0, 0.6);
   z-index: 999;
@@ -180,43 +181,43 @@ const ModalOverlay = styled.div`
 
 const ModalInner = styled.div`
   box-sizing: border-box;
-  position: relative;
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.5);
-  background-color: ${getColor('white')};
-  border-radius: 10px;
+  position: relative;
   top: 50%;
-  transform: translateY(-50%);
   margin: 0 auto;
   padding: 20px 20px;
+  border-radius: 10px;
+  background-color: ${getColor('white')};
+  transform: translateY(-50%);
 `;
 
 const ModalContents = styled.div`
-  width: 100%;
-  height: 100%;
-  justify-content: center;
   display: flex;
+  justify-content: center;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  height: 100%;
 `;
 
 const EditImageWrapper = styled.div`
   display: flex;
+  justify-content: center;
   width: auto;
   height: auto;
   margin-top: 40px;
-  justify-content: center;
   border: 3px solid grey;
   border-radius: 5px;
 `;
 
 const AddImageButton = styled.button`
-  border: 0px;
-  width: 40px;
   display: inline-block;
-  font-size: 35px;
-  font-weight: bold;
-  color: ${getColor('white')};
+  width: 40px;
+  border: 0px;
   background-color: ${getColor('green')};
+  color: ${getColor('white')};
+  font-weight: bold;
+  font-size: 35px;
 
   :hover {
     background-color: ${getColor('dark_green')};
@@ -230,22 +231,23 @@ const ImageHiddenInput = styled.input`
 const ImageLinkWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  width: ${(props) => props.width + 10}px;
-  height: 100px;
   align-items: center;
   justify-content: center;
   text-align: center;
+  width: ${(props) => props.width + 10}px;
+  height: 100px;
   padding-left: 3px;
 `;
 const ImageLinkInput = styled.input`
   width: 90%;
   height: 50px;
-  font-size: 20px;
   padding-left: 10px;
   border-radius: 5px;
   border: 0px;
   outline: 2px solid grey;
   font-style: italic;
+  font-size: 20px;
+
   :focus {
     outline: 2px solid ${getColor('purple')};
   }
@@ -258,20 +260,19 @@ const ImageLinkAddButton = styled.div`
   border: 3px solid ${getColor('purple')};
   border-radius: 5px;
   background-color: ${getColor('purple')};
+  color: ${getColor('white')};
+  line-height: 50px;
   font-size: 20px;
   font-weight: bold;
-  line-height: 50px;
-  color: ${getColor('white')};
-  cursor: pointer;
 
   :hover {
-    background-color: ${getColor('dark_purple')};
     border: 3px solid ${getColor('dark_purple')};
+    background-color: ${getColor('dark_purple')};
   }
+  cursor: pointer;
 `;
 
 const CloseButtonlImage = styled(IoIosClose)`
-  color: ${getColor('gray')};
   width: 70px;
   height: 70px;
 `;
@@ -280,14 +281,16 @@ const CloseButton = styled.div`
   position: absolute;
   right: 10px;
   top: 10px;
-  height: 70px;
   width: 70px;
+  height: 70px;
   margin: auto;
+
   :hover {
     ${CloseButtonlImage} {
       color: ${getColor('darker_gray')};
     }
   }
+  cursor: pointer;
 `;
 
 export default CarouselEditModal;

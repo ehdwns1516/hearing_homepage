@@ -169,9 +169,9 @@ const DetailPage = ({ topMenu, subMenu }) => {
 };
 
 const WholeWrapper = styled.div`
-  height: 100vh;
-  width: 100vw;
   display: flex;
+  width: 100vw;
+  height: 100vh;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -179,40 +179,40 @@ const WholeWrapper = styled.div`
 `;
 
 const TitleText = styled.span`
-  font-size: 30px;
   margin-top: 30px;
+  font-size: 30px;
 `;
 
 const ContentsWrapper = styled.div`
-  height: 100%;
-  width: calc(100% - 285px);
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   overflow: scroll;
   overflow-x: hidden;
+  width: calc(100% - 285px);
+  height: 100%;
 `;
 
 const SideWrapper = styled.div`
-  height: 100%;
-  width: 285px;
-  border-right: 1px solid ${getColor('purple')};
   text-align: center;
+  width: 285px;
+  height: 100%;
+  border-right: 1px solid ${getColor('purple')};
 `;
 
 const HorizonLine = styled.div`
   width: 90%;
-  border-bottom: 1px solid ${getColor('purple')};
-  line-height: 0em;
   margin-top: 20px;
   margin-bottom: 20px;
+  border-bottom: 1px solid ${getColor('purple')};
+  line-height: 0em;
 `;
 
 const InnerText = styled.span`
+  padding: 0 10px;
   background-color: ${getColor('white')};
   color: rgba(0, 0, 0, 0.5);
-  padding: 0 10px;
   font-size: 20px;
 `;
 
@@ -220,12 +220,13 @@ const AddImageButton = styled.button`
   width: 90%;
   height: 40px;
   min-height: 40px;
-  background-color: ${getColor('green')};
-  font-weight: bold;
-  font-size: 20px;
   margin-bottom: 5px;
   border: 1px solid grey;
+  background-color: ${getColor('green')};
   color: ${getColor('white')};
+  font-weight: bold;
+  font-size: 20px;
+
   :hover {
     background-color: ${getColor('dark_green')};
   }
@@ -236,30 +237,30 @@ const EditButton = styled.button`
   width: 90%;
   height: 40px;
   min-height: 40px;
+  margin-bottom: 5px;
+  border: 1px solid grey;
   background-color: ${getColor('purple')};
+  color: ${getColor('white')};
   font-weight: bold;
   font-size: 20px;
-  color: ${getColor('white')};
-  border: 1px solid grey;
-  margin-bottom: 5px;
   :hover {
     background-color: ${getColor('dark_purple')};
   }
 `;
 
 const DeleteImageButton = styled.button`
-  position: relative;
-  top: 20px;
   display: block;
   width: 120px;
   height: 60px;
+  position: relative;
+  top: 20px;
+  margin-top: 10px;
   border: 1px solid grey;
   border-radius: 10px;
   background-color: ${getColor('red')};
+  color: ${getColor('white')};
   font-size: 20px;
   font-weight: bold;
-  color: ${getColor('white')};
-  margin-top: 10px;
   :hover {
     background-color: ${getColor('dark_red')};
   }
@@ -272,6 +273,7 @@ const ImageHiddenInput = styled.input`
 const ContentImg = styled.img`
   width: 80%;
   height: auto;
+  margin-bottom: 5px;
   margin-left: ${(props) =>
     props.editable
       ? css`
@@ -281,15 +283,14 @@ const ContentImg = styled.img`
           0px;
         `};
   object-fit: fill;
-  margin-bottom: 5px;
 `;
 
 const ImgWrapper = styled.div`
-  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: 100%;
 `;
 
 export default DetailPage;

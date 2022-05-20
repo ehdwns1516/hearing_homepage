@@ -80,67 +80,68 @@ const TopNavBar = () => {
 };
 
 const WholeWrapper = styled.div`
-  width: 100vw;
-  height: 60px;
-  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow: visible;
+  position: relative;
+  width: 100vw;
+  height: 60px;
   z-index: 1;
 `;
 
 const TopMenuWrapper = styled.div`
-  height: 50px;
-  width: 1200px;
-  background-color: ${getColor('purple')};
   display: flex;
   flex-direction: row;
+  width: 1200px;
+  height: 50px;
+  background-color: ${getColor('purple')};
 `;
 const MenuButtonWrapper = styled.div`
-  height: auto;
-  width: 240px;
-  float: left;
   flex-direction: column;
+  float: left;
+  width: 240px;
+  height: auto;
 `;
 
 const TopMenuButton = styled.button`
-  height: 50px;
-  width: 240px;
-  font-size: 22px;
-  font-weight: bold;
-  color: ${getColor('white')};
   text-align: center;
-  cursor: pointer;
+  width: 240px;
+  height: 50px;
   border: 0px;
   background-color: ${getColor('purple')};
+  color: ${getColor('white')};
+  font-weight: bold;
+  font-size: 22px;
 
   :hover {
     background-color: ${getColor('dark_purple')};
   }
+  cursor: pointer;
 `;
 
 const TopMenuLink = styled(Link)`
-  height: 50px;
-  width: 240px;
-  font-size: 22px;
-  font-weight: bold;
-  color: ${getColor('white')};
-  text-align: center;
-  line-height: 50px;
   display: inline-block;
   box-sizing: border-box;
+  text-align: center;
+  width: 240px;
+  height: 50px;
   border: 0px;
   background-color: ${getColor('purple')};
+  color: ${getColor('white')};
   text-decoration: none;
+  font-weight: bold;
+  font-size: 22px;
+  line-height: 50px;
+
   :hover {
     background-color: ${getColor('dark_purple')};
   }
 `;
 
 const SubMenuWrapper = styled.div`
-  height: 0px;
   width: 240px;
+  height: 0px;
 `;
 
 const dropDownOpen = keyframes`
@@ -153,18 +154,18 @@ const dropDownOpen = keyframes`
 `;
 
 const SubMenuLink = styled(Link)`
-  height: ${(props) => (props.dropdownanimation === 'true' ? '50px' : '0px')};
   display: ${(props) => (props.dropdownanimation === 'undefined' ? 'block' : 'block')};
-  width: 240px;
-  font-size: 20px;
-  font-weight: bold;
-  color: ${getColor('white')};
-  text-align: center;
-  line-height: 50px;
   box-sizing: border-box;
+  text-align: center;
+  width: 240px;
+  height: ${(props) => (props.dropdownanimation === 'true' ? '50px' : '0px')};
   border: 0px;
   background-color: ${getColor('purple')};
+  color: ${getColor('white')};
   text-decoration: none;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 50px;
   animation-delay: 0s;
   animation: ${(props) =>
     props.dropdownanimation === 'true' // 대문자로 props 선언하면 error 뜨는데 왜지??
@@ -172,6 +173,7 @@ const SubMenuLink = styled(Link)`
           ${dropDownOpen} 0.3s 0s
         `
       : null};
+
   :hover {
     background-color: ${getColor('dark_purple')};
   }

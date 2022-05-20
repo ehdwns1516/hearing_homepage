@@ -53,39 +53,39 @@ const Footer = () => {
 };
 
 const WholeWrapper = styled.div`
-  position: relative;
-  height: 90px;
-  width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   text-align: center;
+  position: relative;
+  width: 100%;
+  height: 90px;
   background-color: ${getColor('darker_purple')};
 `;
 
 const MyFooter = styled.footer`
-  height: 90px;
-  width: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  font-size: 14px;
+  width: auto;
+  height: 90px;
   color: ${getColor('light_gray')};
+  font-size: 14px;
 `;
 
 const LoginImage = styled(FaUserCog)`
-  color: ${getColor('white')};
   width: 40px;
   height: 40px;
+  color: ${getColor('white')};
 `;
 
 const LogoutImage = styled(FaUserSlash)`
-  color: ${getColor('white')};
   width: 40px;
   height: 40px;
+  color: ${getColor('white')};
 `;
 
 const LoginButton = styled.button`
@@ -95,9 +95,10 @@ const LoginButton = styled.button`
   height: 60px;
   border: none;
   background-color: ${getColor('darker_purple')};
-  font-weight: bold;
   color: ${getColor('white')};
   line-height: 15px;
+  font-weight: bold;
+
   :hover {
     color: ${getColor('gray')};
     ${LoginImage} {

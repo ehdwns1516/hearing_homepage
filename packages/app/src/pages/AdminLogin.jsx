@@ -91,66 +91,66 @@ const AdminLogin = () => {
 };
 
 const WholeWrapper = styled.div`
-  height: 100vh;
-  width: 100vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: 100vw;
+  height: 100vh;
 `;
 
 const LogoWrapper = styled.div`
-  width: 100%;
-  height: 75px;
   display: flex;
-  object-fit: cover;
   flex-direction: column;
   align-items: center;
+  object-fit: cover;
+  width: 100%;
+  height: 75px;
   margin-bottom: 20px;
   margin-top: 50px;
 `;
 
 const LogoImg = styled.img`
-  height: auto;
-  width: auto;
   vertical-align: middle;
+  width: auto;
+  height: auto;
   cursor: pointer;
 `;
 
 const LoginContentsWrapper = styled.div`
-  height: 550px;
-  width: 450px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: ${getColor('white')};
+  width: 450px;
+  height: 550px;
   border: 3px solid gray;
   border-radius: 10px;
+  background-color: ${getColor('white')};
 `;
 
 const LoginInfoText = styled.div`
-  height: 50px;
-  width: 300px;
   text-align: left;
+  width: 300px;
+  height: 50px;
+  font-weight: bold;
   line-height: 50px;
   font-size: 20px;
-  font-weight: bold;
 `;
 
 const LoginInfoInput = styled.input`
-  height: 50px;
-  width: 300px;
   display: block;
+  width: 300px;
+  height: 50px;
+  margin-bottom: 10px;
+  padding-left: 10px;
   border: 1px solid gray;
   border-radius: 10px;
   font-size: 20px;
-  padding-left: 10px;
-  margin-bottom: 10px;
 `;
 
 const LoginButton = styled.button`
-  height: 50px;
   width: 310px;
+  height: 50px;
   font-size: 20px;
 `;
 

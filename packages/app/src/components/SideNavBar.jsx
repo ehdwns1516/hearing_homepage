@@ -84,64 +84,65 @@ const SideNavBar = ({ currentPage }) => {
 };
 
 const WholeWrapper = styled.div`
-  height: inherit;
-  width: 100%;
-  overflow: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow: auto;
+  overflow-x: hidden;
+  width: 100%;
+  height: inherit;
 `;
 
 const TopMenuWrapper = styled.div`
-  height: calc(100% - 110px);
   width: 100%;
+  height: calc(100% - 110px);
   background-color: ${getColor('purple')};
 `;
 
 const LogoWrapper = styled.div`
-  height: 110px;
   width: 100%;
-  line-height: 110px;
+  height: 110px;
   background-color: ${getColor('white')};
+  line-height: 110px;
 `;
 
 const LogoImg = styled.img`
-  height: auto;
-  width: inherit;
   vertical-align: middle;
+  width: inherit;
+  height: auto;
   cursor: pointer;
 `;
 
 const TopMenuButton = styled.button`
-  height: 80px;
-  width: 100%;
-  font-size: 25px;
-  font-weight: bold;
-  color: ${getColor('white')};
   text-align: left;
-  cursor: pointer;
+  width: 100%;
+  height: 80px;
   padding-left: 30px;
   border: 0px;
   background-color: ${getColor('purple')};
+  color: ${getColor('white')};
+  font-size: 25px;
+  font-weight: bold;
 
   :hover {
     background-color: ${getColor('dark_purple')};
   }
+  cursor: pointer;
 `;
 
 const TopMenuLink = styled(Link)`
-  height: 80px;
-  width: 100%;
-  font-size: 25px;
-  font-weight: bold;
-  color: ${getColor('white')};
-  text-align: left;
-  line-height: 80px;
-  padding-left: 30px;
   display: inline-block;
   box-sizing: border-box;
+  text-align: left;
+  width: 100%;
+  height: 80px;
+  padding-left: 30px;
   border: 0px;
   background-color: ${getColor('purple')};
+  color: ${getColor('white')};
+  font-size: 25px;
+  font-weight: bold;
+  line-height: 80px;
   text-decoration: none;
   :hover {
     background-color: ${getColor('dark_purple')};
@@ -149,8 +150,8 @@ const TopMenuLink = styled(Link)`
 `;
 
 const SubMenuWrapper = styled.div`
-  height: fit-content;
   width: 100%;
+  height: fit-content;
 `;
 
 const dropDownOpen = keyframes`
@@ -176,26 +177,21 @@ const dropDownClose = keyframes`
 `;
 
 const SubMenuLink = styled(Link)`
-  height: ${(props) => (props.isopened === 'true' ? '50px' : '0px')};
   display: ${(props) => (props.isopened === 'undefined' ? 'none' : 'block')};
-  opacity: ${(props) =>
-    props.isopened === 'undefined' || props.isopened === 'false' ? 0 : 1};
-  pointer-events: ${(props) =>
-    props.isopened === 'undefined' || props.isopened === 'false' ? 'none' : 'auto'};
-  width: 100%;
-  font-size: 20px;
-  font-weight: bold;
-  color: ${getColor('white')};
-  text-align: left;
-  line-height: 50px;
-  padding-left: 50px;
-  display: block;
   box-sizing: border-box;
+  text-align: left;
+  width: 100%;
+  height: ${(props) => (props.isopened === 'true' ? '50px' : '0px')};
+  padding-left: 50px;
   border: 0px;
   background-color: ${(props) =>
     props.iscurrentpage === 'true'
       ? `${getColor('dark_purple')};`
       : `${getColor('purple')};`};
+  color: ${getColor('white')};
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 50px;
   text-decoration: none;
   animation-delay: 0s;
   animation: ${(props) => {
@@ -208,6 +204,10 @@ const SubMenuLink = styled(Link)`
           ${dropDownClose} 0.3s 0s
         `;
   }};
+  opacity: ${(props) =>
+    props.isopened === 'undefined' || props.isopened === 'false' ? 0 : 1};
+  pointer-events: ${(props) =>
+    props.isopened === 'undefined' || props.isopened === 'false' ? 'none' : 'auto'};
 
   :hover {
     background-color: ${getColor('dark_purple')};

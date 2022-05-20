@@ -71,12 +71,12 @@ const StandardImageList = ({ editable, allImages, setAllImages, imageIsChanged }
         sx={{
           width: '88%',
           height: '70%',
-          boxShadow: 3,
           paddingLeft: '15px',
           paddingRight: '15px',
           paddingBottom: '5px',
           paddingTop: '5px',
           borderRadius: 3,
+          boxShadow: 3,
         }}
       >
         {currentPageImages.map((imageUrl, index) =>
@@ -157,52 +157,54 @@ const StandardImageList = ({ editable, allImages, setAllImages, imageIsChanged }
 
 const CustomImageListItem = styled(ImageListItem)`
   overflow: hidden;
-  border-radius: 10px;
   margin: auto;
-  cursor: ${(props) => (props.empty === 'true' ? 'default' : 'pointer')};
+  border-radius: 10px;
   background-color: ${getColor('black')};
 
   :hover {
     opacity: ${(props) => (props.empty ? '1' : '0.75')};
     box-shadow: 0 0 0.4em ${getColor('purple')};
   }
+  cursor: ${(props) => (props.empty === 'true' ? 'default' : 'pointer')};
 `;
 const DeleteImageButton = styled.div`
+  display: inline-block;
   position: absolute;
   top: 5px;
   right: 5px;
   width: 30px;
   height: 30px;
-  line-height: 23px;
   border-radius: 20px;
-  display: inline-block;
   background-color: ${getColor('red')};
   color: ${getColor('white')};
+  line-height: 23px;
   font-size: 35px;
   z-index: 1;
-  cursor: pointer;
   :hover {
     opacity: 0.5;
   }
+  cursor: pointer;
 `;
 
 const ControlPageWrapper = styled.div`
-  width: 90%;
-  height: 50px;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  width: 90%;
+  height: 50px;
 `;
 
 const PageButtonWrapper = styled.div`
-  width: 310px;
-  height: 100%;
+  display: flex;
   overflow: hidden;
-  text-align: center;
   flex-direction: row;
+  text-align: center;
   justify-content: center;
   align-items: center;
+  width: 310px;
+  height: 100%;
+  margin-top: 20px;
 `;
 
 const PageButtonList = styled.div`
@@ -219,13 +221,13 @@ const PageButtonList = styled.div`
 const PageButton = styled.div`
   width: 50px;
   height: 50px;
-  line-height: 50px;
+  margin: auto;
   border-radius: 25px;
+  background-color: ${getColor('purple')};
+  color: ${getColor('white')};
   font-weight: bold;
   font-size: 25px;
-  color: ${getColor('white')};
-  margin: auto;
-  background-color: ${getColor('purple')};
+  line-height: 50px;
 
   :hover {
     background-color: ${getColor('dark_purple')};
@@ -234,39 +236,43 @@ const PageButton = styled.div`
 `;
 
 const PageButtonNext = styled.div`
-  width: 50px;
-  height: 50px;
-  border-radius: 25px;
-  color: ${getColor('white')};
-  font-size: 25px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-weight: bold;
-  background-color: ${getColor('dark_gray')};
+  width: 50px;
+  height: 50px;
   margin-right: 5px;
-  cursor: pointer;
+  margin-top: 20px;
+  border-radius: 25px;
+  background-color: ${getColor('dark_gray')};
+  color: ${getColor('white')};
+  font-size: 25px;
+  font-weight: bold;
+
   :hover {
     background-color: ${getColor('darker_gray')};
   }
+  cursor: pointer;
 `;
 
 const PageButtonPrev = styled.div`
-  width: 50px;
-  height: 50px;
-  border-radius: 25px;
-  color: ${getColor('white')};
-  font-size: 25px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-weight: bold;
-  background-color: ${getColor('dark_gray')};
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
   margin-right: 5px;
-  cursor: pointer;
+  margin-top: 20px;
+  background-color: ${getColor('dark_gray')};
+  color: ${getColor('white')};
+  font-weight: bold;
+  font-size: 25px;
+
   :hover {
     background-color: ${getColor('darker_gray')};
   }
+  cursor: pointer;
 `;
 
 export default StandardImageList;

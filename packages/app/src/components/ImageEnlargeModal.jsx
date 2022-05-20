@@ -44,51 +44,51 @@ const ImageEnlargeModal = ({ images, imageIndex, openEnlageImageModal }) => {
 };
 
 const ModalWrapper = styled.div`
-  box-sizing: border-box;
-  text-align: center;
   display: block;
+  box-sizing: border-box;
+  align-items: center;
+  text-align: center;
+  overflow: auto;
   position: fixed;
   top: 0;
-  right: 0;
   bottom: 0;
   left: 0;
+  right: 0;
   z-index: 1000;
-  overflow: auto;
   outline: 0;
-  align-items: center;
 `;
 
 const ModalOverlay = styled.div`
-  box-sizing: border-box;
   display: block;
+  box-sizing: border-box;
   position: fixed;
   top: 0;
-  left: 0;
   bottom: 0;
+  left: 0;
   right: 0;
   background-color: rgba(0, 0, 0, 0.85);
   z-index: 999;
 `;
 
 const ModalInner = styled.div`
-  position: relative;
-  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.5);
+  position: relative;
   top: 50%;
-  transform: translateY(-50%);
   margin: 0 auto;
   padding: 20px 20px;
+  transform: translateY(-50%);
 `;
 
 const ModalContents = styled.div`
-  width: 80%;
-  height: auto;
-  justify-content: center;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  width: 80%;
+  height: auto;
 `;
 
 const CloseButtonlImage = styled(IoIosClose)`
@@ -99,17 +99,17 @@ const CloseButtonlImage = styled(IoIosClose)`
 
 const CloseButton = styled.div`
   position: absolute;
-  right: 15px;
   top: 15px;
-  height: 70px;
+  right: 15px;
   width: 70px;
+  height: 70px;
   z-index: 1001;
-  cursor: pointer;
   :hover {
     ${CloseButtonlImage} {
       color: ${getColor('dark_gray')};
     }
   }
+  cursor: pointer;
 `;
 
 const NextButtonlImage = styled(IoIosArrowForward)`
@@ -119,21 +119,21 @@ const NextButtonlImage = styled(IoIosArrowForward)`
 `;
 
 const NextButton = styled.div`
-  position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
-  right: 5%;
+  position: absolute;
   top: 25%;
+  right: 5%;
   width: 80px;
   height: 50%;
   z-index: 1001;
-  cursor: pointer;
   :hover {
     ${NextButtonlImage} {
       color: ${getColor('dark_gray')};
     }
   }
+  cursor: pointer;
 `;
 
 const PrevButtonlImage = styled(IoIosArrowBack)`
@@ -143,21 +143,21 @@ const PrevButtonlImage = styled(IoIosArrowBack)`
 `;
 
 const PrevButton = styled.div`
-  position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
-  left: 5%;
+  position: absolute;
   top: 25%;
+  left: 5%;
   width: 80px;
   height: 50%;
   z-index: 1001;
-  cursor: pointer;
   :hover {
     ${PrevButtonlImage} {
       color: ${getColor('dark_gray')};
     }
   }
+  cursor: pointer;
 `;
 
 const ImgWrapper = styled.div`
@@ -166,8 +166,8 @@ const ImgWrapper = styled.div`
 `;
 
 const Img = styled.img`
-  height: auto;
   max-width: 100%;
+  height: auto;
   max-height: 90vh;
   -webkit-user-select: none;
   -moz-user-select: none;

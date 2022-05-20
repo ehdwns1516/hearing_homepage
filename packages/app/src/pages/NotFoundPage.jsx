@@ -22,12 +22,12 @@ const NotFoundPage = () => {
 };
 
 const WholeWrapper = styled.div`
-  height: 100vh;
-  width: 100vw;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100vw;
+  height: 100vh;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -35,9 +35,9 @@ const WholeWrapper = styled.div`
 `;
 
 const NotFoundWrapper = styled.div`
-  height: 30%;
-  width: 50%;
   text-align: center;
+  width: 50%;
+  height: 30%;
 `;
 
 const MainPageButton = styled.img`
@@ -56,13 +56,13 @@ const NotFoundContent1 = styled.div`
 const NotFoundContent2 = styled.div`
   margin-top: 25px;
   margin-bottom: 15px;
-  font-size: 20px;
   color: ${getColor('gray')};
   font-style: italic;
+  font-size: 20px;
 `;
 
 const ReturnHome = styled.a`
-  font-size: 20px;
   margin-top: 30px;
+  font-size: 20px;
 `;
 export default NotFoundPage;

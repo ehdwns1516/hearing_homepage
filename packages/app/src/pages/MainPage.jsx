@@ -149,14 +149,14 @@ const MainPage = () => {
 };
 
 const WholeWrapper = styled.div`
-  padding-top: 10px;
-  height: 100%;
-  width: 100%;
-  text-align: center;
   display: flex;
   flex-direction: column;
+  text-align: center;
   align-items: center;
   overflow-x: hidden;
+  width: 100%;
+  height: 100%;
+  padding-top: 10px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -164,38 +164,38 @@ const WholeWrapper = styled.div`
 `;
 
 const LogoWrapper = styled.div`
+  display: flex;
   width: 100%;
   height: 75px;
-  display: flex;
-  object-fit: cover;
   flex-direction: column;
   align-items: center;
+  object-fit: cover;
 `;
 
 const LogoImg = styled.img`
-  height: auto;
-  width: auto;
   vertical-align: middle;
+  width: auto;
+  height: auto;
   cursor: pointer;
 `;
 
 const ContentsWrapper = styled.div`
-  height: auto;
-  min-height: calc(100vh - 275px);
-  width: 1200px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   overflow: hidden;
+  width: 1200px;
+  height: auto;
+  min-height: calc(100vh - 275px);
   margin-bottom: 5px;
 `;
 
 const RowContents = styled.div`
-  height: auto;
-  width: 100%;
   display: flex;
   flex-direction: row;
+  width: 100%;
+  height: auto;
 `;
 
 const CenterSummary = styled.img`
@@ -208,30 +208,30 @@ const CenterSummary = styled.img`
 `;
 
 const HowToCome = styled.div`
-  width: 50%;
-  height: 400px;
   display: flex;
   flex-direction: column;
+  width: 50%;
+  height: 400px;
   border: 1px solid grey;
   border-left: none;
 `;
 
 const HowToComeLink = styled.div`
+  text-align: left;
   width: 100%;
   height: 50px;
-  font-size: 22px;
-  font-weight: bold;
-  color: ${getColor('white')};
-  text-align: left;
   padding-left: 20px;
-  line-height: 50px;
-  cursor: pointer;
   border: 0px;
   background-color: ${getColor('purple')};
+  color: ${getColor('white')};
+  font-size: 22px;
+  font-weight: bold;
+  line-height: 50px;
 
   :hover {
     background-color: ${getColor('dark_purple')};
   }
+  cursor: pointer;
 `;
 
 const Map = styled.div`
@@ -242,37 +242,37 @@ const Map = styled.div`
 const CallInfo = styled.img`
   width: 50%;
   height: 250px;
-  cursor: pointer;
   border: 1px solid grey;
   border-top: none;
   border-right: none;
+  cursor: pointer;
 `;
 
 const LinkWrapper = styled.div`
-  width: 50%;
-  height: 250px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  width: 50%;
+  height: 250px;
   border: 1px solid grey;
   border-top: none;
 `;
 
 const LinkInfo = styled.div`
-  width: 50%;
-  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 50%;
+  height: 100%;
 `;
 
 const LinkImg = styled.img`
+  display: block;
   position: relative;
   top: 40px;
   width: 50%;
   height: 50%;
-  display: block;
   border-radius: 100px;
   cursor: pointer;
 `;
@@ -283,10 +283,10 @@ const LinkText = styled.div`
   width: 50%;
   height: auto;
   margin-top: 10px;
-  line-height: 25px;
-  font-size: 22px;
   color: ${getColor('gray')};
+  font-size: 22px;
   font-weight: bold;
+  line-height: 25px;
   cursor: pointer;
 `;
 export default MainPage;
