@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled, { css } from 'styled-components';
-import SideNavBar from '../components/SideNavBar';
+import SideNavBar from '../layouts/SideNavBar';
 import { useRecoilState } from 'recoil';
 import StandardImageList from '../components/StandardImageList';
 import PreparingPage from '../components/Preparing';
@@ -11,7 +11,7 @@ import {
   putDetailPageImages,
 } from '../apis/APIs';
 
-import { atomIsLogin, atomPageType } from '../recoils';
+import { atomIsLogin, atomPageType } from '../recoil/atoms';
 import { getColor } from '../utils';
 
 const DetailPage = ({ topMenu, subMenu }) => {
@@ -22,8 +22,8 @@ const DetailPage = ({ topMenu, subMenu }) => {
   const [contents, setContents] = useState(Array);
   const [editable, setEditable] = useState(false);
   const [type, setType] = useState(-1);
-  const [isLogin, setIsLogin] = useRecoilState(atomIsLogin);
-  const [pageType, setPageType] = useRecoilState(atomPageType);
+  const [isLogin] = useRecoilState(atomIsLogin);
+  const [pageType] = useRecoilState(atomPageType);
 
   useEffect(() => {
     setEditable(false);

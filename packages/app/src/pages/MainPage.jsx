@@ -3,13 +3,13 @@ import styled from 'styled-components';
 import Carousel from '../components/Carousel';
 import CarouselEditModal from '../components/CarouselEditModal';
 import KakaoMap from '../components/KakaoMap';
-import TopNavBar from '../components/TopNavBar';
-import Footer from '../components/Footer';
+import TopNavBar from '../layouts/TopNavBar';
+import Footer from '../layouts/Footer';
 
 import { useNavigate } from 'react-router-dom';
 import { postInitNoticeInfo, getNoticeInfos } from '../apis/APIs';
 import { useRecoilState } from 'recoil';
-import { atomIsLogin } from '../recoils';
+import { atomIsLogin } from '../recoil/atoms';
 import logo from '../images/oticon-logo.png';
 import center_summary from '../images/center-summary.jpeg';
 import call_info from '../images/call-info.jpeg';
@@ -21,7 +21,7 @@ const MainPage = () => {
   const [editCarouselModalOpened, setEditCarouselModalOpened] = useState(false);
   const [imageInfos, setImageInfos] = useState(Array);
   const [imageCurrentNo, setImageCurrentNo] = useState(0);
-  const [isLogin, setIsLogin] = useRecoilState(atomIsLogin);
+  const [isLogin] = useRecoilState(atomIsLogin);
   const navigate = useNavigate();
 
   useEffect(() => {

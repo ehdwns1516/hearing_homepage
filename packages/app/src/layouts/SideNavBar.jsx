@@ -5,12 +5,12 @@ import { useRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 import logo from '../images/oticon-logo.png';
 
-import { atomTopMenuList, atomSubMenuList } from '../recoils';
+import { atomTopMenuList, atomSubMenuList } from '../recoil/atoms';
 import { getColor } from '../utils';
 
 const SideNavBar = ({ currentPage }) => {
-  const [topMenuList, setTopMenuList] = useRecoilState(atomTopMenuList);
-  const [subMenuList, setSubMenuList] = useRecoilState(atomSubMenuList);
+  const [topMenuList] = useRecoilState(atomTopMenuList);
+  const [subMenuList] = useRecoilState(atomSubMenuList);
   const [isOpened, setIsOpened] = useState({});
   const navigate = useNavigate();
 

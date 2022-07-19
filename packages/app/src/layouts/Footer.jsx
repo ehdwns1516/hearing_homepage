@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { FaUserCog, FaUserSlash } from 'react-icons/fa';
-import { atomIsLogin, atomAdminName } from '../recoils';
+import { atomIsLogin, atomAdminName } from '../recoil/atoms';
 import { getColor } from '../utils';
 
 const Footer = () => {

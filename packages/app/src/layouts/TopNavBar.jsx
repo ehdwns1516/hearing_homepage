@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom';
 import styled, { css, keyframes } from 'styled-components';
 import { useRecoilState } from 'recoil';
 
-import { atomTopMenuList, atomSubMenuList } from '../recoils';
+import { atomTopMenuList, atomSubMenuList } from '../recoil/atoms';
 import { getColor } from '../utils';
 
 const TopNavBar = () => {
-  const [topMenuList, setTopMenuList] = useRecoilState(atomTopMenuList);
-  const [subMenuList, setSubMenuList] = useRecoilState(atomSubMenuList);
+  const [topMenuList] = useRecoilState(atomTopMenuList);
+  const [subMenuList] = useRecoilState(atomSubMenuList);
   const [isOpened, setIsOpened] = useState({});
 
   useEffect(() => {}, []);
