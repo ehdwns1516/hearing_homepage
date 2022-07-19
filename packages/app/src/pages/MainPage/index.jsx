@@ -25,11 +25,11 @@ import { useNavigate } from 'react-router-dom';
 import { postInitNoticeInfo, getNoticeInfos } from '../../apis/APIs';
 import { useRecoilState } from 'recoil';
 import { atomIsLogin } from '../../recoil/atoms';
-import logo from '../images/oticon-logo.png';
-import center_summary from '../images/center-summary.jpeg';
-import call_info from '../images/call-info.jpeg';
-import naver_blog from '../images/naver-blog.png';
-import NHIS from '../images/NHIS.jpeg';
+import logo from '../../images/oticon-logo.png';
+import center_summary from '../../images/center-summary.jpeg';
+import call_info from '../../images/call-info.jpeg';
+import naver_blog from '../../images/naver-blog.png';
+import NHIS from '../../images/NHIS.jpeg';
 
 const MainPage = () => {
   const [editCarouselModalOpened, setEditCarouselModalOpened] = useState(false);

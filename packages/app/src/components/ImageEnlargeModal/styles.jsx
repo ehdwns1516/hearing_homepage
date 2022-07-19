@@ -1,47 +1,6 @@
-import React, { useState } from 'react';
 import styled from 'styled-components';
 import { IoIosClose, IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
-import { getColor } from '../utils';
-
-const ImageEnlargeModal = ({ images, imageIndex, openEnlageImageModal }) => {
-  const [currentImageIndex, setCurrentImageIndex] = useState(imageIndex);
-
-  const slideNext = () => {
-    if (images.length - 1 === currentImageIndex) return;
-    setCurrentImageIndex(currentImageIndex + 1);
-  };
-  const slidePrev = () => {
-    if (0 === currentImageIndex) return;
-    setCurrentImageIndex(currentImageIndex - 1);
-  };
-  return (
-    <>
-      <ModalOverlay />
-      <ModalWrapper tabIndex='-1'>
-        <CloseButton onClick={openEnlageImageModal}>
-          <CloseButtonlImage></CloseButtonlImage>
-        </CloseButton>
-        <PrevButton onClick={slidePrev}>
-          <PrevButtonlImage></PrevButtonlImage>
-        </PrevButton>
-        <NextButton onClick={slideNext}>
-          <NextButtonlImage></NextButtonlImage>
-        </NextButton>
-        <ModalInner tabIndex='0'>
-          <ModalContents>
-            <ImgWrapper>
-              <Img
-                onClick={openEnlageImageModal}
-                src={images[currentImageIndex]}
-                alt='None'
-              ></Img>
-            </ImgWrapper>
-          </ModalContents>
-        </ModalInner>
-      </ModalWrapper>
-    </>
-  );
-};
+import { getColor } from '../../utils';
 
 const ModalWrapper = styled.div`
   display: block;
@@ -178,4 +137,17 @@ const Img = styled.img`
   -moz-window-dragging: none;
 `;
 
-export default ImageEnlargeModal;
+export {
+  ModalWrapper,
+  ModalOverlay,
+  ModalInner,
+  ModalContents,
+  NextButton,
+  NextButtonlImage,
+  PrevButton,
+  PrevButtonlImage,
+  ImgWrapper,
+  Img,
+  CloseButtonlImage,
+  CloseButton,
+};

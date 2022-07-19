@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
-import logo from '../images/oticon-logo.png';
+import logo from '../../images/oticon-logo.png';
 
 import { atomTopMenuList, atomSubMenuList } from '../../recoil/atoms';
 import {
