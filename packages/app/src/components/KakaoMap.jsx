@@ -23,7 +23,7 @@ const KakaoMap = () => {
     let zoomControl = new kakao.maps.ZoomControl();
     map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 
-    let customOverlay = new kakao.maps.CustomOverlay({
+    new kakao.maps.CustomOverlay({
       map: map,
       content:
         '<div style="padding:0 5px;background:rgba( 255, 255, 255, 1 ); border-radius: 10px; border: 2px solid grey">오티콘보청기 수원점</div>',

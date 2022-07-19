@@ -18,7 +18,7 @@ const StandardImageList = ({ editable, allImages, setAllImages, imageIsChanged }
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   useEffect(() => {
-    window.onresize = function (event) {
+    window.onresize = function () {
       setImageHeight(ImageListRef.current.offsetHeight / 3 - 20);
     };
     setImageHeight(ImageListRef.current.offsetHeight / 3 - 20);
