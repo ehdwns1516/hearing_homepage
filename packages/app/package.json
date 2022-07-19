@@ -24,19 +24,6 @@
     "styled-components": "^5.3.3",
     "web-vitals": "^2.1.2"
   },
-  "lint-staged": {
-    "src/**/*.{js,jsx}": [
-      "eslint --ext .jsx --ext .js ./src --fix"
-    ],
-    "./src/**": [
-      "prettier --write ."
-    ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
