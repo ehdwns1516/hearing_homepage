@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const client = axios.create({
-  baseURL: 'http://localhost:3001/api',
-  // baseURL: 'http://54.180.91.178:3001/api',
+  // baseURL: 'http://localhost:3001/api',
+  baseURL: 'http://54.180.91.178:3001/api',
 });
 
 client.interceptors.request.use(function (config) {
@@ -24,8 +24,8 @@ client.interceptors.response.use(
     if (
       error.response &&
       error.response.status === 401 &&
-      error.response.request.responseURL !== 'http://localhost:3001/api/admin/login'
-      // error.response.request.responseURL !== 'http://54.180.91.178:3001/api/admin/login'
+      // error.response.request.responseURL !== 'http://localhost:3001/api/admin/login'
+      error.response.request.responseURL !== 'http://54.180.91.178:3001/api/admin/login'
     ) {
       sessionStorage.removeItem('admin');
       sessionStorage.removeItem('isLogin');
