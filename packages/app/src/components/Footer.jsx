@@ -9,7 +9,7 @@ import { getColor } from '../utils';
 const Footer = () => {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useRecoilState(atomIsLogin);
-  const [adminName, setAdminName] = useRecoilState(atomAdminName);
+  const [, setAdminName] = useRecoilState(atomAdminName);
 
   const loginOnClick = () => {
     navigate('/login');
