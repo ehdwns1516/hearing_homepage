@@ -23,7 +23,7 @@ const AdminLogin = () => {
   const [isRemember, setIsRemember] = useState(false);
   const navigate = useNavigate();
   const [cookies, setCookie, removeCookie] = useCookies(['rememberId']);
-  const [setIsLogin] = useRecoilState(atomIsLogin);
+  const [, setIsLogin] = useRecoilState(atomIsLogin);
 
   useEffect(() => {
     if (JSON.parse(window.sessionStorage.getItem('isLogin'))) {
@@ -56,23 +56,21 @@ const AdminLogin = () => {
     }
   };
 
-  const login = () => {
-    postAdminLogin(ID, PW)
-      .then((res) => {
-        window.sessionStorage.setItem(
-          'admin',
-          JSON.stringify(res.data.token, 'accessToken')
-        );
-        window.sessionStorage.setItem('isLogin', true);
-        window.sessionStorage.setItem('adminName', res.data.name);
-        setIsLogin(true);
-        alert('로그인에 성공하였습니다.');
-        navigate(-1);
-      })
-      .catch((err) => {
-        if (err.response.status === 401) alert('로그인 정보가 잘못되었습니다.');
-        console.log(err);
-      });
+  const login = async () => {
+    try {
+      const response = await postAdminLogin(ID, PW);
+      window.sessionStorage.setItem(
+        'admin',
+        JSON.stringify(response.data.token, 'accessToken')
+      );
+      window.sessionStorage.setItem('isLogin', true);
+      window.sessionStorage.setItem('adminName', response.data.name);
+      setIsLogin(true);
+      alert('로그인에 성공하였습니다.');
+      navigate(-1);
+    } catch (err) {
+      if (err.response.status === 401) alert('로그인 정보가 잘못되었습니다.');
+    }
   };
 
   return (
