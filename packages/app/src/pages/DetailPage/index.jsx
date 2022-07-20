@@ -37,27 +37,33 @@ const DetailPage = ({ topMenu, subMenu }) => {
   const [isLogin] = useRecoilState(atomIsLogin);
   const [pageType] = useRecoilState(atomPageType);
 
-  useEffect(() => {
+  useEffect(async () => {
     setEditable(false);
-    getDetailPageImages(subMenu)
-      .then((res) => {
-        setContents(res.data.imageURLs);
-        setType(pageType[subMenu]);
-      })
-      .catch((err) => {
-        if (err.response.status === 500)
-          postInitDetailPage(subMenu)
-            .then((res) => {
-              console.log(res);
-              return;
-            })
-            .catch((err) => console.log(err));
-      });
+    try {
+      const response = await getDetailPageImages(subMenu);
+      setContents(response.data.imageURLs);
+      setType(pageType[subMenu]);
+    } catch (error) {
+      if (error.response.status === 500) {
+        try {
+          const res = await postInitDetailPage(subMenu);
+          console.log(res);
+          return;
+        } catch (err) {
+          console.log(err.response);
+        }
+      }
+      console.log(error.response);
+    }
   }, [subMenu]);
 
-  useEffect(() => {
+  useEffect(async () => {
     if (!imageIsChanged.current) return;
-    putDetailPageImages(subMenu, contents).catch((err) => console.log(err));
+    try {
+      await putDetailPageImages(subMenu, contents);
+    } catch (error) {
+      console.log(error.response);
+    }
     imageIsChanged.current = false;
   }, [contents]);
 
@@ -80,23 +86,21 @@ const DetailPage = ({ topMenu, subMenu }) => {
     setEditable(!editable);
   };
 
-  const onChangeImage = (event) => {
+  const onChangeImage = async (event) => {
     if (!event.target.files[0]) return;
     selectedImage.current = event.target.files[0];
     let data = new FormData();
     data.append('image', selectedImage.current);
-
-    postUploadImagesToS3(data)
-      .then((res) => {
-        const afterContents = [...contents];
-        afterContents.splice(imageIndex.current, 0, res.data.url);
-        imageIsChanged.current = true;
-        setContents(afterContents);
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    try {
+      const response = await postUploadImagesToS3(data);
+      const afterContents = [...contents];
+      afterContents.splice(imageIndex.current, 0, response.data.url);
+      imageIsChanged.current = true;
+      setContents(afterContents);
+      console.log(response);
+    } catch (error) {
+      console.log(error.response);
+    }
   };
 
   const EditContents = (content, index) => {
