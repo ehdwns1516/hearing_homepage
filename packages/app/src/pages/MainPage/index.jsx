@@ -38,20 +38,22 @@ const MainPage = () => {
   const [isLogin] = useRecoilState(atomIsLogin);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    getNoticeInfos('MainPageCarousel')
-      .then((res) => {
-        setImageInfos(res.data.infos);
-      })
-      .catch((err) => {
-        if (err.response.status === 500)
-          postInitNoticeInfo('MainPageCarousel')
-            .then((res) => {
-              console.log(res);
-              return;
-            })
-            .catch((err) => console.log(err));
-      });
+  useEffect(async () => {
+    try {
+      const response = await getNoticeInfos('MainPageCarousel');
+      setImageInfos(response.data.infos);
+    } catch (error) {
+      if (error.response.status === 500) {
+        try {
+          const res = await postInitNoticeInfo('MainPageCarousel');
+          console.log(res);
+          return;
+        } catch (err) {
+          console.log(err.response);
+        }
+        console.log(error.response);
+      }
+    }
   }, []);
 
   const visibleEditCarousel = () => {
