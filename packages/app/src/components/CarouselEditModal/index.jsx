@@ -29,25 +29,24 @@ const CarouselEditModal = ({
   const imageInfoIsChanged = useRef(0);
   const imageIndex = useRef(0);
 
-  useEffect(() => {
+  useEffect(async () => {
     if (!imageInfoIsChanged.current) return;
-    putNoticeInfos('MainPageCarousel', contents)
-      .then((res) => {
-        if (imageInfoIsChanged.current === 1) {
-          alert('이미지를 성공적으로 업로드하였습니다.');
-        } else if (imageInfoIsChanged.current === 2) {
-          alert('이미지를 성공적으로 삭제하였습니다.');
-        } else if (imageInfoIsChanged.current === 3) {
-          alert('url 적용에 성공하였습니다.');
-        }
-        console.log(res);
-        imageInfoIsChanged.current = 0;
-      })
-      .catch((err) => {
-        imageInfoIsChanged.current = 0;
-        alert('ERROR: ' + err);
-        console.log(err);
-      });
+    try {
+      const response = await putNoticeInfos('MainPageCarousel', contents);
+      if (imageInfoIsChanged.current === 1) {
+        alert('이미지를 성공적으로 업로드하였습니다.');
+      } else if (imageInfoIsChanged.current === 2) {
+        alert('이미지를 성공적으로 삭제하였습니다.');
+      } else if (imageInfoIsChanged.current === 3) {
+        alert('url 적용에 성공하였습니다.');
+      }
+      console.log(response);
+      imageInfoIsChanged.current = 0;
+    } catch (error) {
+      imageInfoIsChanged.current = 0;
+      alert('ERROR: ' + error);
+      console.log(error.response);
+    }
   }, [contents]);
 
   useEffect(() => {
@@ -72,31 +71,28 @@ const CarouselEditModal = ({
     }
   };
 
-  const onChangeImage = (event) => {
+  const onChangeImage = async (event) => {
     if (!event.target.files[0]) return;
     selectedImage.current = event.target.files[0];
     let data = new FormData();
     data.append('image', selectedImage.current);
 
-    postUploadImagesToS3(data)
-      .then((res) => {
-        const afterContents = [...contents];
-        let index =
-          imageCurrentNo || afterContents.length
-            ? imageCurrentNo + imageIndex.current
-            : 0;
-        afterContents.splice(index, 0, {
-          imageUrl: res.data.url,
-          linkUrl: '',
-        });
-        imageInfoIsChanged.current = 1;
-        setContents(afterContents);
-        setImageCurrentNo(index);
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
+    try {
+      const response = await postUploadImagesToS3(data);
+      const afterContents = [...contents];
+      let index =
+        imageCurrentNo || afterContents.length ? imageCurrentNo + imageIndex.current : 0;
+      afterContents.splice(index, 0, {
+        imageUrl: response.data.url,
+        linkUrl: '',
       });
+      imageInfoIsChanged.current = 1;
+      setContents(afterContents);
+      setImageCurrentNo(index);
+      console.log(response);
+    } catch (error) {
+      console.log(error.response);
+    }
   };
 
   const onChangeLinkURL = (event) => {
