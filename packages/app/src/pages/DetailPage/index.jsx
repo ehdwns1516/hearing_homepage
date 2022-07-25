@@ -31,7 +31,7 @@ const DetailPage = ({ topMenu, subMenu }) => {
   const selectedImage = useRef(null);
   const imageIsChanged = useRef(false);
   const imageIndex = useRef(0);
-  const [contents, setContents] = useState(Array);
+  const [contents, setContents] = useState([]);
   const [editable, setEditable] = useState(false);
   const [type, setType] = useState(-1);
   const [isLogin] = useRecoilState(atomIsLogin);

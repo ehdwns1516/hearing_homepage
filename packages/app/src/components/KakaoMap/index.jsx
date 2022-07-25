@@ -17,7 +17,6 @@ const KakaoMap = () => {
     marker.setMap(map);
 
     kakao.maps.event.addListener(marker, 'click', () => {
-      console.log('first');
       window.open('https://place.map.kakao.com/12510627', '_blank');
     });
     let zoomControl = new kakao.maps.ZoomControl();

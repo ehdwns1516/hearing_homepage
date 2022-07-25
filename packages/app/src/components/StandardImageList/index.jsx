@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { getColor } from '../../utils';
 import ImageList from '@mui/material/ImageList';
@@ -14,6 +14,7 @@ import {
   PageButtonNext,
   PageButtonPrev,
 } from './styles.jsx';
+
 const StandardImageList = ({ editable, allImages, setAllImages, imageIsChanged }) => {
   const ImageListRef = useRef(null);
   const [imageHeight, setImageHeight] = useState('auto');
@@ -52,21 +53,33 @@ const StandardImageList = ({ editable, allImages, setAllImages, imageIsChanged }
     setControlButtonNum(controlButtonNum_);
   }, [currentPageNum, allImages]);
 
-  const deleteImage = (index) => {
-    if (window.confirm('이미지를 정말 삭제하시겠습니까?')) {
-      const afterImages = [...allImages];
-      afterImages.splice(index + (currentPageNum - 1) * 12, 1);
-      setAllImages(afterImages);
-      imageIsChanged.current = true;
-    }
-  };
+  const deleteImage = useCallback(
+    (index) => {
+      if (window.confirm('이미지를 정말 삭제하시겠습니까?')) {
+        const afterImages = [...allImages];
+        afterImages.splice(index + (currentPageNum - 1) * 12, 1);
+        setAllImages(afterImages);
+        imageIsChanged.current = true;
+      }
+    },
+    [allImages, currentPageNum, setAllImages]
+  );
 
-  const openEnlageImageModal = (index) => {
-    if (editable) return;
-    if (!imageModalOpened) setSelectedImageIndex((currentPageNum - 1) * 12 + index);
+  const openEnlargeImageModal = useCallback(
+    (index) => {
+      if (editable) return;
+      if (!imageModalOpened) setSelectedImageIndex((currentPageNum - 1) * 12 + index);
 
-    setImageEnlargeModal(!imageModalOpened);
-  };
+      setImageEnlargeModal(!imageModalOpened);
+    },
+    [
+      editable,
+      imageModalOpened,
+      setSelectedImageIndex,
+      currentPageNum,
+      setImageEnlargeModal,
+    ]
+  );
 
   return (
     <React.Fragment>
@@ -90,7 +103,7 @@ const StandardImageList = ({ editable, allImages, setAllImages, imageIsChanged }
           !imageUrl ? (
             <CustomImageListItem key={index} empty={'true'}></CustomImageListItem>
           ) : (
-            <CustomImageListItem key={index} onClick={() => openEnlageImageModal(index)}>
+            <CustomImageListItem key={index} onClick={() => openEnlargeImageModal(index)}>
               {editable ? (
                 <DeleteImageButton onClick={() => deleteImage(index)}>
                   -
@@ -155,7 +168,7 @@ const StandardImageList = ({ editable, allImages, setAllImages, imageIsChanged }
         <ImageEnlargeModal
           images={allImages}
           imageIndex={selectedImageIndex}
-          openEnlageImageModal={openEnlageImageModal}
+          openEnlargeImageModal={openEnlargeImageModal}
         ></ImageEnlargeModal>
       ) : null}
     </React.Fragment>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import {
   WholeWrapper,
@@ -28,10 +28,10 @@ const Carousel = ({
 }) => {
   const [initAutoCarousel, setInitAutoCarousel] = useState(false);
   const nextButtonRef = useRef(null);
-  const intervalID = useRef(null);
+  const timeoutID = useRef(null);
   useEffect(() => {
     return () => {
-      clearInterval(intervalID.current);
+      clearTimeout(timeoutID.current);
     };
   }, []);
 
@@ -41,34 +41,38 @@ const Carousel = ({
 
   useEffect(() => {
     if (editCarouselModalOpened === true) {
-      clearInterval(intervalID.current);
+      clearTimeout(timeoutID.current);
     } else if (editCarouselModalOpened === false) {
       setSlideAuto();
     }
   }, [editCarouselModalOpened]);
-  2;
-  const nextOnClick = () => {
+
+  const nextOnClick = useCallback(() => {
     if (imageCurrentNo < imageInfos.length) setImageCurrentNo(imageCurrentNo + 1);
     if (imageCurrentNo + 1 === imageInfos.length) setImageCurrentNo(0);
-  };
+  }, [imageCurrentNo, imageInfos, setImageCurrentNo, setImageCurrentNo]);
 
-  const prevOnClick = () => {
+  const prevOnClick = useCallback(() => {
     if (imageCurrentNo > 0) setImageCurrentNo(imageCurrentNo - 1);
     else setImageCurrentNo(imageInfos.length - 1);
-  };
+  }, [imageCurrentNo, imageInfos, setImageCurrentNo, setImageCurrentNo]);
 
-  const imageOnClick = (linkURL) => {
+  const imageOnClick = useCallback((linkURL) => {
     if (linkURL) window.open(linkURL, '_blank');
-  };
+  }, []);
 
-  const setSlideAuto = () => {
+  const setSlideAuto = useCallback(() => {
     if (autoSlideTime && nextButtonRef.current) {
-      intervalID.current = setInterval(() => {
+      timeoutID.current = setTimeout(() => {
+        if (!nextButtonRef.current) {
+          clearTimeout(timeoutID.current);
+          return;
+        }
         nextButtonRef.current.click();
-        if (!nextButtonRef.current) clearInterval(intervalID.current);
+        setSlideAuto();
       }, autoSlideTime * 1000);
     }
-  };
+  }, [autoSlideTime]);
 
   return (
     <WholeWrapper
@@ -76,7 +80,7 @@ const Carousel = ({
       onMouseEnter={
         !editCarouselModalOpened
           ? () => {
-              clearInterval(intervalID.current);
+              clearTimeout(timeoutID.current);
             }
           : null
       }

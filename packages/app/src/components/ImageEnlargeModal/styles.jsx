@@ -50,7 +50,7 @@ const ModalContents = styled.div`
   height: auto;
 `;
 
-const CloseButtonlImage = styled(IoIosClose)`
+const CloseButtonImage = styled(IoIosClose)`
   width: 70px;
   height: 70px;
   color: ${getColor('white')};
@@ -64,14 +64,14 @@ const CloseButton = styled.div`
   height: 70px;
   z-index: 1001;
   :hover {
-    ${CloseButtonlImage} {
+    ${CloseButtonImage} {
       color: ${getColor('dark_gray')};
     }
   }
   cursor: pointer;
 `;
 
-const NextButtonlImage = styled(IoIosArrowForward)`
+const NextButtonImage = styled(IoIosArrowForward)`
   width: 80px;
   height: 80px;
   color: ${getColor('white')};
@@ -88,14 +88,14 @@ const NextButton = styled.div`
   height: 50%;
   z-index: 1001;
   :hover {
-    ${NextButtonlImage} {
+    ${NextButtonImage} {
       color: ${getColor('dark_gray')};
     }
   }
   cursor: pointer;
 `;
 
-const PrevButtonlImage = styled(IoIosArrowBack)`
+const PrevButtonImage = styled(IoIosArrowBack)`
   width: 80px;
   height: 80px;
   color: ${getColor('white')};
@@ -112,7 +112,7 @@ const PrevButton = styled.div`
   height: 50%;
   z-index: 1001;
   :hover {
-    ${PrevButtonlImage} {
+    ${PrevButtonImage} {
       color: ${getColor('dark_gray')};
     }
   }
@@ -143,11 +143,11 @@ export {
   ModalInner,
   ModalContents,
   NextButton,
-  NextButtonlImage,
+  NextButtonImage,
   PrevButton,
-  PrevButtonlImage,
+  PrevButtonImage,
   ImgWrapper,
   Img,
-  CloseButtonlImage,
+  CloseButtonImage,
   CloseButton,
 };
