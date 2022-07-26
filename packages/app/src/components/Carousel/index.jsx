@@ -50,12 +50,12 @@ const Carousel = ({
   const nextOnClick = useCallback(() => {
     if (imageCurrentNo < imageInfos.length) setImageCurrentNo(imageCurrentNo + 1);
     if (imageCurrentNo + 1 === imageInfos.length) setImageCurrentNo(0);
-  }, [imageCurrentNo, imageInfos, setImageCurrentNo, setImageCurrentNo]);
+  }, [imageCurrentNo, imageInfos, setImageCurrentNo]);
 
   const prevOnClick = useCallback(() => {
     if (imageCurrentNo > 0) setImageCurrentNo(imageCurrentNo - 1);
     else setImageCurrentNo(imageInfos.length - 1);
-  }, [imageCurrentNo, imageInfos, setImageCurrentNo, setImageCurrentNo]);
+  }, [imageCurrentNo, imageInfos, setImageCurrentNo]);
 
   const imageOnClick = useCallback((linkURL) => {
     if (linkURL) window.open(linkURL, '_blank');
