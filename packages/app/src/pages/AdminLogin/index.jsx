@@ -34,7 +34,7 @@ const AdminLogin = () => {
       setIsRemember(true);
       setID(cookies.rememberId);
     }
-  }, []);
+  }, [cookies.rememberId, navigate]);
 
   const onChangeID = (e) => {
     e.preventDefault();

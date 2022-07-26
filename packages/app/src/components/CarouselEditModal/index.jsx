@@ -53,7 +53,7 @@ const CarouselEditModal = ({
 
   useEffect(() => {
     if (contents.length) setLinkURL(contents[imageCurrentNo]['linkUrl']);
-  }, [imageCurrentNo]);
+  }, [imageCurrentNo, setLinkURL, contents]);
 
   const imgUploadBtnClick = useCallback((event, position) => {
     event.preventDefault();
@@ -71,7 +71,7 @@ const CarouselEditModal = ({
       imageInfoIsChanged.current = 2;
       setContents(afterContents);
     }
-  }, [contents, imageCurrentNo, setImageCurrentNo, setContents]);
+  }, [contents, imageCurrentNo, setImageCurrentNo]);
 
   const onChangeImage = useCallback(
     async (event) => {
@@ -99,7 +99,7 @@ const CarouselEditModal = ({
         console.log(error.response);
       }
     },
-    [contents, setContents, setImageCurrentNo]
+    [contents, setImageCurrentNo, imageCurrentNo]
   );
 
   const onChangeLinkURL = useCallback(
@@ -118,7 +118,7 @@ const CarouselEditModal = ({
     });
     imageInfoIsChanged.current = 3;
     setContents(afterContents);
-  }, [contents, setContents]);
+  }, [contents, imageCurrentNo, linkURL]);
 
   return (
     <>

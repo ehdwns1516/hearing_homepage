@@ -63,7 +63,7 @@ const StandardImageList = ({ editable, allImages, setAllImages, imageIsChanged }
         imageIsChanged.current = true;
       }
     },
-    [allImages, currentPageNum, setAllImages]
+    [allImages, currentPageNum, setAllImages, imageIsChanged]
   );
 
   const openEnlargeImageModal = useCallback(
@@ -73,13 +73,7 @@ const StandardImageList = ({ editable, allImages, setAllImages, imageIsChanged }
 
       setImageEnlargeModal(!imageModalOpened);
     },
-    [
-      editable,
-      imageModalOpened,
-      setSelectedImageIndex,
-      currentPageNum,
-      setImageEnlargeModal,
-    ]
+    [editable, imageModalOpened, currentPageNum]
   );
 
   return (

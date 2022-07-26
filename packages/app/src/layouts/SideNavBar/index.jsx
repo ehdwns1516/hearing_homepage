@@ -29,7 +29,7 @@ const SideNavBar = ({ currentPage }) => {
       menuAnimation[value] = true;
     }
     setIsOpened(topMenuOpened);
-  }, []);
+  }, [currentPage, topMenuList, subMenuList]);
 
   const onClkTopMenu = useCallback(
     (topMenu) => {

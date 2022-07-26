@@ -19,12 +19,12 @@ const ImageEnlargeModal = ({ images, imageIndex, openEnlargeImageModal }) => {
   const slideNext = useCallback(() => {
     if (images.length - 1 === currentImageIndex) return;
     setCurrentImageIndex(currentImageIndex + 1);
-  }, [images, currentImageIndex, setCurrentImageIndex]);
+  }, [images, currentImageIndex]);
 
   const slidePrev = useCallback(() => {
     if (0 === currentImageIndex) return;
     setCurrentImageIndex(currentImageIndex - 1);
-  }, [currentImageIndex, setCurrentImageIndex]);
+  }, [currentImageIndex]);
 
   return (
     <>

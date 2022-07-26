@@ -57,7 +57,7 @@ const DetailPage = ({ topMenu, subMenu }) => {
         console.log(error.response);
       }
     })();
-  }, [subMenu]);
+  }, [subMenu, pageType]);
 
   useEffect(() => {
     (async () => {
@@ -69,7 +69,7 @@ const DetailPage = ({ topMenu, subMenu }) => {
       }
       imageIsChanged.current = false;
     })();
-  }, [contents]);
+  }, [contents, subMenu]);
 
   const imgInputBtnClick = useCallback(
     (event, index) => {

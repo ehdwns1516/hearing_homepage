@@ -29,6 +29,20 @@ const Carousel = ({
   const [initAutoCarousel, setInitAutoCarousel] = useState(false);
   const nextButtonRef = useRef(null);
   const timeoutID = useRef(null);
+
+  const setSlideAuto = useCallback(() => {
+    if (autoSlideTime && nextButtonRef.current) {
+      timeoutID.current = setTimeout(() => {
+        if (!nextButtonRef.current) {
+          clearTimeout(timeoutID.current);
+          return;
+        }
+        nextButtonRef.current.click();
+        setSlideAuto();
+      }, autoSlideTime * 1000);
+    }
+  }, [autoSlideTime]);
+
   useEffect(() => {
     return () => {
       clearTimeout(timeoutID.current);
@@ -37,7 +51,7 @@ const Carousel = ({
 
   useEffect(() => {
     if (initAutoCarousel) setSlideAuto();
-  }, [initAutoCarousel]);
+  }, [initAutoCarousel, setSlideAuto]);
 
   useEffect(() => {
     if (editCarouselModalOpened === true) {
@@ -45,7 +59,7 @@ const Carousel = ({
     } else if (editCarouselModalOpened === false) {
       setSlideAuto();
     }
-  }, [editCarouselModalOpened]);
+  }, [editCarouselModalOpened, setSlideAuto]);
 
   const nextOnClick = useCallback(() => {
     if (imageCurrentNo < imageInfos.length) setImageCurrentNo(imageCurrentNo + 1);
@@ -60,19 +74,6 @@ const Carousel = ({
   const imageOnClick = useCallback((linkURL) => {
     if (linkURL) window.open(linkURL, '_blank');
   }, []);
-
-  const setSlideAuto = useCallback(() => {
-    if (autoSlideTime && nextButtonRef.current) {
-      timeoutID.current = setTimeout(() => {
-        if (!nextButtonRef.current) {
-          clearTimeout(timeoutID.current);
-          return;
-        }
-        nextButtonRef.current.click();
-        setSlideAuto();
-      }, autoSlideTime * 1000);
-    }
-  }, [autoSlideTime]);
 
   return (
     <WholeWrapper
