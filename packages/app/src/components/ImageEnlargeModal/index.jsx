@@ -1,47 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   ModalWrapper,
   ModalOverlay,
   ModalInner,
   ModalContents,
   NextButton,
-  NextButtonlImage,
+  NextButtonImage,
   PrevButton,
-  PrevButtonlImage,
+  PrevButtonImage,
   ImgWrapper,
   Img,
-  CloseButtonlImage,
+  CloseButtonImage,
   CloseButton,
 } from './styles.jsx';
-const ImageEnlargeModal = ({ images, imageIndex, openEnlageImageModal }) => {
+const ImageEnlargeModal = ({ images, imageIndex, openEnlargeImageModal }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(imageIndex);
 
-  const slideNext = () => {
+  const slideNext = useCallback(() => {
     if (images.length - 1 === currentImageIndex) return;
     setCurrentImageIndex(currentImageIndex + 1);
-  };
-  const slidePrev = () => {
+  }, [images, currentImageIndex, setCurrentImageIndex]);
+
+  const slidePrev = useCallback(() => {
     if (0 === currentImageIndex) return;
     setCurrentImageIndex(currentImageIndex - 1);
-  };
+  }, [currentImageIndex, setCurrentImageIndex]);
+
   return (
     <>
       <ModalOverlay />
       <ModalWrapper tabIndex='-1'>
-        <CloseButton onClick={openEnlageImageModal}>
-          <CloseButtonlImage></CloseButtonlImage>
+        <CloseButton onClick={openEnlargeImageModal}>
+          <CloseButtonImage></CloseButtonImage>
         </CloseButton>
         <PrevButton onClick={slidePrev}>
-          <PrevButtonlImage></PrevButtonlImage>
+          <PrevButtonImage></PrevButtonImage>
         </PrevButton>
         <NextButton onClick={slideNext}>
-          <NextButtonlImage></NextButtonlImage>
+          <NextButtonImage></NextButtonImage>
         </NextButton>
         <ModalInner tabIndex='0'>
           <ModalContents>
             <ImgWrapper>
               <Img
-                onClick={openEnlageImageModal}
+                onClick={openEnlargeImageModal}
                 src={images[currentImageIndex]}
                 alt='None'
               ></Img>

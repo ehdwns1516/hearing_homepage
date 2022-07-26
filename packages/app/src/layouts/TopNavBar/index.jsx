@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useRecoilState } from 'recoil';
 
 import { atomTopMenuList, atomSubMenuList } from '../../recoil/atoms';
@@ -17,23 +17,24 @@ const TopNavBar = () => {
   const [subMenuList] = useRecoilState(atomSubMenuList);
   const [isOpened, setIsOpened] = useState({});
 
-  useEffect(() => {}, []);
-
-  const hoverTopMenu = (topMenu) => {
-    let topMenuOpened = { ...isOpened };
-    topMenuOpened[topMenu] = !topMenuOpened[topMenu];
-    if (topMenuOpened[topMenu]) {
-      for (let menu in topMenuOpened) {
-        if (topMenu !== menu) topMenuOpened[menu] = false;
+  const hoverTopMenu = useCallback(
+    (topMenu) => {
+      let topMenuOpened = { ...isOpened };
+      topMenuOpened[topMenu] = !topMenuOpened[topMenu];
+      if (topMenuOpened[topMenu]) {
+        for (let menu in topMenuOpened) {
+          if (topMenu !== menu) topMenuOpened[menu] = false;
+        }
+        setIsOpened(topMenuOpened);
+      } else {
+        for (let menu in topMenuOpened) {
+          if (topMenu !== menu) topMenuOpened[menu] = false;
+        }
+        setIsOpened(topMenuOpened);
       }
-      setIsOpened(topMenuOpened);
-    } else {
-      for (let menu in topMenuOpened) {
-        if (topMenu !== menu) topMenuOpened[menu] = false;
-      }
-      setIsOpened(topMenuOpened);
-    }
-  };
+    },
+    [isOpened]
+  );
 
   const getSubMenus = (topMenu, index) => {
     return (

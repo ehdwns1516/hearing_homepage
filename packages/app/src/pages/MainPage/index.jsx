@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Carousel from '../../components/Carousel';
-import CarouselEditModal from '../../components/CarouselEditModal';
+import loadable from '@loadable/component';
 import KakaoMap from '../../components/KakaoMap';
 import TopNavBar from '../../layouts/TopNavBar';
 import Footer from '../../layouts/Footer';
@@ -30,6 +30,7 @@ import center_summary from '../../images/center-summary.jpeg';
 import call_info from '../../images/call-info.jpeg';
 import naver_blog from '../../images/naver-blog.png';
 import NHIS from '../../images/NHIS.jpeg';
+const CarouselEditModal = loadable(() => import('../../components/CarouselEditModal'));
 
 const MainPage = () => {
   const [editCarouselModalOpened, setEditCarouselModalOpened] = useState(false);
@@ -38,28 +39,30 @@ const MainPage = () => {
   const [isLogin] = useRecoilState(atomIsLogin);
   const navigate = useNavigate();
 
-  useEffect(async () => {
-    try {
-      const response = await getNoticeInfos('MainPageCarousel');
-      setImageInfos(response.data.infos);
-    } catch (error) {
-      if (error.response.status === 500) {
-        try {
-          const res = await postInitNoticeInfo('MainPageCarousel');
-          console.log(res);
-          return;
-        } catch (err) {
-          console.log(err.response);
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await getNoticeInfos('MainPageCarousel');
+        setImageInfos(response.data.infos);
+      } catch (error) {
+        if (error.response.status === 500) {
+          try {
+            const res = await postInitNoticeInfo('MainPageCarousel');
+            console.log(res);
+            return;
+          } catch (err) {
+            console.log(err.response);
+          }
+          console.log(error.response);
         }
-        console.log(error.response);
       }
-    }
+    })();
   }, []);
 
-  const visibleEditCarousel = () => {
+  const visibleEditCarousel = useCallback(() => {
     if (editCarouselModalOpened) window.location.reload();
     setEditCarouselModalOpened(!editCarouselModalOpened);
-  };
+  }, [editCarouselModalOpened]);
 
   return (
     <WholeWrapper>

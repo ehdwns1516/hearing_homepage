@@ -1,5 +1,6 @@
 import React from 'react';
 import { WholeWrapper, Title, Description, AccentText } from './styles.jsx';
+
 const PreparingPage = () => {
   return (
     <WholeWrapper>

@@ -3,9 +3,11 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import { ThemeProvider } from 'styled-components';
 import { GlobalStyle, Theme } from './global_style';
-import DetailPages from './routes/DetailPageRoutes';
-import MainPage from './pages/MainPage';
-import AdminLogin from './pages/AdminLogin';
+import loadable from '@loadable/component';
+
+const MainPage = loadable(() => import('./pages/MainPage'));
+const AdminLogin = loadable(() => import('./pages/AdminLogin'));
+const DetailPage = loadable(() => import('./pages/DetailPage'));
 
 const App = () => {
   return (
@@ -16,7 +18,7 @@ const App = () => {
           <Routes>
             <Route path='/' element={<MainPage />} />
             <Route path='/login' element={<AdminLogin />} />
-            <Route path='/*' element={<DetailPages />} />
+            <Route path='/*' element={<DetailPage />} />
           </Routes>
         </BrowserRouter>
       </ThemeProvider>

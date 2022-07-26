@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import SideNavBar from '../../layouts/SideNavBar';
 import { useRecoilState } from 'recoil';
 import StandardImageList from '../../components/StandardImageList';
@@ -31,77 +31,93 @@ const DetailPage = ({ topMenu, subMenu }) => {
   const selectedImage = useRef(null);
   const imageIsChanged = useRef(false);
   const imageIndex = useRef(0);
-  const [contents, setContents] = useState(Array);
+  const [contents, setContents] = useState([]);
   const [editable, setEditable] = useState(false);
   const [type, setType] = useState(-1);
   const [isLogin] = useRecoilState(atomIsLogin);
   const [pageType] = useRecoilState(atomPageType);
 
-  useEffect(async () => {
-    setEditable(false);
-    try {
-      const response = await getDetailPageImages(subMenu);
-      setContents(response.data.imageURLs);
-      setType(pageType[subMenu]);
-    } catch (error) {
-      if (error.response.status === 500) {
-        try {
-          const res = await postInitDetailPage(subMenu);
-          console.log(res);
-          return;
-        } catch (err) {
-          console.log(err.response);
+  useEffect(() => {
+    (async () => {
+      setEditable(false);
+      try {
+        const response = await getDetailPageImages(subMenu);
+        setContents(response.data.imageURLs);
+        setType(pageType[subMenu]);
+      } catch (error) {
+        if (error.response.status === 500) {
+          try {
+            const res = await postInitDetailPage(subMenu);
+            console.log(res);
+            return;
+          } catch (err) {
+            console.log(err.response);
+          }
         }
+        console.log(error.response);
       }
-      console.log(error.response);
-    }
+    })();
   }, [subMenu]);
 
-  useEffect(async () => {
-    if (!imageIsChanged.current) return;
-    try {
-      await putDetailPageImages(subMenu, contents);
-    } catch (error) {
-      console.log(error.response);
-    }
-    imageIsChanged.current = false;
+  useEffect(() => {
+    (async () => {
+      if (!imageIsChanged.current) return;
+      try {
+        await putDetailPageImages(subMenu, contents);
+      } catch (error) {
+        console.log(error.response);
+      }
+      imageIsChanged.current = false;
+    })();
   }, [contents]);
 
-  const imgInputBtnClick = (event, index) => {
-    imageIndex.current = index;
-    imageInput.current.click();
-  };
+  const imgInputBtnClick = useCallback(
+    (event, index) => {
+      imageIndex.current = index;
+      imageInput.current.click();
+    },
+    [imageIndex]
+  );
 
-  const imgDeleteBtnClick = (event, index) => {
-    if (window.confirm('이미지를 정말 삭제하시겠습니까?')) {
-      const afterContents = [...contents];
-      afterContents.splice(index, 1);
-      imageIsChanged.current = true;
-      setContents(afterContents);
-    }
-  };
+  const imgDeleteBtnClick = useCallback(
+    (event, index) => {
+      if (window.confirm('이미지를 정말 삭제하시겠습니까?')) {
+        const afterContents = [...contents];
+        afterContents.splice(index, 1);
+        imageIsChanged.current = true;
+        setContents(afterContents);
+      }
+    },
+    [contents]
+  );
 
-  const editBtnClick = (event) => {
-    event.preventDefault();
-    setEditable(!editable);
-  };
+  const editBtnClick = useCallback(
+    (event) => {
+      event.preventDefault();
+      setEditable(!editable);
+    },
+    [editable]
+  );
 
-  const onChangeImage = async (event) => {
-    if (!event.target.files[0]) return;
-    selectedImage.current = event.target.files[0];
-    let data = new FormData();
-    data.append('image', selectedImage.current);
-    try {
-      const response = await postUploadImagesToS3(data);
-      const afterContents = [...contents];
-      afterContents.splice(imageIndex.current, 0, response.data.url);
-      imageIsChanged.current = true;
-      setContents(afterContents);
-      console.log(response);
-    } catch (error) {
-      console.log(error.response);
-    }
-  };
+  const onChangeImage = useCallback(
+    async (event) => {
+      if (!event.target.files[0]) return;
+      selectedImage.current = event.target.files[0];
+      let data = new FormData();
+      data.append('image', selectedImage.current);
+      try {
+        const response = await postUploadImagesToS3(data);
+        const afterContents = [...contents];
+        afterContents.splice(imageIndex.current, 0, response.data.url);
+        imageIsChanged.current = true;
+        setContents(afterContents);
+        console.log(response);
+      } catch (error) {
+        console.log(error.response);
+      }
+    },
+    [contents]
+  );
 
   const EditContents = (content, index) => {
     return (
