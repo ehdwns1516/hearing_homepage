@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 import logo from '../../images/oticon-logo.png';
@@ -31,15 +31,18 @@ const SideNavBar = ({ currentPage }) => {
     setIsOpened(topMenuOpened);
   }, []);
 
-  const onClkTopMenu = (topMenu) => {
-    let topMenuOpened = { ...isOpened };
-    topMenuOpened[topMenu] = !topMenuOpened[topMenu];
-    if (topMenuOpened[topMenu]) {
-      setIsOpened(topMenuOpened);
-    } else {
-      setIsOpened(topMenuOpened);
-    }
-  };
+  const onClkTopMenu = useCallback(
+    (topMenu) => {
+      let topMenuOpened = { ...isOpened };
+      topMenuOpened[topMenu] = !topMenuOpened[topMenu];
+      if (topMenuOpened[topMenu]) {
+        setIsOpened(topMenuOpened);
+      } else {
+        setIsOpened(topMenuOpened);
+      }
+    },
+    [isOpened]
+  );
 
   const getSubMenus = (topMenu, index) => {
     return (

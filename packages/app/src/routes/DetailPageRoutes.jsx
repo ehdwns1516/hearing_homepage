@@ -2,8 +2,10 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { atomTopMenuList, atomSubMenuList } from '../recoil/atoms';
-import DetailPage from '../pages/DetailPage';
 import NotFoundPage from '../pages/NotFoundPage';
+import loadable from '@loadable/component';
+
+const DetailPage = loadable(() => import('./pages/DetailPage'));
 
 const DetailPages = () => {
   const [topMenuList] = useRecoilState(atomTopMenuList);

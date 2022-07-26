@@ -3,7 +3,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { getColor } from '../../utils';
 import ImageList from '@mui/material/ImageList';
-import ImageEnlargeModal from '../ImageEnlargeModal';
+import loadable from '@loadable/component';
 import {
   CustomImageListItem,
   DeleteImageButton,
@@ -15,6 +15,7 @@ import {
   PageButtonPrev,
 } from './styles.jsx';
 
+const ImageEnlargeModal = loadable(() => import('../ImageEnlargeModal'));
 const StandardImageList = ({ editable, allImages, setAllImages, imageIsChanged }) => {
   const ImageListRef = useRef(null);
   const [imageHeight, setImageHeight] = useState('auto');
