@@ -5,7 +5,7 @@ import { atomTopMenuList, atomSubMenuList } from '../recoil/atoms';
 import NotFoundPage from '../pages/NotFoundPage';
 import loadable from '@loadable/component';
 
-const DetailPage = loadable(() => import('./pages/DetailPage'));
+const DetailPage = loadable(() => import('../pages/DetailPage'));
 
 const DetailPages = () => {
   const [topMenuList] = useRecoilState(atomTopMenuList);

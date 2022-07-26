@@ -135,7 +135,7 @@ const StandardImageList = ({ editable, allImages, setAllImages, imageIsChanged }
               currentPageNum === item ? (
                 <PageButton
                   key={item}
-                  style={{ backgroundColor: `${getColor('dark_purple')};` }}
+                  style={{ backgroundColor: `${getColor('dark_purple')}` }}
                 >
                   {item}
                 </PageButton>

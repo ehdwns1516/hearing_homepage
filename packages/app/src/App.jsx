@@ -7,7 +7,7 @@ import loadable from '@loadable/component';
 
 const MainPage = loadable(() => import('./pages/MainPage'));
 const AdminLogin = loadable(() => import('./pages/AdminLogin'));
-const DetailPage = loadable(() => import('./pages/DetailPage'));
+const DetailPages = loadable(() => import('./routes/DetailPageRoutes'));
 
 const App = () => {
   return (
@@ -18,7 +18,7 @@ const App = () => {
           <Routes>
             <Route path='/' element={<MainPage />} />
             <Route path='/login' element={<AdminLogin />} />
-            <Route path='/*' element={<DetailPage />} />
+            <Route path='/*' element={<DetailPages />} />
           </Routes>
         </BrowserRouter>
       </ThemeProvider>
